@@ -11,7 +11,7 @@ import SwiftUI
 struct Inus_StreamApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomePage()
         }
     }
 }

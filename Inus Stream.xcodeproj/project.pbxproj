@@ -7,18 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5871865F28DA849400BABB66 /* SnapToScroll in Frameworks */ = {isa = PBXBuildFile; productRef = 5871865E28DA849400BABB66 /* SnapToScroll */; };
 		588B11F628D90DCF007CA197 /* Inus_StreamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B11F528D90DCF007CA197 /* Inus_StreamApp.swift */; };
-		588B11F828D90DCF007CA197 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B11F728D90DCF007CA197 /* ContentView.swift */; };
+		588B11F828D90DCF007CA197 /* RecentAnimeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B11F728D90DCF007CA197 /* RecentAnimeCard.swift */; };
 		588B11FA28D90DD1007CA197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 588B11F928D90DD1007CA197 /* Assets.xcassets */; };
 		588B11FD28D90DD1007CA197 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 588B11FC28D90DD1007CA197 /* Preview Assets.xcassets */; };
+		588B120428D91452007CA197 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B120328D91452007CA197 /* HomePage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		588B11F228D90DCF007CA197 /* Inus Stream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Inus Stream.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		588B11F528D90DCF007CA197 /* Inus_StreamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inus_StreamApp.swift; sourceTree = "<group>"; };
-		588B11F728D90DCF007CA197 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		588B11F728D90DCF007CA197 /* RecentAnimeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentAnimeCard.swift; sourceTree = "<group>"; };
 		588B11F928D90DD1007CA197 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		588B11FC28D90DD1007CA197 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		588B120328D91452007CA197 /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5871865F28DA849400BABB66 /* SnapToScroll in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,9 +56,10 @@
 			isa = PBXGroup;
 			children = (
 				588B11F528D90DCF007CA197 /* Inus_StreamApp.swift */,
-				588B11F728D90DCF007CA197 /* ContentView.swift */,
+				588B11F728D90DCF007CA197 /* RecentAnimeCard.swift */,
 				588B11F928D90DD1007CA197 /* Assets.xcassets */,
 				588B11FB28D90DD1007CA197 /* Preview Content */,
+				588B120328D91452007CA197 /* HomePage.swift */,
 			);
 			path = "Inus Stream";
 			sourceTree = "<group>";
@@ -83,6 +88,9 @@
 			dependencies = (
 			);
 			name = "Inus Stream";
+			packageProductDependencies = (
+				5871865E28DA849400BABB66 /* SnapToScroll */,
+			);
 			productName = "Inus Stream";
 			productReference = 588B11F228D90DCF007CA197 /* Inus Stream.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +119,9 @@
 				Base,
 			);
 			mainGroup = 588B11E928D90DCF007CA197;
+			packageReferences = (
+				5871865D28DA849400BABB66 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */,
+			);
 			productRefGroup = 588B11F328D90DCF007CA197 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -137,7 +148,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				588B11F828D90DCF007CA197 /* ContentView.swift in Sources */,
+				588B11F828D90DCF007CA197 /* RecentAnimeCard.swift in Sources */,
+				588B120428D91452007CA197 /* HomePage.swift in Sources */,
 				588B11F628D90DCF007CA197 /* Inus_StreamApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -339,6 +351,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5871865D28DA849400BABB66 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swiftui-library/hstack-snap-to-scroll";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5871865E28DA849400BABB66 /* SnapToScroll */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5871865D28DA849400BABB66 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */;
+			productName = SnapToScroll;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 588B11EA28D90DCF007CA197 /* Project object */;
 }
