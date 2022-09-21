@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "hstack-snap-to-scroll",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftui-library/hstack-snap-to-scroll",
+      "state" : {
+        "revision" : "263470319f98008b1e0294129847e2837ad37d89",
+        "version" : "1.0.2"
+      }
+    }
+  ],
+  "version" : 2
+}
