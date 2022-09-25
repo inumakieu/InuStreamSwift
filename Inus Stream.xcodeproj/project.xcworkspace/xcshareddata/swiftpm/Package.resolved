@@ -8,6 +8,15 @@
         "revision" : "263470319f98008b1e0294129847e2837ad37d89",
         "version" : "1.0.2"
       }
+    },
+    {
+      "identity" : "swiftuisnappingscrollview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ciaranrobrien/SwiftUISnappingScrollView.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "e2cd31e59f61478dae08b9f941bfb910c9413f00"
+      }
     }
   ],
   "version" : 2

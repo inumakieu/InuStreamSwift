@@ -13,47 +13,124 @@ struct HomePage: View {
     let tempString = "NO TITLE"
     
     var body: some View {
-            ZStack(alignment: .top) {
-                Color(red: 22/255, green: 21/255, blue: 26/255)
-                    .ignoresSafeArea()
-                ScrollView {
-                        HStackSnap(alignment: .leading(0)) {
-                            ForEach(api.books) {anime in
-                                ExtractedView(item: anime)
-                            }
-                        }
-                        .frame(height: 500, alignment: .bottom)
-                        .frame(maxWidth: .infinity)
-                        
-                    
-                    
-                    Text("Recently Released")
-                        .foregroundColor(.white)
-                        .bold()
-                        .font(.title2)
-                        .padding(.horizontal, 20)
-                        .padding(.top, 20)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 30) {
-                            ForEach(0..<5) {_ in
-                                RecentAnimeCard()
-                            }
+        ZStack(alignment: .top) {
+            Color(hex: "#ff16151A")
+                .ignoresSafeArea()
+            ScrollView {
+                HStackSnap(alignment: .leading(0)) {
+                    ForEach(api.books) { anime in
+                        ExtractedView(item: anime)
+                            .snapAlignmentHelper(id: anime.id)
+                    }
+                }
+                .frame(height: 500, alignment: .bottom)
+                .frame(maxWidth: .infinity)
+                
+                
+                
+                Text("Recently Added")
+                    .foregroundColor(.white)
+                    .bold()
+                    .font(.title2)
+                    .padding(.horizontal, 30)
+                    .padding(.top, 30)
+                    .padding(.bottom, -12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 20) {
+                        ForEach(api.recents) {recentAnime in
+                            RecentAnimeCard(anime: recentAnime)
                         }
                     }
-                    .padding(.horizontal, 20)
-                    .frame(height: 300)
-                    .frame(maxWidth: .infinity)
-                    
                 }
-                .ignoresSafeArea()
-                .padding(.top, -60)
-            }.onAppear() {
-                api.loadData()
+                .padding(.horizontal, 30)
+                .frame(height: 300)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 0)
+                
+                Text("Continue watching")
+                    .foregroundColor(.white)
+                    .bold()
+                    .font(.title2)
+                    .padding(.horizontal, 30)
+                    .padding(.top, 0)
+                    .padding(.bottom, -12)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 20) {
+                        ForEach(0..<5) {_ in
+                            ContinueWatching()
+                        }
+                    }
+                }
+                .padding(.horizontal, 30)
+                .frame(height: 300)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 0)
+                
+                Spacer()
+                    .frame(height: 100)
+                    .frame(maxHeight: 100)
+                
             }
+            .ignoresSafeArea()
+            .padding(.top, -70)
+            
+            VStack {
+                Spacer()
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)))
+                    .frame(width: 350, height: 70)
+                .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), radius:12, x:0, y:0)
+                    
+                    HStack {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(Color(hex: "#ff1E222C"))
+                            .frame(width: 90, height: 40)
+                            
+                            Text("Home")
+                                .bold()
+                            .foregroundColor(.white)
+                        }
+                        .frame(maxWidth: .infinity)
+                        
+                        
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 19)
+                                .fill(Color(hex: "#001E222C"))
+                            .frame(width: 90, height: 40)
+                            
+                            Text("Search")
+                                .bold()
+                            .foregroundColor(.white)
+                        }
+                        .frame(maxWidth: .infinity)
+                        
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 19)
+                                .fill(Color(hex: "#001E222C"))
+                            .frame(width: 90, height: 40)
+                            
+                            Text("Settings")
+                                .bold()
+                            .foregroundColor(.white)
+                        }
+                        .frame(maxWidth: .infinity)
+                        
+                    }
+                    .frame(width: 300)
+                }
+            }
+        }.onAppear() {
+            api.loadData()
+            api.loadRecent()
         }
-        
+    }
+    
 }
 
 struct HomePage_Previews: PreviewProvider {
@@ -64,6 +141,7 @@ struct HomePage_Previews: PreviewProvider {
 
 class Api : ObservableObject{
     @Published var books = [IAnimeInfo]()
+    @Published var recents = [IAnimeRecent]()
     
     func loadData() {
         guard let url = URL(string: "https://consumet-api.herokuapp.com/meta/anilist/trending?provider=zoro") else {
@@ -78,6 +156,20 @@ class Api : ObservableObject{
             }
         }.resume()
     }
+    
+    func loadRecent() {
+        guard let url = URL(string: "https://consumet-api.herokuapp.com/meta/anilist/recent-episodes?provider=zoro") else {
+            print("Invalid url...")
+            return
+        }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            let books = try! JSONDecoder().decode(RecentResults.self, from: data!)
+            print(books)
+            DispatchQueue.main.async {
+                self.recents = books.results
+            }
+        }.resume()
+    }
 }
 
 struct TrendingResults: Codable, Hashable {
@@ -86,19 +178,41 @@ struct TrendingResults: Codable, Hashable {
     let results: [IAnimeInfo]
 }
 
+struct RecentResults: Codable, Hashable {
+    let currentPage: Int
+    let hasNextPage: Bool
+    let totalPages: Int
+    let totalResults: Int
+    let results: [IAnimeRecent]
+}
+
 struct IAnimeInfo: Codable, Hashable, Identifiable {
     let id: String
-    let malId: Int
+    let malId: Int?
     let title: ITitle
     let image: String
     let description: String
     let status: String
     let cover: String
-    let rating: Int
-    let releaseDate: Int
+    let rating: Int?
+    let releaseDate: Int?
     let genres: [String]
-    let totalEpisodes: Int
-    let duration: Int
+    let totalEpisodes: Int?
+    let duration: Int?
+    let type: String
+}
+
+struct IAnimeRecent: Codable, Hashable, Identifiable {
+    let id: String
+    let malId: Int?
+    let title: ITitle
+    let image: String
+    let rating: Int?
+    let color: String
+    let episodeId: String
+    let episodeTitle: String
+    let episodeNumber: Int
+    let genres: [String]
     let type: String
 }
 
@@ -113,70 +227,131 @@ struct ExtractedView: View {
     let item: IAnimeInfo
     
     var body: some View {
-            ZStack(alignment: .leading) {
-                AsyncImage(url: URL(string: "\(item.cover)")) { image in
-                    image.resizable()
-                        .blur(radius: 3)
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 500)
-                        .frame(maxWidth: .infinity)
-                        .cornerRadius(12)
-                } placeholder: {
-                    ProgressView()
-                }
+        ZStack(alignment: .leading) {
+            AsyncImage(url: URL(string: "\(item.cover)")) { image in
+                image.resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 500)
+                    .frame(maxWidth: 390)
+                    .cornerRadius(12)
+            } placeholder: {
+                ProgressView()
+            }
+            .ignoresSafeArea()
+            
+            Rectangle()
+                .fill(LinearGradient(
+                    gradient: Gradient(stops: [
+                        .init(color: Color(hex: "#0016151A"), location: 0),
+                        .init(color: Color(hex: "#9016151A"), location: 0.5),
+                        .init(color: Color(hex: "#ff16151A"), location: 1)
+                    ]),
+                    startPoint: UnitPoint(x: 0.0, y: 0),
+                    endPoint: UnitPoint(x: 0.0, y: 1)))
+                .frame(width: 390, height: 500)
                 .ignoresSafeArea()
-                
-                Rectangle()
-                    .fill(LinearGradient(
-                        gradient: Gradient(stops: [
-                            .init(color: Color(#colorLiteral(red: 0.08627450466156006, green: 0.08235294371843338, blue: 0.10196078568696976, alpha: 0)), location: 0),
-                            .init(color: Color(#colorLiteral(red: 0.08627450466156006, green: 0.08235294371843338, blue: 0.10196078568696976, alpha: 0.7099999785423279)), location: 0.5052083134651184),
-                            .init(color: Color(#colorLiteral(red: 0.08627451211214066, green: 0.08235294371843338, blue: 0.10196078568696976, alpha: 1)), location: 1)]),
-                        startPoint: UnitPoint(x: 0.5, y: -3.061617214180981e-17),
-                        endPoint: UnitPoint(x: 0.5, y: 0.9999999999999999)))
-                    .frame(width: 390, height: 500)
-                    .ignoresSafeArea()
-                
-                VStack(alignment: .leading) {
-                    Text("\(item.duration) min / Episodes")
-                        .fontWeight(.semibold)
-                        .font(.caption)
-                    Text("Episodes: \(item.totalEpisodes) - Status: \(item.status)")
+            
+            VStack(alignment: .leading) {
+                Text("\(item.duration ?? 0) min / Episodes")
+                    .fontWeight(.semibold)
+                    .font(.caption)
+                HStack {
+                    Text("Episodes:")
                         .fontWeight(.semibold)
                         .font(.subheadline)
-                    Text("\(item.title.english!)")
-                        .bold()
-                        .font(.title)
-                    Text(.init("\(item.description.replacingOccurrences(of: "<br><br>", with: "").replacingOccurrences(of: "<i>", with: "_").replacingOccurrences(of: "</i>", with: "_"))"))
-                        .fontWeight(.medium)
-                        .font(.footnote)
-                        .lineLimit(10)
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, -14)
-                        .padding(.bottom, 8)
-                        .padding(.leading, 0)
-                    
+                    Text("\(item.totalEpisodes ?? 0)")
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
+                        .font(.subheadline)
+                    Text("- Status:")
+                        .fontWeight(.semibold)
+                        .font(.subheadline)
+                    Text("\(item.status)")
+                        .fontWeight(.bold)
+                        .textCase(.uppercase)
+                        .foregroundColor(.red)
+                        .font(.subheadline)
+                }
+                Text("\(item.title.english!)")
+                    .bold()
+                    .font(.title)
+                Text(.init("\(item.description.replacingOccurrences(of: "<br>", with: "").replacingOccurrences(of: "<i>", with: "_").replacingOccurrences(of: "</i>", with: "_"))"))
+                    .fontWeight(.semibold)
+                    .font(.footnote)
+                    .lineSpacing(-3.0)
+                    .lineLimit(10)
+                    .frame(maxWidth: 350)
+                    .padding(.top, -14)
+                    .padding(.bottom, 8)
+                    .padding(.leading, 0)
+                
+                HStack {
                     ZStack {
                         RoundedRectangle(cornerRadius: 35)
                             .fill(Color(#colorLiteral(red: 0.10196078568696976, green: 0.6823529601097107, blue: 0.9960784316062927, alpha: 1)))
                             .frame(width: 109, height: 43)
                         
-                        Text("Info")
-                            .font(.subheadline)
-                            .bold()
-                            .foregroundColor(.white)
-                            .multilineTextAlignment(.center)
+                        HStack {
+                            Image(systemName: "info.circle.fill")
+                                .font(Font.system(size: 24, weight: .bold))
+                            
+                            Text("INFO")
+                                .font(.subheadline)
+                                .bold()
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                        }
+                        
                         
                     }
                     .padding(.leading, 20)
                     
-                }
-                .foregroundColor(.white)
-                .frame(height: 500, alignment: .bottom)
-                .frame(maxWidth: .infinity)
-                .padding(.bottom, 20)
+                    Spacer()
+                    
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 21.5)
+                            .fill(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)))
+                            .frame(width: 43, height: 43)
+                        
+                        Image(systemName: "plus")
+                            .font(Font.system(size: 20, weight: .bold))
+                    }
+                    .padding(.trailing, 20)
+                }.frame(width: 350)
+                
             }
-            .snapAlignmentHelper(id: item.id)
-            .aspectRatio(contentMode: .fill)
+            .foregroundColor(.white)
+            .frame(height: 500, alignment: .bottom)
+            .frame(maxWidth: 390)
+            .padding(.bottom, 20)
+        }
+        .aspectRatio(contentMode: .fill)
+    }
+}
+
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+        case 3: // RGB (12-bit)
+            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: // RGB (24-bit)
+            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: // ARGB (32-bit)
+            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (a, r, g, b) = (1, 1, 1, 0)
+        }
+
+        self.init(
+            .sRGB,
+            red: Double(r) / 255,
+            green: Double(g) / 255,
+            blue:  Double(b) / 255,
+            opacity: Double(a) / 255
+        )
     }
 }

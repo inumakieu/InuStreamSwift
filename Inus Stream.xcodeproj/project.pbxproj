@@ -13,6 +13,8 @@
 		588B11FA28D90DD1007CA197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 588B11F928D90DD1007CA197 /* Assets.xcassets */; };
 		588B11FD28D90DD1007CA197 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 588B11FC28D90DD1007CA197 /* Preview Assets.xcassets */; };
 		588B120428D91452007CA197 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B120328D91452007CA197 /* HomePage.swift */; };
+		E9933E8F28E019FC00751BBE /* SwiftUISnappingScrollView in Frameworks */ = {isa = PBXBuildFile; productRef = E9933E8E28E019FC00751BBE /* SwiftUISnappingScrollView */; };
+		E9933E9128E02A2400751BBE /* ContinueWatching.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9028E02A2400751BBE /* ContinueWatching.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,7 @@
 		588B11F928D90DD1007CA197 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		588B11FC28D90DD1007CA197 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		588B120328D91452007CA197 /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
+		E9933E9028E02A2400751BBE /* ContinueWatching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinueWatching.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9933E8F28E019FC00751BBE /* SwiftUISnappingScrollView in Frameworks */,
 				5871865F28DA849400BABB66 /* SnapToScroll in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -60,6 +64,7 @@
 				588B11F928D90DD1007CA197 /* Assets.xcassets */,
 				588B11FB28D90DD1007CA197 /* Preview Content */,
 				588B120328D91452007CA197 /* HomePage.swift */,
+				E9933E9028E02A2400751BBE /* ContinueWatching.swift */,
 			);
 			path = "Inus Stream";
 			sourceTree = "<group>";
@@ -90,6 +95,7 @@
 			name = "Inus Stream";
 			packageProductDependencies = (
 				5871865E28DA849400BABB66 /* SnapToScroll */,
+				E9933E8E28E019FC00751BBE /* SwiftUISnappingScrollView */,
 			);
 			productName = "Inus Stream";
 			productReference = 588B11F228D90DCF007CA197 /* Inus Stream.app */;
@@ -121,6 +127,7 @@
 			mainGroup = 588B11E928D90DCF007CA197;
 			packageReferences = (
 				5871865D28DA849400BABB66 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */,
+				E9933E8D28E019FC00751BBE /* XCRemoteSwiftPackageReference "SwiftUISnappingScrollView" */,
 			);
 			productRefGroup = 588B11F328D90DCF007CA197 /* Products */;
 			projectDirPath = "";
@@ -151,6 +158,7 @@
 				588B11F828D90DCF007CA197 /* RecentAnimeCard.swift in Sources */,
 				588B120428D91452007CA197 /* HomePage.swift in Sources */,
 				588B11F628D90DCF007CA197 /* Inus_StreamApp.swift in Sources */,
+				E9933E9128E02A2400751BBE /* ContinueWatching.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,6 +369,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		E9933E8D28E019FC00751BBE /* XCRemoteSwiftPackageReference "SwiftUISnappingScrollView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ciaranrobrien/SwiftUISnappingScrollView.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -368,6 +384,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5871865D28DA849400BABB66 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */;
 			productName = SnapToScroll;
+		};
+		E9933E8E28E019FC00751BBE /* SwiftUISnappingScrollView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E9933E8D28E019FC00751BBE /* XCRemoteSwiftPackageReference "SwiftUISnappingScrollView" */;
+			productName = SwiftUISnappingScrollView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
