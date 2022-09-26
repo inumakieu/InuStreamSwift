@@ -11,10 +11,10 @@ struct ContinueWatching: View {
     var body: some View {
         VStack(alignment: .leading) {
             ZStack {
-                AsyncImage(url: URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b98659-sH5z5RfMuyMr.png")) { image in
+                AsyncImage(url: URL(string: "https://artworks.thetvdb.com/banners/episodes/329822/6125438.jpg")) { image in
                     image.resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 140, height: 210)
+                        .frame(width: 220, height: 130)
                         .cornerRadius(20)
                 } placeholder: {
                     ProgressView()
@@ -29,7 +29,7 @@ struct ContinueWatching: View {
                         .init(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), location: 1)]),
                             startPoint: UnitPoint(x: 0, y: 0),
                             endPoint: UnitPoint(x: 0, y: 1)))
-                .frame(width: 140, height: 210)
+                    .frame(width: 220, height: 130)
                 
                 VStack {
                     Image(systemName: "play.fill")
@@ -39,6 +39,17 @@ struct ContinueWatching: View {
                 
                 VStack {
                     Spacer()
+                    
+                    HStack {
+                        
+                        Spacer()
+                        
+                        Text("18:44 / 24:01")
+                            .foregroundColor(Color(hex: "#ffACACAC"))
+                            .font(.custom("", size: 10))
+                            .bold()
+                    }
+                    .padding(.horizontal, 20)
                     
                     ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: 3)
@@ -51,24 +62,9 @@ struct ContinueWatching: View {
                             .foregroundColor(Color(hex: "#ffB93434"))
                     }
                     .padding(.horizontal, 14)
-                    
-                    HStack {
-                        Text("EP 1")
-                            .foregroundColor(Color(hex: "#ffACACAC"))
-                            .font(.custom("", size: 10))
-                            .bold()
-                        
-                        Spacer()
-                        
-                        Text("18:44 / 24:01")
-                            .foregroundColor(Color(hex: "#ffACACAC"))
-                            .font(.custom("", size: 10))
-                            .bold()
-                    }
                     .padding(.bottom, 12)
-                    .padding(.horizontal, 20)
                 }
-                .frame(width: 140, height: 210)
+                .frame(width: 220, height: 130)
             }
             
             
@@ -78,14 +74,9 @@ struct ContinueWatching: View {
                 .foregroundColor(Color.gray)
                 .bold()
                 .lineLimit(1)
-                .frame(width: 140, alignment: .leading)
-                .padding(.horizontal, 3.0)
-            
-            Text("Episode 1")
-                .font(.footnote)
-                .foregroundColor(Color.gray)
-                .bold()
-                .padding(.leading, 3.0)
+                .frame(width: 220, alignment: .leading)
+                .padding(.leading, 14.0)
+                .padding(.top, 0)
         }
     }
 }

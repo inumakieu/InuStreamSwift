@@ -15,6 +15,8 @@
 		588B120428D91452007CA197 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B120328D91452007CA197 /* HomePage.swift */; };
 		E9933E8F28E019FC00751BBE /* SwiftUISnappingScrollView in Frameworks */ = {isa = PBXBuildFile; productRef = E9933E8E28E019FC00751BBE /* SwiftUISnappingScrollView */; };
 		E9933E9128E02A2400751BBE /* ContinueWatching.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9028E02A2400751BBE /* ContinueWatching.swift */; };
+		E9933E9328E1220400751BBE /* InfoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9228E1220400751BBE /* InfoPage.swift */; };
+		E9933E9528E1282100751BBE /* EpisodeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9428E1282100751BBE /* EpisodeCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,8 @@
 		588B11FC28D90DD1007CA197 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		588B120328D91452007CA197 /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
 		E9933E9028E02A2400751BBE /* ContinueWatching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinueWatching.swift; sourceTree = "<group>"; };
+		E9933E9228E1220400751BBE /* InfoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPage.swift; sourceTree = "<group>"; };
+		E9933E9428E1282100751BBE /* EpisodeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,8 @@
 				588B11F928D90DD1007CA197 /* Assets.xcassets */,
 				588B11FB28D90DD1007CA197 /* Preview Content */,
 				588B120328D91452007CA197 /* HomePage.swift */,
+				E9933E9228E1220400751BBE /* InfoPage.swift */,
+				E9933E9428E1282100751BBE /* EpisodeCard.swift */,
 				E9933E9028E02A2400751BBE /* ContinueWatching.swift */,
 			);
 			path = "Inus Stream";
@@ -155,6 +161,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9933E9328E1220400751BBE /* InfoPage.swift in Sources */,
+				E9933E9528E1282100751BBE /* EpisodeCard.swift in Sources */,
 				588B11F828D90DCF007CA197 /* RecentAnimeCard.swift in Sources */,
 				588B120428D91452007CA197 /* HomePage.swift in Sources */,
 				588B11F628D90DCF007CA197 /* Inus_StreamApp.swift in Sources */,

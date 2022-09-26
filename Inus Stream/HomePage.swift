@@ -13,121 +13,123 @@ struct HomePage: View {
     let tempString = "NO TITLE"
     
     var body: some View {
-        ZStack(alignment: .top) {
-            Color(hex: "#ff16151A")
-                .ignoresSafeArea()
-            ScrollView {
-                HStackSnap(alignment: .leading(0)) {
-                    ForEach(api.books) { anime in
-                        ExtractedView(item: anime)
-                            .snapAlignmentHelper(id: anime.id)
-                    }
-                }
-                .frame(height: 500, alignment: .bottom)
-                .frame(maxWidth: .infinity)
-                
-                
-                
-                Text("Recently Added")
-                    .foregroundColor(.white)
-                    .bold()
-                    .font(.title2)
-                    .padding(.horizontal, 30)
-                    .padding(.top, 30)
-                    .padding(.bottom, -12)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 20) {
-                        ForEach(api.recents) {recentAnime in
-                            RecentAnimeCard(anime: recentAnime)
+        NavigationView {
+            ZStack(alignment: .top) {
+                Color(hex: "#ff16151A")
+                    .ignoresSafeArea()
+                ScrollView {
+                    HStackSnap(alignment: .leading(0)) {
+                        ForEach(api.books) { anime in
+                            ExtractedView(item: anime)
+                                .snapAlignmentHelper(id: anime.id)
                         }
                     }
-                }
-                .padding(.horizontal, 30)
-                .frame(height: 300)
-                .frame(maxWidth: .infinity)
-                .padding(.top, 0)
-                
-                Text("Continue watching")
-                    .foregroundColor(.white)
-                    .bold()
-                    .font(.title2)
-                    .padding(.horizontal, 30)
-                    .padding(.top, 0)
-                    .padding(.bottom, -12)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 20) {
-                        ForEach(0..<5) {_ in
-                            ContinueWatching()
-                        }
-                    }
-                }
-                .padding(.horizontal, 30)
-                .frame(height: 300)
-                .frame(maxWidth: .infinity)
-                .padding(.top, 0)
-                
-                Spacer()
-                    .frame(height: 100)
-                    .frame(maxHeight: 100)
-                
-            }
-            .ignoresSafeArea()
-            .padding(.top, -70)
-            
-            VStack {
-                Spacer()
-                ZStack {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)))
-                    .frame(width: 350, height: 70)
-                .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), radius:12, x:0, y:0)
+                    .frame(height: 500, alignment: .bottom)
+                    .frame(maxWidth: .infinity)
                     
-                    HStack {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 20)
-                                .fill(Color(hex: "#ff1E222C"))
-                            .frame(width: 90, height: 40)
-                            
-                            Text("Home")
-                                .bold()
-                            .foregroundColor(.white)
+                    
+                    
+                    Text("Recently Added")
+                        .foregroundColor(.white)
+                        .bold()
+                        .font(.title2)
+                        .padding(.horizontal, 30)
+                        .padding(.top, 30)
+                        .padding(.bottom, -12)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 20) {
+                            ForEach(api.recents) {recentAnime in
+                                RecentAnimeCard(anime: recentAnime)
+                            }
                         }
-                        .frame(maxWidth: .infinity)
-                        
-                        
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 19)
-                                .fill(Color(hex: "#001E222C"))
-                            .frame(width: 90, height: 40)
-                            
-                            Text("Search")
-                                .bold()
-                            .foregroundColor(.white)
-                        }
-                        .frame(maxWidth: .infinity)
-                        
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 19)
-                                .fill(Color(hex: "#001E222C"))
-                            .frame(width: 90, height: 40)
-                            
-                            Text("Settings")
-                                .bold()
-                            .foregroundColor(.white)
-                        }
-                        .frame(maxWidth: .infinity)
-                        
                     }
-                    .frame(width: 300)
+                    .padding(.horizontal, 30)
+                    .frame(height: 300)
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 0)
+                    
+                    Text("Continue watching")
+                        .foregroundColor(.white)
+                        .bold()
+                        .font(.title2)
+                        .padding(.horizontal, 30)
+                        .padding(.top, 0)
+                        .padding(.bottom, -12)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 10) {
+                            ForEach(0..<5) {_ in
+                                ContinueWatching()
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 30)
+                    .frame(height: 220)
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 0)
+                    
+                    Spacer()
+                        .frame(height: 100)
+                        .frame(maxHeight: 100)
+                    
                 }
-            }
-        }.onAppear() {
-            api.loadData()
-            api.loadRecent()
+                .ignoresSafeArea()
+                .padding(.top, -70)
+                
+                VStack {
+                    Spacer()
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)))
+                        .frame(width: 350, height: 70)
+                    .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), radius:12, x:0, y:0)
+                        
+                        HStack {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 20)
+                                    .fill(Color(hex: "#ff1E222C"))
+                                .frame(width: 90, height: 40)
+                                
+                                Text("Home")
+                                    .bold()
+                                .foregroundColor(.white)
+                            }
+                            .frame(maxWidth: .infinity)
+                            
+                            
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 19)
+                                    .fill(Color(hex: "#001E222C"))
+                                .frame(width: 90, height: 40)
+                                
+                                Text("Search")
+                                    .bold()
+                                .foregroundColor(.white)
+                            }
+                            .frame(maxWidth: .infinity)
+                            
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 19)
+                                    .fill(Color(hex: "#001E222C"))
+                                .frame(width: 90, height: 40)
+                                
+                                Text("Settings")
+                                    .bold()
+                                .foregroundColor(.white)
+                            }
+                            .frame(maxWidth: .infinity)
+                            
+                        }
+                        .frame(width: 300)
+                    }
+                }
+            }.onAppear() {
+                api.loadData()
+                api.loadRecent()
+        }
         }
     }
     
@@ -275,6 +277,8 @@ struct ExtractedView: View {
                 Text("\(item.title.english!)")
                     .bold()
                     .font(.title)
+                    .frame(maxWidth: 350, alignment: .leading)
+                
                 Text(.init("\(item.description.replacingOccurrences(of: "<br>", with: "").replacingOccurrences(of: "<i>", with: "_").replacingOccurrences(of: "</i>", with: "_"))"))
                     .fontWeight(.semibold)
                     .font(.footnote)
@@ -286,25 +290,27 @@ struct ExtractedView: View {
                     .padding(.leading, 0)
                 
                 HStack {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 35)
-                            .fill(Color(#colorLiteral(red: 0.10196078568696976, green: 0.6823529601097107, blue: 0.9960784316062927, alpha: 1)))
-                            .frame(width: 109, height: 43)
-                        
-                        HStack {
-                            Image(systemName: "info.circle.fill")
-                                .font(Font.system(size: 24, weight: .bold))
+                    NavigationLink(destination: InfoPage()) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 35)
+                                .fill(Color(#colorLiteral(red: 0.10196078568696976, green: 0.6823529601097107, blue: 0.9960784316062927, alpha: 1)))
+                                .frame(width: 109, height: 43)
                             
-                            Text("INFO")
-                                .font(.subheadline)
-                                .bold()
-                                .foregroundColor(.white)
-                                .multilineTextAlignment(.center)
+                            HStack {
+                                Image(systemName: "info.circle.fill")
+                                    .font(Font.system(size: 24, weight: .bold))
+                                
+                                Text("INFO")
+                                    .font(.subheadline)
+                                    .bold()
+                                    .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                            }
+                            
+                            
                         }
-                        
-                        
+                        .padding(.leading, 20)
                     }
-                    .padding(.leading, 20)
                     
                     Spacer()
                     
