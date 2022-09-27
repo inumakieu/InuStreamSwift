@@ -14,7 +14,6 @@ struct InfoPage: View {
     @Environment(\.presentationMode) var presentation
     
     var body: some View {
-        NavigationView {
             ZStack(alignment: .top) {
                 Color(hex: "#ff16151A")
                     .ignoresSafeArea()
@@ -214,25 +213,25 @@ struct InfoPage: View {
             .onAppear() {
                 infoApi.loadInfo(id: anilistId)
         }
-        }
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(
-          leading: Button(action: { presentation.wrappedValue.dismiss() }) {
-            Image(systemName: "chevron.left")
-                  .font(.system(size: 24, weight: .bold))
-              .foregroundColor(.white)
-              .imageScale(.large) })
-        .contentShape(Rectangle()) // Start of the gesture to dismiss the navigation
-        .gesture(
-          DragGesture(coordinateSpace: .local)
-            .onEnded { value in
-              if value.translation.width > .zero
-                  && value.translation.height > -30
-                  && value.translation.height < 30 {
-                presentation.wrappedValue.dismiss()
-              }
-            }
-        )
+            .navigationBarBackButtonHidden(true)
+                .navigationBarItems(
+                  leading: Button(action: { presentation.wrappedValue.dismiss() }) {
+                    Image(systemName: "chevron.left")
+                          .font(.system(size: 24, weight: .bold))
+                      .foregroundColor(.white)
+                      .imageScale(.large) })
+                .contentShape(Rectangle()) // Start of the gesture to dismiss the navigation
+                .gesture(
+                  DragGesture(coordinateSpace: .local)
+                    .onEnded { value in
+                      if value.translation.width > .zero
+                          && value.translation.height > -30
+                          && value.translation.height < 30 {
+                        presentation.wrappedValue.dismiss()
+                      }
+                    }
+                )
+                
         
     }
 }

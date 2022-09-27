@@ -11,6 +11,14 @@ import SnapToScroll
 struct HomePage: View {
     @StateObject var api = Api()
     let tempString = "NO TITLE"
+    @Environment(\.presentationMode) var presentation
+    
+    init() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+
+        UINavigationBar.appearance().standardAppearance = appearance
+    }
     
     var body: some View {
         NavigationView {
@@ -216,6 +224,7 @@ struct HomePage: View {
                 api.loadRecent()
             }
         }.accentColor(.white)
+            
     }
     
 }
