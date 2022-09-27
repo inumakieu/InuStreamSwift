@@ -1,12 +1,39 @@
 {
   "pins" : [
     {
+      "identity" : "faswiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattmaddux/FASwiftUI.git",
+      "state" : {
+        "revision" : "95828fdcd194b6d295e4d2b1a61ea480c9609f0e",
+        "version" : "2.0.0"
+      }
+    },
+    {
       "identity" : "hstack-snap-to-scroll",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftui-library/hstack-snap-to-scroll",
       "state" : {
         "revision" : "263470319f98008b1e0294129847e2837ad37d89",
         "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swiftui-shimmer",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/markiv/SwiftUI-Shimmer.git",
+      "state" : {
+        "revision" : "61411771350a5a4e96666a8a202ae4b2be327a2b",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "swiftuifonticon",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/huybuidac/SwiftUIFontIcon",
+      "state" : {
+        "revision" : "4f170fbf443d985ae518a14a12ec8194ec6b08eb",
+        "version" : "2.1.0"
       }
     },
     {

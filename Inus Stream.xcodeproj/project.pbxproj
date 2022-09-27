@@ -17,6 +17,12 @@
 		E9933E9128E02A2400751BBE /* ContinueWatching.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9028E02A2400751BBE /* ContinueWatching.swift */; };
 		E9933E9328E1220400751BBE /* InfoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9228E1220400751BBE /* InfoPage.swift */; };
 		E9933E9528E1282100751BBE /* EpisodeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9428E1282100751BBE /* EpisodeCard.swift */; };
+		E9933E9828E153B400751BBE /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = E9933E9728E153B400751BBE /* Shimmer */; };
+		E9933E9A28E1608E00751BBE /* WatchPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9928E1608E00751BBE /* WatchPage.swift */; };
+		E9933E9E28E1721400751BBE /* FASwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = E9933E9D28E1721400751BBE /* FASwiftUI */; };
+		E9933EA128E1736F00751BBE /* SwiftUIFontIcon in Frameworks */ = {isa = PBXBuildFile; productRef = E9933EA028E1736F00751BBE /* SwiftUIFontIcon */; };
+		E9CBF17428E2775B00F1BC29 /* SeekbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF17328E2775B00F1BC29 /* SeekbarView.swift */; };
+		E9CBF17628E2782F00F1BC29 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF17528E2782F00F1BC29 /* BlurView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +35,10 @@
 		E9933E9028E02A2400751BBE /* ContinueWatching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinueWatching.swift; sourceTree = "<group>"; };
 		E9933E9228E1220400751BBE /* InfoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPage.swift; sourceTree = "<group>"; };
 		E9933E9428E1282100751BBE /* EpisodeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCard.swift; sourceTree = "<group>"; };
+		E9933E9928E1608E00751BBE /* WatchPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPage.swift; sourceTree = "<group>"; };
+		E9933E9B28E1633700751BBE /* Inus-Stream-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Inus-Stream-Info.plist"; sourceTree = SOURCE_ROOT; };
+		E9CBF17328E2775B00F1BC29 /* SeekbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekbarView.swift; sourceTree = "<group>"; };
+		E9CBF17528E2782F00F1BC29 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,8 +46,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9933E9828E153B400751BBE /* Shimmer in Frameworks */,
 				E9933E8F28E019FC00751BBE /* SwiftUISnappingScrollView in Frameworks */,
 				5871865F28DA849400BABB66 /* SnapToScroll in Frameworks */,
+				E9933EA128E1736F00751BBE /* SwiftUIFontIcon in Frameworks */,
+				E9933E9E28E1721400751BBE /* FASwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +76,9 @@
 		588B11F428D90DCF007CA197 /* Inus Stream */ = {
 			isa = PBXGroup;
 			children = (
+				E9CBF17328E2775B00F1BC29 /* SeekbarView.swift */,
+				E9933E9928E1608E00751BBE /* WatchPage.swift */,
+				E9933E9B28E1633700751BBE /* Inus-Stream-Info.plist */,
 				588B11F528D90DCF007CA197 /* Inus_StreamApp.swift */,
 				588B11F728D90DCF007CA197 /* RecentAnimeCard.swift */,
 				588B11F928D90DD1007CA197 /* Assets.xcassets */,
@@ -71,6 +87,7 @@
 				E9933E9228E1220400751BBE /* InfoPage.swift */,
 				E9933E9428E1282100751BBE /* EpisodeCard.swift */,
 				E9933E9028E02A2400751BBE /* ContinueWatching.swift */,
+				E9CBF17528E2782F00F1BC29 /* BlurView.swift */,
 			);
 			path = "Inus Stream";
 			sourceTree = "<group>";
@@ -102,6 +119,9 @@
 			packageProductDependencies = (
 				5871865E28DA849400BABB66 /* SnapToScroll */,
 				E9933E8E28E019FC00751BBE /* SwiftUISnappingScrollView */,
+				E9933E9728E153B400751BBE /* Shimmer */,
+				E9933E9D28E1721400751BBE /* FASwiftUI */,
+				E9933EA028E1736F00751BBE /* SwiftUIFontIcon */,
 			);
 			productName = "Inus Stream";
 			productReference = 588B11F228D90DCF007CA197 /* Inus Stream.app */;
@@ -134,6 +154,9 @@
 			packageReferences = (
 				5871865D28DA849400BABB66 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */,
 				E9933E8D28E019FC00751BBE /* XCRemoteSwiftPackageReference "SwiftUISnappingScrollView" */,
+				E9933E9628E153B400751BBE /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */,
+				E9933E9C28E1721400751BBE /* XCRemoteSwiftPackageReference "FASwiftUI" */,
+				E9933E9F28E1736F00751BBE /* XCRemoteSwiftPackageReference "SwiftUIFontIcon" */,
 			);
 			productRefGroup = 588B11F328D90DCF007CA197 /* Products */;
 			projectDirPath = "";
@@ -163,7 +186,10 @@
 			files = (
 				E9933E9328E1220400751BBE /* InfoPage.swift in Sources */,
 				E9933E9528E1282100751BBE /* EpisodeCard.swift in Sources */,
+				E9933E9A28E1608E00751BBE /* WatchPage.swift in Sources */,
+				E9CBF17428E2775B00F1BC29 /* SeekbarView.swift in Sources */,
 				588B11F828D90DCF007CA197 /* RecentAnimeCard.swift in Sources */,
+				E9CBF17628E2782F00F1BC29 /* BlurView.swift in Sources */,
 				588B120428D91452007CA197 /* HomePage.swift in Sources */,
 				588B11F628D90DCF007CA197 /* Inus_StreamApp.swift in Sources */,
 				E9933E9128E02A2400751BBE /* ContinueWatching.swift in Sources */,
@@ -298,6 +324,7 @@
 				DEVELOPMENT_TEAM = A9QQBWPHB7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Inus-Stream-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -327,6 +354,7 @@
 				DEVELOPMENT_TEAM = A9QQBWPHB7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Inus-Stream-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -385,6 +413,30 @@
 				kind = branch;
 			};
 		};
+		E9933E9628E153B400751BBE /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/markiv/SwiftUI-Shimmer.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		E9933E9C28E1721400751BBE /* XCRemoteSwiftPackageReference "FASwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mattmaddux/FASwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		E9933E9F28E1736F00751BBE /* XCRemoteSwiftPackageReference "SwiftUIFontIcon" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/huybuidac/SwiftUIFontIcon";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -397,6 +449,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E9933E8D28E019FC00751BBE /* XCRemoteSwiftPackageReference "SwiftUISnappingScrollView" */;
 			productName = SwiftUISnappingScrollView;
+		};
+		E9933E9728E153B400751BBE /* Shimmer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E9933E9628E153B400751BBE /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */;
+			productName = Shimmer;
+		};
+		E9933E9D28E1721400751BBE /* FASwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E9933E9C28E1721400751BBE /* XCRemoteSwiftPackageReference "FASwiftUI" */;
+			productName = FASwiftUI;
+		};
+		E9933EA028E1736F00751BBE /* SwiftUIFontIcon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E9933E9F28E1736F00751BBE /* XCRemoteSwiftPackageReference "SwiftUIFontIcon" */;
+			productName = SwiftUIFontIcon;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
