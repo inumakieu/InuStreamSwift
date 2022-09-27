@@ -242,9 +242,12 @@ struct CustomControlsView: View {
                     startPoint: UnitPoint(x: 0, y: 0),
                     endPoint: UnitPoint(x: 0, y: 1)))
                 .frame(width: .infinity, height: .infinity)
-                .onTapGesture {
-                    showUI = !showUI
-                }
+            Color.clear
+                .frame(width: .infinity, height: 300)
+              .contentShape(Rectangle())
+            .onTapGesture {
+                showUI = false
+            }
             
             VStack {
                 HStack {
@@ -499,9 +502,7 @@ struct CustomPlayerWithControls: View {
                             showUI = true
                         }
                             .overlay(CustomControlsView(animeData: animeData, showUI: $showUI, episodeIndex: episodeIndex, playerVM: playerVM)
-                                     , alignment: .bottom).onTapGesture {
-                                print("YES")
-                            }
+                                     , alignment: .bottom)
                     }
                 }
                 .padding(.horizontal, 60)
