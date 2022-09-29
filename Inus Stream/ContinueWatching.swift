@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct ContinueWatching: View {
+    let image: String
+    let progress: Double
     var body: some View {
         VStack(alignment: .leading) {
             ZStack {
-                AsyncImage(url: URL(string: "https://artworks.thetvdb.com/banners/episodes/329822/6125438.jpg")) { image in
+                AsyncImage(url: URL(string: image ?? "https://artworks.thetvdb.com/banners/episodes/329822/6125438.jpg")) { image in
                     image.resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 220, height: 130)
@@ -57,7 +59,7 @@ struct ContinueWatching: View {
                             .frame(height: 6)
                             .foregroundColor(Color(hex: "#ffffffff"))
                         RoundedRectangle(cornerRadius: 3)
-                            .frame(width: 60)
+                            .frame(width: (220 - 28) * (progress ?? 0.0))
                             .frame(height: 6)
                             .foregroundColor(Color(hex: "#ffB93434"))
                     }
@@ -83,6 +85,6 @@ struct ContinueWatching: View {
 
 struct ContinueWatching_Previews: PreviewProvider {
     static var previews: some View {
-        ContinueWatching()
+        ContinueWatching(image: "", progress: 0.0)
     }
 }

@@ -19,7 +19,7 @@ struct InfoPage: View {
                     .ignoresSafeArea()
                 
                 if(infoApi.infodata != nil) {
-                    ScrollView {
+                    ScrollView(showsIndicators: false) {
                         ZStack(alignment: .bottom) {
                             AsyncImage(url: URL(string: infoApi.infodata!.cover)) { image in
                                 image.resizable()
@@ -102,8 +102,8 @@ struct InfoPage: View {
                         
                         ScrollView {
                             VStack(spacing: 18) {
-                                ForEach(0..<infoApi.infodata!.episodes.count) {index in
-                                    EpisodeCard(animeData: infoApi.infodata!,title: infoApi.infodata!.episodes[index].title ?? infoApi.infodata!.title.romaji, number: infoApi.infodata!.episodes[index].number, thumbnail: infoApi.infodata!.episodes[index].image
+                                ForEach(0..<infoApi.infodata!.episodes!.count) {index in
+                                    EpisodeCard(animeData: infoApi.infodata!,title: infoApi.infodata!.episodes![index].title ?? infoApi.infodata!.title.romaji, number: infoApi.infodata!.episodes![index].number, thumbnail: infoApi.infodata!.episodes![index].image, isFiller: infoApi.infodata!.episodes![index].isFiller
                                                 )
                                 }
                                 Spacer()
@@ -198,28 +198,32 @@ struct InfoPage: View {
                         ScrollView {
                             VStack(spacing: 18) {
                                 ForEach(0..<5) {index in
-                                    EpisodeCard(animeData: nil,title: "Hell is other people.", number: 1, thumbnail: "https://artworks.thetvdb.com/banners/episodes/329822/6190201.jpg")
+                                    EpisodeCard(animeData: nil,title: "Hell is other people.", number: 1, thumbnail: "https://artworks.thetvdb.com/banners/episodes/329822/6190201.jpg", isFiller: false)
                                 }
                             }
                         .frame(maxWidth: 350, alignment: .leading)
                         }
-                        .frame(height: 500)
+                        .frame(maxHeight: 500)
                     }
                     .ignoresSafeArea()
                     .redacted(reason: .placeholder).shimmering(active: true)
                 }
                 
+                Button(action: {
+                    self.presentation.wrappedValue.dismiss()
+                }, label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 28, weight: .heavy))
+                        .foregroundColor(.white)
+                })
+                .frame(maxWidth: .infinity,alignment: .leading)
+                .padding(.leading, 20)
             }
             .onAppear() {
                 infoApi.loadInfo(id: anilistId)
         }
             .navigationBarBackButtonHidden(true)
-                .navigationBarItems(
-                  leading: Button(action: { presentation.wrappedValue.dismiss() }) {
-                    Image(systemName: "chevron.left")
-                          .font(.system(size: 24, weight: .bold))
-                      .foregroundColor(.white)
-                      .imageScale(.large) })
+                
                 .contentShape(Rectangle()) // Start of the gesture to dismiss the navigation
                 .gesture(
                   DragGesture(coordinateSpace: .local)
@@ -246,7 +250,7 @@ class InfoApi : ObservableObject{
     @Published var infodata: InfoData? = nil
     
     func loadInfo(id: String) {
-        guard let url = URL(string: "https://api.consumet.org/meta/anilist/info/\(id)") else {
+        guard let url = URL(string: "https://api.consumet.org/meta/anilist/info/\(id)?fetchFiller=true") else {
             print("Invalid url...")
             return
         }
@@ -275,16 +279,17 @@ struct InfoData: Codable {
     let description, status: String
     let releaseDate: Int
     let startDate, endDate: EndDateClass
-    let totalEpisodes, duration: Int
+    let totalEpisodes: Int?
+    let duration: Int?
     let rating: Int?
     let genres: [String]
-    let season: String
+    let season: String?
     let studios: [String]
     let subOrDub, type: String
     let recommendations: [Recommended]?
     let characters: [Character]
     let relations: [Related]
-    let episodes: [Episode]
+    let episodes: [Episode]?
 }
 
 struct Recommended: Codable {
@@ -292,7 +297,7 @@ struct Recommended: Codable {
     let malId: Int?
     let title: Title
     let status: String
-    let episodes: Int
+    let episodes: Int?
     let image, cover: String
     let rating: Int?
     let type: String
@@ -325,6 +330,7 @@ struct Episode: Codable {
     let description: String?
     let number: Int
     let image: String
+    let isFiller: Bool?
 }
 
 // MARK: - Name

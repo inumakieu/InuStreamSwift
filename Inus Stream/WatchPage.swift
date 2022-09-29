@@ -219,6 +219,10 @@ struct CustomControlsView: View {
     @StateObject var streamApi = StreamApi()
     @State var progress = 0.25
     @State var showEpisodeSelector: Bool = false
+    
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    
     func secondsToMinutesSeconds(_ seconds: Int) -> String {
         let minutes = (seconds % 3600) / 60
         let seconds = (seconds % 3600) % 60
@@ -251,6 +255,15 @@ struct CustomControlsView: View {
             
             VStack {
                 HStack {
+                    // self.presentationMode.wrappedValue.dismiss()
+                    Button(action: {
+                        self.presentationMode.wrappedValue.dismiss()
+                    }, label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 28, weight: .heavy))
+                            .foregroundColor(.white)
+                    })
+                    
                     Spacer()
                     VStack {
                         HStack {
@@ -258,13 +271,13 @@ struct CustomControlsView: View {
                                 .foregroundColor(.white)
                                 .font(.system(size: 16))
                                 .bold()
-                            Text("EP: \(animeData.episodes[episodeIndex].number)")
+                            Text("EP: \(animeData.episodes![episodeIndex].number)")
                                 .foregroundColor(Color(hex: "#ff999999"))
                                 .font(.system(size: 16))
                                 .bold()
                                 .padding(.leading, -3)
                         }
-                        Text("\(animeData.episodes[episodeIndex].title ?? "")")
+                        Text("\(animeData.episodes![episodeIndex].title ?? "")")
                             .foregroundColor(.white)
                             .font(.system(size: 12))
                             .bold()
@@ -343,7 +356,7 @@ struct CustomControlsView: View {
                             FontIcon.button(.awesome5Solid(code: .step_forward), action: {
                                 Task {
                                     self.episodeIndex = self.episodeIndex + 1
-                                    await self.streamApi.loadStream(id: self.animeData.episodes[episodeIndex].id)
+                                    await self.streamApi.loadStream(id: self.animeData.episodes![episodeIndex].id)
                                     playerVM.setCurrentItem(AVPlayerItem(url: URL(string:  self.streamApi.streamdata?.sources[0].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
                                     playerVM.player.play()
                                 }
@@ -379,9 +392,9 @@ struct CustomControlsView: View {
                             
                             ScrollView(.horizontal) {
                                 HStack(spacing: 20) {
-                                    ForEach((episodeIndex+1)..<animeData.episodes.count) { index in
+                                    ForEach((episodeIndex+1)..<animeData.episodes!.count) { index in
                                         ZStack {
-                                            AsyncImage(url: URL(string: animeData.episodes[index].image)) { image in
+                                            AsyncImage(url: URL(string: animeData.episodes![index].image)) { image in
                                                 image.resizable()
                                                     .aspectRatio(contentMode: .fill)
                                                     .frame(width: 160, height: 90)
@@ -390,7 +403,7 @@ struct CustomControlsView: View {
                                             }
                                             
                                             VStack(alignment: .trailing) {
-                                                Text("\(animeData.episodes[index].number)")
+                                                Text("\(animeData.episodes![index].number)")
                                                     .bold()
                                                     .font(.headline)
                                                     .bold()
@@ -402,7 +415,7 @@ struct CustomControlsView: View {
                                                 ZStack(alignment: .center) {
                                                     Color(.black)
                                                     
-                                                    Text("\(animeData.episodes[index].title ?? "Episode \(animeData.episodes[index].number)")")
+                                                    Text("\(animeData.episodes![index].title ?? "Episode \(animeData.episodes![index].number)")")
                                                         .font(.caption2)
                                                         .bold()
                                                         .lineLimit(2)
@@ -415,6 +428,14 @@ struct CustomControlsView: View {
                                         }
                                         .frame(width: 160, height: 90)
                                         .cornerRadius(12)
+                                        .onTapGesture {
+                                            Task {
+                                                self.episodeIndex = self.episodeIndex  + index - 1
+                                                await self.streamApi.loadStream(id: self.animeData.episodes![episodeIndex].id)
+                                                playerVM.setCurrentItem(AVPlayerItem(url: URL(string:  self.streamApi.streamdata?.sources[0].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
+                                                playerVM.player.play()
+                                            }
+                                        }
                                     }
                                     
                                 }
@@ -510,7 +531,7 @@ struct CustomPlayerWithControls: View {
             .padding()
             .ignoresSafeArea()
             .task {
-                await self.streamApi.loadStream(id: self.animeData.episodes[episodeIndex].id)
+                await self.streamApi.loadStream(id: self.animeData.episodes![episodeIndex].id)
                 playerVM.setCurrentItem(AVPlayerItem(url:  URL(string: self.streamApi.streamdata?.sources[0].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
                 playerVM.player.play()
             }
@@ -529,26 +550,47 @@ struct WatchPage: View {
     let episodeIndex: Int
     @Environment(\.presentationMode) var presentation
     
+    private var shouldApplyBackground: Bool {
+            guard #available(iOS 16, *) else {
+                return true
+            }
+            return false
+        }
+    
     var body: some View {
-        CustomPlayerWithControls(animeData: animeData!, episodeIndex: episodeIndex)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarItems(
-                leading: Button(action: { presentation.wrappedValue.dismiss() }) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundColor(.white)
-                    .imageScale(.large) })
-            .contentShape(Rectangle()) // Start of the gesture to dismiss the navigation
-            .gesture(
-                DragGesture(coordinateSpace: .local)
-                    .onEnded { value in
-                        if value.translation.width > .zero
-                            && value.translation.height > -30
-                            && value.translation.height < 30 {
-                            presentation.wrappedValue.dismiss()
+        if #available(iOS 16, *) {
+            CustomPlayerWithControls(animeData: animeData!, episodeIndex: episodeIndex)
+                .navigationBarBackButtonHidden(true)
+                .contentShape(Rectangle()) // Start of the gesture to dismiss the navigation
+                .gesture(
+                    DragGesture(coordinateSpace: .local)
+                        .onEnded { value in
+                            if value.translation.width > .zero
+                                && value.translation.height > -30
+                                && value.translation.height < 30 {
+                                presentation.wrappedValue.dismiss()
+                            }
                         }
-                    }
-            )
+                )
+                .edgesIgnoringSafeArea(.all)
+                .persistentSystemOverlays(.hidden)
+        } else {
+            CustomPlayerWithControls(animeData: animeData!, episodeIndex: episodeIndex)
+                .navigationBarBackButtonHidden(true)
+                .contentShape(Rectangle()) // Start of the gesture to dismiss the navigation
+                .gesture(
+                    DragGesture(coordinateSpace: .local)
+                        .onEnded { value in
+                            if value.translation.width > .zero
+                                && value.translation.height > -30
+                                && value.translation.height < 30 {
+                                presentation.wrappedValue.dismiss()
+                            }
+                        }
+                )
+                .edgesIgnoringSafeArea(.all)
+        }
+            
     }
 }
 
@@ -568,9 +610,24 @@ struct CustomView: View {
                 
                 Rectangle()
                     .foregroundColor(.white.opacity(0.5)).frame(height: barHeight, alignment: .bottom).cornerRadius(12)
+                    .gesture(DragGesture(minimumDistance: 0)
+                        .onEnded({ value in
+                            self.percentage = min(max(0, Double(value.location.x / geometry.size.width * total)), total)
+                            self.isDragging = false
+                            self.barHeight = 6
+                        })
+                            .onChanged({ value in
+                                self.isDragging = true
+                                self.barHeight = 10
+                                print(value)
+                                // TODO: - maybe use other logic here
+                                self.percentage = min(max(0, Double(value.location.x / geometry.size.width * total)), total)
+                            })).animation(.spring(response: 0.3), value: self.isDragging)
                 Rectangle()
                     .foregroundColor(.white)
                     .frame(width: geometry.size.width * CGFloat(self.percentage / total)).frame(height: barHeight, alignment: .bottom).cornerRadius(12)
+                
+                    
             }.frame(maxHeight: .infinity, alignment: .bottom)
                 .cornerRadius(12)
                 .gesture(DragGesture(minimumDistance: 0)

@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct Inus_StreamApp: App {
+    @StateObject private var dataController = DataController()
+    
     var body: some Scene {
         WindowGroup {
             HomePage()
+                .environment(\.managedObjectContext, dataController.container.viewContext)
         }
     }
 }

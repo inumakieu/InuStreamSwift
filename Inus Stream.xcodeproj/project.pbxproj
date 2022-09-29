@@ -23,6 +23,9 @@
 		E9933EA128E1736F00751BBE /* SwiftUIFontIcon in Frameworks */ = {isa = PBXBuildFile; productRef = E9933EA028E1736F00751BBE /* SwiftUIFontIcon */; };
 		E9CBF17428E2775B00F1BC29 /* SeekbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF17328E2775B00F1BC29 /* SeekbarView.swift */; };
 		E9CBF17628E2782F00F1BC29 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF17528E2782F00F1BC29 /* BlurView.swift */; };
+		E9CBF17828E3D93C00F1BC29 /* SearchPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF17728E3D93C00F1BC29 /* SearchPage.swift */; };
+		E9CBF17D28E3F3F500F1BC29 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF17C28E3F3F500F1BC29 /* DataController.swift */; };
+		E9CBF18028E3F72D00F1BC29 /* AnimeStorage.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF17E28E3F72D00F1BC29 /* AnimeStorage.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +42,9 @@
 		E9933E9B28E1633700751BBE /* Inus-Stream-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Inus-Stream-Info.plist"; sourceTree = SOURCE_ROOT; };
 		E9CBF17328E2775B00F1BC29 /* SeekbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeekbarView.swift; sourceTree = "<group>"; };
 		E9CBF17528E2782F00F1BC29 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
+		E9CBF17728E3D93C00F1BC29 /* SearchPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPage.swift; sourceTree = "<group>"; };
+		E9CBF17C28E3F3F500F1BC29 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		E9CBF17F28E3F72D00F1BC29 /* AnimeStorage.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AnimeStorage.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +94,9 @@
 				E9933E9428E1282100751BBE /* EpisodeCard.swift */,
 				E9933E9028E02A2400751BBE /* ContinueWatching.swift */,
 				E9CBF17528E2782F00F1BC29 /* BlurView.swift */,
+				E9CBF17728E3D93C00F1BC29 /* SearchPage.swift */,
+				E9CBF17C28E3F3F500F1BC29 /* DataController.swift */,
+				E9CBF17E28E3F72D00F1BC29 /* AnimeStorage.xcdatamodeld */,
 			);
 			path = "Inus Stream";
 			sourceTree = "<group>";
@@ -185,11 +194,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9933E9328E1220400751BBE /* InfoPage.swift in Sources */,
+				E9CBF17D28E3F3F500F1BC29 /* DataController.swift in Sources */,
 				E9933E9528E1282100751BBE /* EpisodeCard.swift in Sources */,
 				E9933E9A28E1608E00751BBE /* WatchPage.swift in Sources */,
 				E9CBF17428E2775B00F1BC29 /* SeekbarView.swift in Sources */,
+				E9CBF17828E3D93C00F1BC29 /* SearchPage.swift in Sources */,
 				588B11F828D90DCF007CA197 /* RecentAnimeCard.swift in Sources */,
 				E9CBF17628E2782F00F1BC29 /* BlurView.swift in Sources */,
+				E9CBF18028E3F72D00F1BC29 /* AnimeStorage.xcdatamodeld in Sources */,
 				588B120428D91452007CA197 /* HomePage.swift in Sources */,
 				588B11F628D90DCF007CA197 /* Inus_StreamApp.swift in Sources */,
 				E9933E9128E02A2400751BBE /* ContinueWatching.swift in Sources */,
@@ -466,6 +478,19 @@
 			productName = SwiftUIFontIcon;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		E9CBF17E28E3F72D00F1BC29 /* AnimeStorage.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E9CBF17F28E3F72D00F1BC29 /* AnimeStorage.xcdatamodel */,
+			);
+			currentVersion = E9CBF17F28E3F72D00F1BC29 /* AnimeStorage.xcdatamodel */;
+			path = AnimeStorage.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 588B11EA28D90DCF007CA197 /* Project object */;
 }

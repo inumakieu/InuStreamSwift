@@ -12,6 +12,8 @@ struct HomePage: View {
     @StateObject var api = Api()
     let tempString = "NO TITLE"
     @Environment(\.presentationMode) var presentation
+    @Environment(\.managedObjectContext) var storage
+    @FetchRequest(sortDescriptors: []) var animeStorageData: FetchedResults<AnimeStorageData>
     
     init() {
         let appearance = UINavigationBarAppearance()
@@ -22,208 +24,174 @@ struct HomePage: View {
     
     var body: some View {
         NavigationView {
-            ZStack(alignment: .top) {
-                Color(hex: "#ff16151A")
-                    .ignoresSafeArea()
-                if(api.books.count > 0) {
-                    ScrollView {
-                        VStack {
-                            TabView() {
-                                ForEach(api.books) { anime in
-                                    ExtractedView(item: anime)
-                                        .frame(maxWidth: 390)
-                                }
-                            }.tabViewStyle(.page(indexDisplayMode: .never))
-                                .indexViewStyle(.page(backgroundDisplayMode: .always))
+                ZStack(alignment: .top) {
+                    Color(hex: "#ff16151A")
+                        .ignoresSafeArea()
+                    if(api.books.count > 0) {
+                        ScrollView {
+                            VStack {
+                                TabView() {
+                                    ForEach(api.books) { anime in
+                                        ExtractedView(item: anime)
+                                            .frame(maxWidth: 390)
+                                    }
+                                }.tabViewStyle(.page(indexDisplayMode: .never))
+                                    .indexViewStyle(.page(backgroundDisplayMode: .always))
+                                
+                            }.frame(height: 500, alignment: .bottom)
+                                .frame(maxWidth: .infinity)
                             
-                        }.frame(height: 500, alignment: .bottom)
+                            
+                            
+                            
+                            Text("Recently Added")
+                                .foregroundColor(.white)
+                                .bold()
+                                .font(.title2)
+                                .padding(.horizontal, 30)
+                                .padding(.top, 30)
+                                .padding(.bottom, -12)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 14) {
+                                    ForEach(api.recents) {recentAnime in
+                                        RecentAnimeCard(anime: recentAnime)
+                                    }
+                                }
+                            }
+                            .padding(.horizontal, 30)
+                            .frame(height: 300)
                             .frame(maxWidth: .infinity)
-                        
-                        
-                        
-                        
-                        Text("Recently Added")
-                            .foregroundColor(.white)
-                            .bold()
-                            .font(.title2)
-                            .padding(.horizontal, 30)
-                            .padding(.top, 30)
-                            .padding(.bottom, -12)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 20) {
-                                ForEach(api.recents) {recentAnime in
-                                    RecentAnimeCard(anime: recentAnime)
-                                }
-                            }
-                        }
-                        .padding(.horizontal, 30)
-                        .frame(height: 300)
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 0)
-                        
-                        Text("Continue watching")
-                            .foregroundColor(.white)
-                            .bold()
-                            .font(.title2)
-                            .padding(.horizontal, 30)
                             .padding(.top, 0)
-                            .padding(.bottom, -12)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 10) {
-                                ForEach(0..<5) {_ in
-                                    ContinueWatching()
+                            
+                            Text("Continue watching")
+                                .foregroundColor(.white)
+                                .bold()
+                                .font(.title2)
+                                .padding(.horizontal, 30)
+                                .padding(.top, 0)
+                                .padding(.bottom, -12)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 10) {
+                                    ForEach(animeStorageData) {data in
+                                        ContinueWatching(image: data.episodeThumbnail ?? "https://artworks.thetvdb.com/banners/episodes/329822/6125438.jpg", progress: data.episodeProgress ?? 0.0)
+                                    }
                                 }
                             }
-                        }
-                        .padding(.horizontal, 30)
-                        .frame(height: 220)
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 0)
-                        
-                        Spacer()
-                            .frame(height: 100)
-                            .frame(maxHeight: 100)
-                        
-                    }
-                    .ignoresSafeArea()
-                    .padding(.top, -70)
-                } else {
-                    ScrollView {
-                        VStack {
-                            
-                            ShimmerView()
-                                .frame(maxWidth: 390)
-                            
-                        }.frame(height: 500, alignment: .bottom)
+                            .padding(.horizontal, 30)
+                            .frame(height: 220)
                             .frame(maxWidth: .infinity)
-                        
-                        
-                        
-                        
-                        Text("Recently Added")
-                            .foregroundColor(.white)
-                            .bold()
-                            .font(.title2)
-                            .padding(.horizontal, 30)
-                            .padding(.top, 30)
-                            .padding(.bottom, -12)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 20) {
-                                ForEach(0..<5) {_ in
-                                    RecentAnimeCard(anime: IAnimeRecent(id: "140085",
-                                                                        malId: 50060,
-                                                                        title: ITitle(
-                                                                          romaji: "Shadowverse Flame",
-                                                                          english: "Shadowverse Flame",
-                                                                          native: "シャドウバースF（フレイム）",
-                                                                          userPreferred: "Shadowverse Flame"
-                                                                        ),
-                                                                        image: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx140085-3VhIbUc8HKYi.jpg",
-                                                                        rating: 57,
-                                                                        color: "#e48628",
-                                                                        episodeId: "cl8fcg82200042gpk1itl8sgf-enime",
-                                                                        episodeTitle: "The Shadowverse Club Tournament Begins!",
-                                                                        episodeNumber: 26,
-                                                                        genres: [
-                                                                          "Fantasy"
-                                                                        ],
-                                                                        type: "TV"))
-                                }
-                            }
-                        }
-                        .padding(.horizontal, 30)
-                        .frame(height: 300)
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 0)
-                        
-                        Text("Continue watching")
-                            .foregroundColor(.white)
-                            .bold()
-                            .font(.title2)
-                            .padding(.horizontal, 30)
                             .padding(.top, 0)
-                            .padding(.bottom, -12)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 10) {
-                                ForEach(0..<5) {_ in
-                                    ContinueWatching()
+                            
+                            Spacer()
+                                .frame(height: 100)
+                                .frame(maxHeight: 100)
+                            
+                        }
+                        .ignoresSafeArea()
+                        .padding(.top, -70)
+                    } else {
+                        ScrollView {
+                            VStack {
+                                
+                                ShimmerView()
+                                    .frame(maxWidth: 390)
+                                
+                            }.frame(height: 500, alignment: .bottom)
+                                .frame(maxWidth: .infinity)
+                            
+                            
+                            
+                            
+                            Text("Recently Added")
+                                .foregroundColor(.white)
+                                .bold()
+                                .font(.title2)
+                                .padding(.horizontal, 30)
+                                .padding(.top, 30)
+                                .padding(.bottom, -12)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 20) {
+                                    ForEach(0..<5) {_ in
+                                        RecentAnimeCard(anime: IAnimeRecent(id: "140085",
+                                                                            malId: 50060,
+                                                                            title: ITitle(
+                                                                              romaji: "Shadowverse Flame",
+                                                                              english: "Shadowverse Flame",
+                                                                              native: "シャドウバースF（フレイム）",
+                                                                              userPreferred: "Shadowverse Flame"
+                                                                            ),
+                                                                            image: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx140085-3VhIbUc8HKYi.jpg",
+                                                                            rating: 57,
+                                                                            color: "#e48628",
+                                                                            episodeId: "cl8fcg82200042gpk1itl8sgf-enime",
+                                                                            episodeTitle: "The Shadowverse Club Tournament Begins!",
+                                                                            episodeNumber: 26,
+                                                                            genres: [
+                                                                              "Fantasy"
+                                                                            ],
+                                                                            type: "TV"))
+                                    }
                                 }
                             }
+                            .padding(.horizontal, 30)
+                            .frame(height: 300)
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 0)
+                            
+                            Text("Continue watching")
+                                .foregroundColor(.white)
+                                .bold()
+                                .font(.title2)
+                                .padding(.horizontal, 30)
+                                .padding(.top, 0)
+                                .padding(.bottom, -12)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 10) {
+                                    ForEach(0..<5) {_ in
+                                        ContinueWatching(image: "", progress: 0.0)
+                                    }
+                                }
+                            }
+                            .padding(.horizontal, 30)
+                            .frame(height: 220)
+                            .frame(maxWidth: .infinity)
+                            .padding(.top, 0)
+                            
+                            Spacer()
+                                .frame(height: 100)
+                                .frame(maxHeight: 100)
+                            
                         }
-                        .padding(.horizontal, 30)
-                        .frame(height: 220)
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 0)
-                        
-                        Spacer()
-                            .frame(height: 100)
-                            .frame(maxHeight: 100)
-                        
+                        .ignoresSafeArea()
+                        .redacted(reason: .placeholder).shimmering(active: true)
                     }
-                    .ignoresSafeArea()
-                    .redacted(reason: .placeholder).shimmering(active: true)
-                }
-                
-                VStack {
-                    Spacer()
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)))
-                            .frame(width: 350, height: 70)
-                            .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), radius:12, x:0, y:0)
-                        
+                    
+                    NavigationLink(destination: SearchPage()) {
                         HStack {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(Color(hex: "#ff1E222C"))
-                                    .frame(width: 90, height: 40)
-                                
-                                Text("Home")
-                                    .bold()
-                                    .foregroundColor(.white)
-                            }
-                            .frame(maxWidth: .infinity)
-                            
-                            
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 19)
-                                    .fill(Color(hex: "#001E222C"))
-                                    .frame(width: 90, height: 40)
-                                
-                                Text("Search")
-                                    .bold()
-                                    .foregroundColor(.white)
-                            }
-                            .frame(maxWidth: .infinity)
-                            
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 19)
-                                    .fill(Color(hex: "#001E222C"))
-                                    .frame(width: 90, height: 40)
-                                
-                                Text("Settings")
-                                    .bold()
-                                    .foregroundColor(.white)
-                            }
-                            .frame(maxWidth: .infinity)
+                            Image(systemName: "magnifyingglass")
+                                .font(.system(size: 32, weight: .bold))
+                                .foregroundColor(.white)
                             
                         }
-                        .frame(width: 300)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 12)
                     }
                 }
-            }.onAppear() {
-                api.loadData()
-                api.loadRecent()
-            }
+            
         }.accentColor(.white)
+            .onAppear() {
+            api.loadData()
+            api.loadRecent()
+        }
             
     }
     
@@ -287,15 +255,15 @@ struct IAnimeInfo: Codable, Hashable, Identifiable {
     let malId: Int?
     let title: ITitle
     let image: String
-    let description: String
+    let description: String?
     let status: String
-    let cover: String
+    let cover: String?
     let rating: Int?
     let releaseDate: Int?
     let genres: [String]
     let totalEpisodes: Int?
     let duration: Int?
-    let type: String
+    let type: String?
 }
 
 struct IAnimeRecent: Codable, Hashable, Identifiable {
@@ -315,7 +283,7 @@ struct IAnimeRecent: Codable, Hashable, Identifiable {
 struct ITitle: Codable, Hashable {
     let romaji: String
     var english: String?
-    let native: String
+    let native: String?
     var userPreferred: String?
 }
 
@@ -325,7 +293,7 @@ struct ExtractedView: View {
     
     var body: some View {
         ZStack(alignment: .leading) {
-            AsyncImage(url: URL(string: "\(item.cover)")) { image in
+            AsyncImage(url: URL(string: "\(item.cover!)")) { image in
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -377,7 +345,7 @@ struct ExtractedView: View {
                     .frame(maxWidth: 350, alignment: .leading)
                     .multilineTextAlignment(.leading)
                 
-                Text(.init("\(item.description.replacingOccurrences(of: "<br>", with: "").replacingOccurrences(of: "<i>", with: "_").replacingOccurrences(of: "</i>", with: "_"))"))
+                Text(.init("\(item.description!.replacingOccurrences(of: "<br>", with: "").replacingOccurrences(of: "<i>", with: "_").replacingOccurrences(of: "</i>", with: "_"))"))
                     .fontWeight(.semibold)
                     .font(.footnote)
                     .lineSpacing(-3.0)
