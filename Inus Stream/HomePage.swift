@@ -10,20 +10,38 @@ import SnapToScroll
 
 struct HomePage: View {
     @StateObject var api = Api()
+    @StateObject var infoApi = InfoApi()
     let tempString = "NO TITLE"
     @Environment(\.presentationMode) var presentation
     @Environment(\.managedObjectContext) var storage
     @FetchRequest(sortDescriptors: []) var animeStorageData: FetchedResults<AnimeStorageData>
+    @State var canNavigate: Bool = false
+    @State var tempData: InfoData? = nil
+    @State private var sheetShown = false
     
     init() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
 
         UINavigationBar.appearance().standardAppearance = appearance
+        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        if #available(iOS 16.0, *) {
+            windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     var body: some View {
-        NavigationView {
+        
+        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        if #available(iOS 16.0, *) {
+            windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        return NavigationView {
                 ZStack(alignment: .top) {
                     Color(hex: "#ff16151A")
                         .ignoresSafeArea()
@@ -33,7 +51,7 @@ struct HomePage: View {
                                 TabView() {
                                     ForEach(api.books) { anime in
                                         ExtractedView(item: anime)
-                                            .frame(maxWidth: 390)
+                                            .frame(maxWidth: .infinity)
                                     }
                                 }.tabViewStyle(.page(indexDisplayMode: .never))
                                     .indexViewStyle(.page(backgroundDisplayMode: .always))
@@ -75,16 +93,28 @@ struct HomePage: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
                             ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 10) {
+                                HStack(alignment: .top, spacing: 20) {
                                     ForEach(animeStorageData) {data in
-                                        ContinueWatching(image: data.episodeThumbnail ?? "https://artworks.thetvdb.com/banners/episodes/329822/6125438.jpg", progress: data.episodeProgress ?? 0.0)
+                                        NavigationLink(destination: WatchPage(aniData: infoApi.infodata, episodeIndex: Int(data.episodeNumber) - 1, anilistId: data.id), isActive: $canNavigate) {
+                                            ContinueWatching(image: data.episodeThumbnail ?? "https://artworks.thetvdb.com/banners/episodes/329822/6125438.jpg", progress: data.episodeProgress ?? 0.0, title: data.animeTitle!, currentTime: data.currentTime, duration: data.duration, number: data.episodeNumber)
+                                        }.simultaneousGesture(TapGesture().onEnded {
+                                            // get data
+                                            infoApi.loadInfo(id: data.id!)
+                                            
+                                            if(infoApi.infodata == nil) {
+                                                canNavigate = false
+                                            } else {
+                                                canNavigate = true
+                                            }
+                                            //canNavigate = infoApi.infodata != nil
+                                        })
                                     }
                                 }
                             }
                             .padding(.horizontal, 30)
-                            .frame(height: 220)
+                            .frame(height: 240, alignment: .top)
                             .frame(maxWidth: .infinity)
-                            .padding(.top, 0)
+                            .padding(.top, 20)
                             
                             Spacer()
                                 .frame(height: 100)
@@ -98,7 +128,7 @@ struct HomePage: View {
                             VStack {
                                 
                                 ShimmerView()
-                                    .frame(maxWidth: 390)
+                                    .frame(maxWidth: .infinity)
                                 
                             }.frame(height: 500, alignment: .bottom)
                                 .frame(maxWidth: .infinity)
@@ -154,14 +184,14 @@ struct HomePage: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             
                             ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 10) {
+                                HStack(alignment: .top, spacing: 0) {
                                     ForEach(0..<5) {_ in
-                                        ContinueWatching(image: "", progress: 0.0)
+                                        ContinueWatching(image: "", progress: 0.0, title: "", currentTime: 0.0, duration: 0.0, number: 1)
                                     }
                                 }
                             }
                             .padding(.horizontal, 30)
-                            .frame(height: 220)
+                            .frame(height: 260, alignment: .top)
                             .frame(maxWidth: .infinity)
                             .padding(.top, 0)
                             
@@ -174,23 +204,34 @@ struct HomePage: View {
                         .redacted(reason: .placeholder).shimmering(active: true)
                     }
                     
-                    NavigationLink(destination: SearchPage()) {
-                        HStack {
-                            Image(systemName: "magnifyingglass")
-                                .font(.system(size: 32, weight: .bold))
-                                .foregroundColor(.white)
-                            
-                        }
+                        
+                    Button(action: {
+                        sheetShown = true
+                    }) {
+                        Image(systemName: "magnifyingglass")
+                            .font(.system(size: 32, weight: .bold))
+                            .foregroundColor(.white)
+                    }
                         .frame(maxWidth: .infinity, alignment: .trailing)
                         .padding(.horizontal, 20)
                         .padding(.top, 12)
-                    }
                 }
             
-        }.accentColor(.white)
-            .onAppear() {
+        }
+        .accentColor(.white)
+        .onAppear() {
             api.loadData()
             api.loadRecent()
+        }
+        .sheet(isPresented: $sheetShown) {
+            if #available(iOS 16.0, *) {
+                NavigationView {
+                    SearchPage()
+                        
+                }
+            } else {
+                // Fallback on earlier versions
+            }
         }
             
     }
@@ -272,7 +313,7 @@ struct IAnimeRecent: Codable, Hashable, Identifiable {
     let title: ITitle
     let image: String
     let rating: Int?
-    let color: String
+    let color: String?
     let episodeId: String
     let episodeTitle: String
     let episodeNumber: Int
@@ -297,14 +338,14 @@ struct ExtractedView: View {
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 390, height: 500)
-                    .frame(maxWidth: 390)
+                    .frame(width: .infinity, height: 500)
+                    .frame(maxWidth: .infinity)
                     .cornerRadius(12)
             } placeholder: {
                 ProgressView()
             }
-            .frame(width: 390, height: 500)
-            .frame(maxWidth: 390)
+            .frame(width: .infinity, height: 500)
+            .frame(maxWidth: .infinity)
             
             Rectangle()
                 .fill(LinearGradient(
@@ -315,8 +356,8 @@ struct ExtractedView: View {
                     ]),
                     startPoint: UnitPoint(x: 0.0, y: 0),
                     endPoint: UnitPoint(x: 0.0, y: 1)))
-                .frame(width: 390, height: 500)
-                .frame(maxWidth: 390)
+                .frame(width: .infinity, height: 500)
+                .frame(maxWidth: .infinity)
             
             VStack(alignment: .leading) {
                 Text("\(item.duration ?? 0) min / Episodes")
@@ -339,13 +380,13 @@ struct ExtractedView: View {
                         .foregroundColor(.red)
                         .font(.subheadline)
                 }
-                Text("\(item.title.english!)")
+                Text("\(item.title.english ?? item.title.romaji)")
                     .bold()
                     .font(.title)
                     .frame(maxWidth: 350, alignment: .leading)
                     .multilineTextAlignment(.leading)
                 
-                Text(.init("\(item.description!.replacingOccurrences(of: "<br>", with: "").replacingOccurrences(of: "<i>", with: "_").replacingOccurrences(of: "</i>", with: "_"))"))
+                Text(.init("\(item.description!.replacingOccurrences(of: "<br>", with: "").replacingOccurrences(of: "_", with: "").replacingOccurrences(of: "<i>", with: "_").replacingOccurrences(of: "</i>", with: "_").replacingOccurrences(of: "_ ", with: "_"))"))
                     .fontWeight(.semibold)
                     .font(.footnote)
                     .lineSpacing(-3.0)
@@ -403,10 +444,11 @@ struct ExtractedView: View {
             }
             .foregroundColor(.white)
             .frame(height: 500, alignment: .bottom)
-            .frame(maxWidth: 390)
+            .frame(maxWidth: .infinity)
             .padding(.bottom, 20)
         }
-        .frame(maxWidth: 390)
+        .frame(maxWidth: .infinity)
+        
     }
 }
 
@@ -418,14 +460,14 @@ struct ShimmerView: View {
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 390, height: 500)
-                    .frame(maxWidth: 390)
+                    .frame(width: .infinity, height: 500)
+                    .frame(maxWidth: .infinity)
                     .cornerRadius(12)
             } placeholder: {
                 ProgressView()
             }
-            .frame(width: 390, height: 500)
-            .frame(maxWidth: 390)
+            .frame(width: .infinity, height: 500)
+            .frame(maxWidth: .infinity)
             
             Rectangle()
                 .fill(LinearGradient(
@@ -436,8 +478,8 @@ struct ShimmerView: View {
                     ]),
                     startPoint: UnitPoint(x: 0.0, y: 0),
                     endPoint: UnitPoint(x: 0.0, y: 1)))
-                .frame(width: 390, height: 500)
-                .frame(maxWidth: 390)
+                .frame(width: .infinity, height: 500)
+                .frame(maxWidth: .infinity)
             
             VStack(alignment: .leading) {
                 Text("24 min / Episodes")
@@ -518,10 +560,10 @@ struct ShimmerView: View {
             }
             .foregroundColor(.white)
             .frame(height: 500, alignment: .bottom)
-            .frame(maxWidth: 390)
+            .frame(maxWidth: .infinity)
             .padding(.bottom, 20)
         }
-        .frame(maxWidth: 390)
+        .frame(maxWidth: .infinity)
     }
 }
 

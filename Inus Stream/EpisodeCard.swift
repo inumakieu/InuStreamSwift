@@ -17,7 +17,7 @@ struct EpisodeCard: View {
     @FetchRequest(sortDescriptors: []) var animeStorageData: FetchedResults<AnimeStorageData>
     
     var body: some View {
-        NavigationLink(destination: WatchPage(animeData: animeData, episodeIndex: number - 1)) {
+        NavigationLink(destination: WatchPage(aniData: animeData, episodeIndex: number - 1, anilistId: nil)) {
             HStack {
                 ZStack(alignment: .bottomTrailing) {
                     AsyncImage(url: URL(string: thumbnail)) { image in
@@ -84,21 +84,7 @@ struct EpisodeCard: View {
             .frame(maxWidth: 350, alignment: .leading)
             
         }.simultaneousGesture(TapGesture().onEnded{
-            let index = animeStorageData.firstIndex(where: {($0.id!) == animeData?.id})
-            if(index != nil && animeStorageData[index!].watched != nil) {
-                animeStorageData[index!].watched!.append(number)
-                animeStorageData[index!].episodeThumbnail = animeData!.episodes![(animeStorageData[index!].watched!.max() ?? 1) - 1].image
-                animeStorageData[index!].episodeProgress = 0.5
-            } else {
-                let storageDataTemp = AnimeStorageData(context: storage)
-                storageDataTemp.id = animeData?.id
-                storageDataTemp.watched = [number]
-                storageDataTemp.episodeProgress = 0.5
-                storageDataTemp.episodeThumbnail = animeData!.episodes![number - 1].image
-            }
             
-            
-            try? storage.save()
         })
         
     }

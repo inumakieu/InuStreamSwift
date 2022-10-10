@@ -15,6 +15,7 @@ struct Inus_StreamApp: App {
         WindowGroup {
             HomePage()
                 .environment(\.managedObjectContext, dataController.container.viewContext)
+                .environment(\.colorScheme, .dark)
         }
     }
 }

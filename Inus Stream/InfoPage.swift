@@ -13,8 +13,34 @@ struct InfoPage: View {
     @StateObject var infoApi = InfoApi()
     @Environment(\.presentationMode) var presentation
     
+    init(anilistId: String) {
+        self.anilistId = anilistId
+    }
+    
+    func getAiringTime(airingTime: Int) -> String {
+        // convert seconds into days and hours
+        let hours = airingTime / 60 / 60
+        let days = hours / 24
+        
+        // return days if time is longer than one day
+        if(days >= 1) {
+            return String(days) + " days"
+        } else {
+            // return hours if time is less than one day
+            return String(hours) + " hours"
+        }
+        
+    }
+    
     var body: some View {
-            ZStack(alignment: .top) {
+        
+        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+        if #available(iOS 16.0, *) {
+            windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
+        } else {
+            // Fallback on earlier versions
+        }
+        return ZStack(alignment: .top) {
                 Color(hex: "#ff16151A")
                     .ignoresSafeArea()
                 
@@ -38,7 +64,8 @@ struct InfoPage: View {
                                     ]),
                                     startPoint: UnitPoint(x: 0.0, y: 0),
                                     endPoint: UnitPoint(x: 0.0, y: 1)))
-                                .frame(width: 394, height: 440)
+                                .frame(height: 440)
+                                .frame(maxWidth: .infinity)
                                 .ignoresSafeArea()
                             
                             AsyncImage(url: URL(string: infoApi.infodata!.image)) { image in
@@ -75,22 +102,41 @@ struct InfoPage: View {
                         .cornerRadius(20)
                         .padding(.all, 20)
                         
-                        ScrollView(.horizontal) {
-                            HStack(spacing: 12) {
-                                ForEach(0..<infoApi.infodata!.genres.count) {genre in
-                                    ZStack {
-                                        Color(.black)
-                                        Text(infoApi.infodata!.genres[genre])
-                                            .foregroundColor(.white)
-                                            .bold()
-                                            .font(.caption)
-                                            .padding(.horizontal, 20)
-                                            .padding(.vertical, 12)
+                        HStack {
+                            ScrollView(.horizontal) {
+                                HStack(spacing: 12) {
+                                    ForEach(0..<infoApi.infodata!.genres.count) {genre in
+                                        ZStack {
+                                            Color(.black)
+                                            Text(infoApi.infodata!.genres[genre])
+                                                .foregroundColor(.white)
+                                                .bold()
+                                                .font(.caption)
+                                                .bold()
+                                                .padding(.horizontal, 20)
+                                                .padding(.vertical, 12)
+                                        }
+                                        .frame(height: 32)
+                                        .cornerRadius(40)
                                     }
-                                    .cornerRadius(40)
                                 }
                             }
+                            if(infoApi.infodata?.nextAiringEpisode != nil) {
+                                ZStack {
+                                    Color(hex: "#ffEE4546")
+                                    Text("Next Episode: \(getAiringTime(airingTime: infoApi.infodata!.nextAiringEpisode!.timeUntilAiring))")
+                                        .bold()
+                                        .font(.caption)
+                                        .bold()
+                                        .multilineTextAlignment(.center)
+                                }
+                                .frame(height: 40)
+                                .frame(maxWidth: 100)
+                                .cornerRadius(12)
+                            }
+                            
                         }
+                        
                         .padding(.horizontal, 20)
                         
                         Text("Episodes")
@@ -105,6 +151,27 @@ struct InfoPage: View {
                                 ForEach(0..<infoApi.infodata!.episodes!.count) {index in
                                     EpisodeCard(animeData: infoApi.infodata!,title: infoApi.infodata!.episodes![index].title ?? infoApi.infodata!.title.romaji, number: infoApi.infodata!.episodes![index].number, thumbnail: infoApi.infodata!.episodes![index].image, isFiller: infoApi.infodata!.episodes![index].isFiller
                                                 )
+                                    .contextMenu {
+                                        VStack {
+                                            Button(action: {
+                                                // set this episode as watched
+                                                
+                                            }) {
+                                                HStack {
+                                                    Text("Mark as watched")
+                                                    
+                                                    Image(systemName: "eye.fill")
+                                                }
+                                            }
+                                            Button(action: {}) {
+                                                HStack {
+                                                    Text("Set to current Episode")
+                                                    
+                                                    Image(systemName: "eye.fill")
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                                 Spacer()
                                     .frame(maxHeight: 100)
@@ -235,6 +302,7 @@ struct InfoPage: View {
                       }
                     }
                 )
+        
                 
         
     }
@@ -242,7 +310,7 @@ struct InfoPage: View {
 
 struct InfoPage_Previews: PreviewProvider {
     static var previews: some View {
-        InfoPage(anilistId: "98659")
+        InfoPage(anilistId: "130298")
     }
 }
 
@@ -279,6 +347,7 @@ struct InfoData: Codable {
     let description, status: String
     let releaseDate: Int
     let startDate, endDate: EndDateClass
+    let nextAiringEpisode: AiringData?
     let totalEpisodes: Int?
     let duration: Int?
     let rating: Int?
@@ -290,6 +359,12 @@ struct InfoData: Codable {
     let characters: [Character]
     let relations: [Related]
     let episodes: [Episode]?
+}
+
+struct AiringData: Codable {
+    let airingTime: Int
+    let timeUntilAiring: Int
+    let episode: Int
 }
 
 struct Recommended: Codable {

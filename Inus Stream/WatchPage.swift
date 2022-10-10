@@ -67,6 +67,10 @@ final class PlayerViewModel: ObservableObject {
         }
     }
     
+    func getCurrentItem() -> AVPlayerItem? {
+        return player.currentItem
+    }
+    
     func setCurrentItem(_ item: AVPlayerItem) {
         currentTime = .zero
         duration = nil
@@ -212,13 +216,15 @@ struct UISliderView: UIViewRepresentable {
 }
 
 struct CustomControlsView: View {
+    var episodeData: StreamData?
     let animeData: InfoData
+    @State var qualityIndex: Int
     @Binding var showUI: Bool
     @State var episodeIndex: Int
     @ObservedObject var playerVM: PlayerViewModel
-    @StateObject var streamApi = StreamApi()
     @State var progress = 0.25
     @State var showEpisodeSelector: Bool = false
+    @StateObject var streamApi = StreamApi()
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     
@@ -248,12 +254,14 @@ struct CustomControlsView: View {
                 .frame(width: .infinity, height: .infinity)
             Color.clear
                 .frame(width: .infinity, height: 300)
-              .contentShape(Rectangle())
-            .onTapGesture {
-                showUI = false
-            }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    showUI = false
+                }
             
             VStack {
+                Spacer()
+                    .frame(maxHeight: 12)
                 HStack {
                     // self.presentationMode.wrappedValue.dismiss()
                     Button(action: {
@@ -286,15 +294,62 @@ struct CustomControlsView: View {
                 }
                 Spacer()
                 HStack {
-                    Button(action: {
-                        playerVM.player.seek(to: CMTime(seconds: playerVM.currentTime - 15, preferredTimescale: 1), toleranceBefore: .zero, toleranceAfter: .zero)
-                    }, label: {
-                        Image(systemName: "gobackward")
-                            .font(.system(size: 28, weight: .heavy))
-                            .foregroundColor(.white.opacity(0.7))
-                    })
+                    if(episodeData != nil) {
+                        ZStack {
+                            Color(hex: "#ff1E222C")
+                                .cornerRadius(12)
+                            
+                            VStack(alignment: .center, spacing: 8) {
+                                ForEach(0..<(episodeData!.sources!.count - 1)) { index in
+                                    ZStack {
+                                        if(index == qualityIndex) {
+                                            Color(hex: "#ff464E6C")
+                                        }
+                                        
+                                        Text("\(episodeData!.sources![index].quality!)")
+                                            .foregroundColor(.white)
+                                            .font(.subheadline)
+                                            .bold()
+                                            .padding(.horizontal, 12)
+                                            .padding(.vertical, 8)
+                                    }
+                                    .frame(maxWidth: 90)
+                                    .cornerRadius(8)
+                                    .onTapGesture(perform: {
+                                        Task {
+                                            let curTime = playerVM.currentTime
+                                            self.qualityIndex = index
+                                            await self.streamApi.loadStream(id: self.animeData.episodes![episodeIndex].id)
+                                            playerVM.setCurrentItem(AVPlayerItem(url: URL(string:  self.streamApi.streamdata?.sources![self.qualityIndex].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
+                                            await playerVM.player.seek(to: CMTime(seconds: curTime, preferredTimescale: 1), toleranceBefore: .zero, toleranceAfter: .zero)
+                                            playerVM.player.play()
+                                        }
+                                        
+                                    })
+                                    
+                                }
+                                
+                            }
+                            .padding(8)
+                            .cornerRadius(12)
+                        }
+                        .frame(maxWidth: 106)
+                        .cornerRadius(12)
+                        .clipped()
+                    }
                     
-                    Spacer().frame(maxWidth: 30)
+                    
+                    Spacer()
+                    Image("goBackward")
+                        .resizable()
+                        .frame(width: 28, height: 28)
+                        .foregroundColor(.white.opacity(0.6))
+                        .onTapGesture {
+                            playerVM.player.seek(to: CMTime(seconds: playerVM.currentTime - 15, preferredTimescale: 1), toleranceBefore: .zero, toleranceAfter: .zero)
+                            
+                        }
+                    
+                    Spacer().frame(maxWidth: 72)
                     
                     if playerVM.isPlaying == false {
                         FontIcon.button(.awesome5Solid(code: .play), action: {
@@ -308,13 +363,17 @@ struct CustomControlsView: View {
                         }, fontsize: 42)
                         .foregroundColor(.white)
                     }
-                    Spacer().frame(maxWidth: 30)
-                    Image(systemName: "goforward")
-                        .font(.system(size: 28, weight: .heavy))
-                        .foregroundColor(.white.opacity(0.7))
+                    Spacer().frame(maxWidth: 72)
+                    Image("goForward")
+                        .resizable()
+                        .frame(width: 28, height: 28)
+                        .foregroundColor(.white)
                         .onTapGesture {
                             playerVM.player.seek(to: CMTime(seconds: playerVM.currentTime + 15, preferredTimescale: 1), toleranceBefore: .zero, toleranceAfter: .zero)
                         }
+                    Spacer()
+                    Spacer()
+                        .frame(maxWidth: 106)
                 }
                 .padding(.top, 20)
                 Spacer()
@@ -323,10 +382,10 @@ struct CustomControlsView: View {
                         HStack {
                             CustomView(percentage: $playerVM.currentTime, isDragging: $playerVM.isEditingCurrentTime, total: playerVM.duration!)
                                 .frame(height: 6)
-                                .frame(maxHeight: 10)
+                                .frame(maxHeight: 20)
                                 .padding(.bottom, playerVM.isEditingCurrentTime ? 3 : 0 )
                             
-                            Spacer().frame(maxWidth: 30)
+                            Spacer().frame(maxWidth: 34)
                             
                             Text("\(secondsToMinutesSeconds(Int(playerVM.currentTime))) / \(secondsToMinutesSeconds(Int(playerVM.duration!)))")
                                 .font(.caption)
@@ -334,7 +393,7 @@ struct CustomControlsView: View {
                                 .foregroundColor(.white)
                             
                             Spacer()
-                                .frame(maxWidth: 20)
+                                .frame(maxWidth: 34)
                             
                             FontIcon.button(.awesome5Solid(code: .closed_captioning), action: {
                                 print("subtitles")
@@ -342,22 +401,25 @@ struct CustomControlsView: View {
                             .foregroundColor(.white)
                             
                             Spacer()
-                                .frame(maxWidth: 20)
+                                .frame(maxWidth: 34)
                             
-                            FontIcon.button(.ionicon(code: .ios_settings), action: {
-                                print("settings")
-                                showEpisodeSelector = true
-                            }, fontsize: 20)
-                            .foregroundColor(.white)
+                            Image("episodeSelector")
+                                .resizable()
+                                .frame(width: 24, height: 19)
+                                .foregroundColor(.white.opacity(0.7))
+                                .onTapGesture {
+                                    showEpisodeSelector = true
+                                }
+                            
                             
                             Spacer()
-                                .frame(maxWidth: 20)
+                                .frame(maxWidth: 34)
                             
                             FontIcon.button(.awesome5Solid(code: .step_forward), action: {
                                 Task {
                                     self.episodeIndex = self.episodeIndex + 1
                                     await self.streamApi.loadStream(id: self.animeData.episodes![episodeIndex].id)
-                                    playerVM.setCurrentItem(AVPlayerItem(url: URL(string:  self.streamApi.streamdata?.sources[0].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
+                                    playerVM.setCurrentItem(AVPlayerItem(url: URL(string:  self.streamApi.streamdata?.sources![0].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
                                     playerVM.player.play()
                                 }
                                 
@@ -432,7 +494,7 @@ struct CustomControlsView: View {
                                             Task {
                                                 self.episodeIndex = self.episodeIndex  + index - 1
                                                 await self.streamApi.loadStream(id: self.animeData.episodes![episodeIndex].id)
-                                                playerVM.setCurrentItem(AVPlayerItem(url: URL(string:  self.streamApi.streamdata?.sources[0].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
+                                                playerVM.setCurrentItem(AVPlayerItem(url: URL(string:  self.streamApi.streamdata?.sources![0].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
                                                 playerVM.player.play()
                                             }
                                         }
@@ -476,8 +538,8 @@ class StreamApi : ObservableObject{
 }
 
 struct StreamData: Codable {
-    let headers: header
-    let sources: [source]
+    let headers: header?
+    let sources: [source]?
 }
 
 struct header: Codable {
@@ -487,19 +549,40 @@ struct header: Codable {
 struct source: Codable {
     let url: String
     let isM3U8: Bool
+    let quality: String?
+}
+
+struct GaugeProgressStyle: ProgressViewStyle {
+    var strokeColor = Color.white
+    var strokeWidth = 12.0
+    
+    func makeBody(configuration: Configuration) -> some View {
+        let fractionCompleted = configuration.fractionCompleted ?? 0
+        
+        return ZStack {
+            Circle()
+                .trim(from: 0, to: fractionCompleted)
+                .stroke(strokeColor, style: StrokeStyle(lineWidth: strokeWidth, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+        }
+    }
 }
 
 
 struct CustomPlayerWithControls: View {
-    var animeData: InfoData
+    var animeData: InfoData?
     var episodeIndex: Int
     @StateObject var streamApi = StreamApi()
     @State var doneLoading = false
     @State var showUI: Bool = true
+    @State var episodeData: StreamData? = nil
+    @State var resIndex: Int = 0
     
     @StateObject private var playerVM = PlayerViewModel()
+    @Environment(\.managedObjectContext) var storage
+    @FetchRequest(sortDescriptors: []) var animeStorageData: FetchedResults<AnimeStorageData>
     
-    init(animeData: InfoData, episodeIndex: Int) {
+    init(animeData: InfoData?, episodeIndex: Int) {
         self.animeData = animeData
         self.episodeIndex = episodeIndex
         
@@ -513,86 +596,169 @@ struct CustomPlayerWithControls: View {
     }
     
     var body: some View {
-        ZStack {
-            Color(.black)
-                .ignoresSafeArea()
-            VStack {
-                VStack {
-                    ZStack {
-                        CustomVideoPlayer(playerVM: playerVM, showUI: showUI).onTapGesture {
-                            showUI = true
+        if animeData != nil {
+            if #available(iOS 16.0, *) {
+            ZStack {
+                Color(.black)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
+                    .ignoresSafeArea(.all)
+                    .persistentSystemOverlays(.hidden)
+                    VStack {
+                        VStack {
+                            ZStack {
+                                CustomVideoPlayer(playerVM: playerVM, showUI: showUI).onTapGesture {
+                                    showUI = true
+                                }
+                                .overlay(CustomControlsView(episodeData: episodeData,animeData: animeData!, qualityIndex: resIndex, showUI: $showUI, episodeIndex: episodeIndex, playerVM: playerVM)
+                                         , alignment: .bottom)
+                            }
                         }
-                            .overlay(CustomControlsView(animeData: animeData, showUI: $showUI, episodeIndex: episodeIndex, playerVM: playerVM)
-                                     , alignment: .bottom)
+                        .padding(.horizontal, 60)
                     }
-                }
-                .padding(.horizontal, 60)
+                    .padding()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
+                    .ignoresSafeArea(.all)
+                    .persistentSystemOverlays(.hidden)
+                    .task {
+                        await self.streamApi.loadStream(id: self.animeData!.episodes![episodeIndex].id)
+                        
+                        episodeData = streamApi.streamdata!
+                        
+                        // get 1080p res
+                        
+                        for i in 0..<streamApi.streamdata!.sources!.count {
+                            if (self.streamApi.streamdata!.sources![i].quality! == "1080p")
+                            {
+                                resIndex = i
+                            }
+                        }
+                        
+                        print(episodeData)
+                        
+                        playerVM.setCurrentItem(AVPlayerItem(url:  URL(string: self.streamApi.streamdata?.sources![resIndex].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
+                        
+                        let index = animeStorageData.firstIndex(where: {($0.id!) == animeData!.id})
+                        if(index != nil && animeStorageData[index!].watched != nil && animeStorageData[index!].currentTime != nil && animeStorageData[index!].episodeNumber == episodeIndex + 1) {
+                            await playerVM.player.seek(to: CMTime(seconds: animeStorageData[index!].currentTime, preferredTimescale: 1))
+                        }
+                        
+                        playerVM.player.play()
+                    }
+                    .onDisappear {
+                        playerVM.player.pause()
+                        
+                        
+                        let index = animeStorageData.firstIndex(where: {($0.id!) == animeData!.id})
+                        if(index != nil && animeStorageData[index!].watched != nil) {
+                            animeStorageData[index!].watched!.append(animeData!.episodes![episodeIndex].number)
+                            animeStorageData[index!].episodeThumbnail = animeData!.episodes![(animeStorageData[index!].watched!.max() ?? 1) - 1].image
+                            animeStorageData[index!].episodeProgress = 0.5
+                            animeStorageData[index!].currentTime = playerVM.currentTime
+                            animeStorageData[index!].duration = playerVM.duration ?? (24.0 * 60.0)
+                            animeStorageData[index!].animeTitle = animeData!.title.english ?? animeData!.title.romaji
+                            animeStorageData[index!].episodeNumber = Int16(animeData!.episodes![episodeIndex].number)
+                        } else {
+                            let storageDataTemp = AnimeStorageData(context: storage)
+                            storageDataTemp.id = animeData!.id
+                            storageDataTemp.watched = [animeData!.episodes![episodeIndex].number]
+                            storageDataTemp.episodeProgress = 0.5
+                            storageDataTemp.episodeThumbnail = animeData!.episodes![episodeIndex].image
+                            storageDataTemp.currentTime = playerVM.currentTime
+                            storageDataTemp.duration = playerVM.duration!
+                            storageDataTemp.animeTitle = animeData!.title.english ?? animeData!.title.romaji
+                            storageDataTemp.episodeNumber = Int16(animeData!.episodes![episodeIndex].number)
+                        }
+                        
+                        
+                        try? storage.save()
+                        
+                        
+                        playerVM.player.replaceCurrentItem(with: nil)
+                    }
+                
             }
-            .padding()
-            .ignoresSafeArea()
-            .task {
-                await self.streamApi.loadStream(id: self.animeData.episodes![episodeIndex].id)
-                playerVM.setCurrentItem(AVPlayerItem(url:  URL(string: self.streamApi.streamdata?.sources[0].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
-                playerVM.player.play()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .edgesIgnoringSafeArea(.all)
+            .ignoresSafeArea(.all)
+            .persistentSystemOverlays(.hidden)
+            } else {
+                // Fallback on earlier versions
             }
-            .onDisappear {
-                playerVM.player.pause()
-                playerVM.player.replaceCurrentItem(with: nil)
+        }
+        else {
+            ZStack {
+                Color(.black)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .progressViewStyle(GaugeProgressStyle())
             }
         }
     }
 }
 
+struct Loading: View {
+    var body: some View {
+        ZStack {
+            ProgressView()
+        }
+    }
+}
 
 
 struct WatchPage: View {
-    let animeData: InfoData?
+    var animeData: InfoData?
     let episodeIndex: Int
+    let anilistId: String?
     @Environment(\.presentationMode) var presentation
+    @StateObject var infoApi = InfoApi()
+    @State private var isPresented = false
     
-    private var shouldApplyBackground: Bool {
-            guard #available(iOS 16, *) else {
-                return true
-            }
-            return false
-        }
+    init(aniData: InfoData?, episodeIndex: Int, anilistId: String?) {
+        animeData = aniData
+        self.episodeIndex = episodeIndex
+        self.anilistId = anilistId
+    }
     
     var body: some View {
         if #available(iOS 16, *) {
-            CustomPlayerWithControls(animeData: animeData!, episodeIndex: episodeIndex)
-                .navigationBarBackButtonHidden(true)
-                .contentShape(Rectangle()) // Start of the gesture to dismiss the navigation
-                .gesture(
-                    DragGesture(coordinateSpace: .local)
-                        .onEnded { value in
-                            if value.translation.width > .zero
-                                && value.translation.height > -30
-                                && value.translation.height < 30 {
-                                presentation.wrappedValue.dismiss()
-                            }
-                        }
-                )
-                .edgesIgnoringSafeArea(.all)
-                .persistentSystemOverlays(.hidden)
-        } else {
-            CustomPlayerWithControls(animeData: animeData!, episodeIndex: episodeIndex)
-                .navigationBarBackButtonHidden(true)
-                .contentShape(Rectangle()) // Start of the gesture to dismiss the navigation
-                .gesture(
-                    DragGesture(coordinateSpace: .local)
-                        .onEnded { value in
-                            if value.translation.width > .zero
-                                && value.translation.height > -30
-                                && value.translation.height < 30 {
-                                presentation.wrappedValue.dismiss()
-                            }
-                        }
-                )
-                .edgesIgnoringSafeArea(.all)
-        }
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .landscape))
             
+            return ZStack {
+                CustomPlayerWithControls(animeData: animeData, episodeIndex: episodeIndex)
+                    .navigationBarBackButtonHidden(true)
+                    .contentShape(Rectangle())
+                    .ignoresSafeArea(.all)
+                    .edgesIgnoringSafeArea(.all)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .persistentSystemOverlays(.hidden)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .ignoresSafeArea(.all)
+            .edgesIgnoringSafeArea(.all)
+            
+            
+        } else {
+            return CustomPlayerWithControls(animeData: animeData!, episodeIndex: episodeIndex)
+                .navigationBarBackButtonHidden(true)
+                .contentShape(Rectangle())
+                .ignoresSafeArea(.all)
+                .edgesIgnoringSafeArea(.all)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                
+                .onAppear() {
+                    print("VIEWWWWW")
+                }
+        }
+        
+        
     }
 }
+
+
+
 
 
 struct CustomView: View {
@@ -627,8 +793,8 @@ struct CustomView: View {
                     .foregroundColor(.white)
                     .frame(width: geometry.size.width * CGFloat(self.percentage / total)).frame(height: barHeight, alignment: .bottom).cornerRadius(12)
                 
-                    
-            }.frame(maxHeight: .infinity, alignment: .bottom)
+                
+            }.frame(maxHeight: .infinity, alignment: .center)
                 .cornerRadius(12)
                 .gesture(DragGesture(minimumDistance: 0)
                     .onEnded({ value in

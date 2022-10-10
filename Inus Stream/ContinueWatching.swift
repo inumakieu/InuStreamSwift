@@ -10,6 +10,21 @@ import SwiftUI
 struct ContinueWatching: View {
     let image: String
     let progress: Double
+    let title: String
+    let currentTime: Double
+    let duration: Double
+    let number: Int16
+    
+    func secondsToMinutesSeconds(seconds: Int) -> String {
+        let minutes = (seconds % 3600) / 60
+        let seconds = (seconds % 3600) % 60
+        
+        let minuteString = (minutes < 10 ? "0" : "") +  "\(minutes)"
+        let secondsString = (seconds < 10 ? "0" : "") +  "\(seconds)"
+        
+        return minuteString + ":" + secondsString
+    }
+    
     var body: some View {
         VStack(alignment: .leading) {
             ZStack {
@@ -40,13 +55,20 @@ struct ContinueWatching: View {
                 }
                 
                 VStack {
+                    Text("\(number)")
+                        .font(.system(size: 22, weight: .heavy))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(.trailing, 14)
+                        .padding(.top, 10)
+                    
                     Spacer()
                     
                     HStack {
                         
                         Spacer()
                         
-                        Text("18:44 / 24:01")
+                        Text("\(secondsToMinutesSeconds(seconds: Int(currentTime.rounded()))) / \(secondsToMinutesSeconds(seconds: Int(duration.rounded())))")
                             .foregroundColor(Color(hex: "#ffACACAC"))
                             .font(.custom("", size: 10))
                             .bold()
@@ -59,7 +81,7 @@ struct ContinueWatching: View {
                             .frame(height: 6)
                             .foregroundColor(Color(hex: "#ffffffff"))
                         RoundedRectangle(cornerRadius: 3)
-                            .frame(width: (220 - 28) * (progress ?? 0.0))
+                            .frame(width: (220 - 28) * (currentTime / duration ?? 0.0))
                             .frame(height: 6)
                             .foregroundColor(Color(hex: "#ffB93434"))
                     }
@@ -71,13 +93,13 @@ struct ContinueWatching: View {
             
             
             
-            Text("Classroom of the Elite")
+            Text("\(title)")
                 .font(.callout)
                 .foregroundColor(Color.gray)
                 .bold()
-                .lineLimit(1)
-                .frame(width: 220, alignment: .leading)
-                .padding(.leading, 14.0)
+                .lineLimit(2)
+                .multilineTextAlignment(.center)
+                .frame(width: 220, alignment: .center)
                 .padding(.top, 0)
         }
     }
@@ -85,6 +107,6 @@ struct ContinueWatching: View {
 
 struct ContinueWatching_Previews: PreviewProvider {
     static var previews: some View {
-        ContinueWatching(image: "", progress: 0.0)
+        ContinueWatching(image: "", progress: 0.0, title: "", currentTime: 0.0, duration: 0.0, number: 0)
     }
 }

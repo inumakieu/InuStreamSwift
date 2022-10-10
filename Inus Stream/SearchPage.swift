@@ -17,6 +17,15 @@ struct SearchPage: View {
                     .ignoresSafeArea()
                 VStack {
                     
+                    Text("Search")
+                        .font(.title)
+                        .bold()
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 30)
+                        .padding(.top, 30)
+                        
+                    
                     ZStack {
                         RoundedRectangle(cornerRadius: 8)
                             .frame(height: 40)
@@ -27,6 +36,7 @@ struct SearchPage: View {
                             "Search for an Anime...",
                             text: $animeName
                         )
+                        .foregroundColor(.white)
                         .onChange(of: animeName){ newValue in
                             searchApi.searchAnime(animeName: newValue.lowercased().replacingOccurrences(of: " ", with: "-"))
                         }
@@ -35,7 +45,6 @@ struct SearchPage: View {
                         .padding(.horizontal, 12)
                     }
                     .padding(.horizontal, 30)
-                    .padding(.top, 60)
                     .padding(.bottom, 30)
                     
                     ScrollView(.vertical) {
@@ -59,7 +68,16 @@ struct SearchPage: View {
                                                 AsyncImage(url: URL(string: searchApi.searchdata[index].cover ?? "")) { image in
                                                     image.resizable()
                                                         .aspectRatio(contentMode: .fill)
-                                                        .frame(width: 192,height: 80)
+                                                        .frame(width: 192,height: 90)
+                                                        .frame(maxWidth: .infinity)
+                                                } placeholder: {
+                                                    ProgressView()
+                                                }
+                                            } else {
+                                                AsyncImage(url: URL(string: searchApi.searchdata[index].image)) { image in
+                                                    image.resizable()
+                                                        .aspectRatio(contentMode: .fill)
+                                                        .frame(height: 90)
                                                         .frame(maxWidth: .infinity)
                                                 } placeholder: {
                                                     ProgressView()
@@ -90,6 +108,7 @@ struct SearchPage: View {
                                                     .font(.system(size: 7))
                                                     .foregroundColor(.white)
                                                     .lineLimit(4)
+                                                    .multilineTextAlignment(.leading)
                                                     .frame(maxWidth: .infinity, alignment: .leading)
                                                 
                                                 HStack{
