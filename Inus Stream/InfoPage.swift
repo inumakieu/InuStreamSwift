@@ -50,7 +50,8 @@ struct InfoPage: View {
                             AsyncImage(url: URL(string: infoApi.infodata!.cover)) { image in
                                 image.resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .frame(width: 390, height: 440)
+                                    .frame(height: 440)
+                                    .frame(maxWidth: .infinity, maxHeight: 440)
                             } placeholder: {
                                 ProgressView()
                             }
@@ -65,7 +66,7 @@ struct InfoPage: View {
                                     startPoint: UnitPoint(x: 0.0, y: 0),
                                     endPoint: UnitPoint(x: 0.0, y: 1)))
                                 .frame(height: 440)
-                                .frame(maxWidth: .infinity)
+                                .frame(maxWidth: .infinity, maxHeight: 440)
                                 .ignoresSafeArea()
                             
                             AsyncImage(url: URL(string: infoApi.infodata!.image)) { image in
@@ -77,6 +78,8 @@ struct InfoPage: View {
                                 ProgressView()
                             }
                         }
+                        .frame(height: 440)
+                        .frame(maxWidth: .infinity, maxHeight: 440, alignment: .top)
                         
                         Text(infoApi.infodata!.title.english ?? infoApi.infodata!.title.romaji)
                             .bold()
@@ -90,97 +93,24 @@ struct InfoPage: View {
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
                         
-                        ZStack {
-                            Color(hex: "#ff1E222C")
-                            Text(.init(infoApi.infodata!.description.replacingOccurrences(of: "<br>", with: "").replacingOccurrences(of: "<i>", with: "_").replacingOccurrences(of: "</i>", with: "_")))
-                                .foregroundColor(.white)
-                                .font(.caption)
-                                .multilineTextAlignment(.center)
-                                .padding(.all, 20)
-                        }
-                        .frame(maxWidth: 350)
-                        .cornerRadius(20)
-                        .padding(.all, 20)
-                        
-                        HStack {
-                            ScrollView(.horizontal) {
-                                HStack(spacing: 12) {
-                                    ForEach(0..<infoApi.infodata!.genres.count) {genre in
-                                        ZStack {
-                                            Color(.black)
-                                            Text(infoApi.infodata!.genres[genre])
-                                                .foregroundColor(.white)
-                                                .bold()
-                                                .font(.caption)
-                                                .bold()
-                                                .padding(.horizontal, 20)
-                                                .padding(.vertical, 12)
-                                        }
-                                        .frame(height: 32)
-                                        .cornerRadius(40)
-                                    }
-                                }
-                            }
-                            if(infoApi.infodata?.nextAiringEpisode != nil) {
-                                ZStack {
-                                    Color(hex: "#ffEE4546")
-                                    Text("Next Episode: \(getAiringTime(airingTime: infoApi.infodata!.nextAiringEpisode!.timeUntilAiring))")
-                                        .bold()
-                                        .font(.caption)
-                                        .bold()
-                                        .multilineTextAlignment(.center)
-                                }
-                                .frame(height: 40)
-                                .frame(maxWidth: 100)
-                                .cornerRadius(12)
-                            }
-                            
-                        }
-                        
-                        .padding(.horizontal, 20)
-                        
-                        Text("Episodes")
-                            .foregroundColor(.white)
-                            .font(.title)
-                            .bold()
-                            .frame(maxWidth: 340, alignment: .leading)
-                            .padding(.top, 10)
-                        
                         ScrollView {
-                            VStack(spacing: 18) {
-                                ForEach(0..<infoApi.infodata!.episodes!.count) {index in
-                                    EpisodeCard(animeData: infoApi.infodata!,title: infoApi.infodata!.episodes![index].title ?? infoApi.infodata!.title.romaji, number: infoApi.infodata!.episodes![index].number, thumbnail: infoApi.infodata!.episodes![index].image, isFiller: infoApi.infodata!.episodes![index].isFiller
-                                                )
-                                    .contextMenu {
-                                        VStack {
-                                            Button(action: {
-                                                // set this episode as watched
-                                                
-                                            }) {
-                                                HStack {
-                                                    Text("Mark as watched")
-                                                    
-                                                    Image(systemName: "eye.fill")
-                                                }
-                                            }
-                                            Button(action: {}) {
-                                                HStack {
-                                                    Text("Set to current Episode")
-                                                    
-                                                    Image(systemName: "eye.fill")
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                Spacer()
-                                    .frame(maxHeight: 100)
+                            HStack {
+                                TabView {
+                                    ExtraInfoView(infoApi: infoApi)
+                                        .frame(height: 700)
+                                        .frame(maxWidth: 390)
+                                    
+                                    EpisodeView(infoApi: infoApi)
+                                        .frame(maxWidth: 390)
+                                }.tabViewStyle(.page(indexDisplayMode: .never))
+                                    .indexViewStyle(.page(backgroundDisplayMode: .always))
+                                    .frame(maxHeight: 1000)
+                                .frame(maxWidth: 390)
                             }
-                        .frame(maxWidth: 350, alignment: .leading)
                         }
-                        .frame(height: 500)
                     }
                     .ignoresSafeArea()
+                    
                 }
                 else {
                     ScrollView {
@@ -289,6 +219,8 @@ struct InfoPage: View {
             .onAppear() {
                 infoApi.loadInfo(id: anilistId)
         }
+            .supportedOrientation(.portrait)
+            .prefersHomeIndicatorAutoHidden(true)
             .navigationBarBackButtonHidden(true)
                 
                 .contentShape(Rectangle()) // Start of the gesture to dismiss the navigation
@@ -308,9 +240,144 @@ struct InfoPage: View {
     }
 }
 
+struct ExtraInfoView: View {
+    let infoApi: InfoApi
+    
+    var body: some View {
+        ZStack {
+            Color(hex: "#ff1E222C")
+            
+            VStack {
+                Text("Synonyms")
+                    .bold()
+                
+                Text("Youjitsu")
+                    .bold()
+            }
+            .padding(20)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity)
+        
+    }
+}
+
+struct EpisodeView: View {
+    let infoApi: InfoApi
+    
+    func getAiringTime(airingTime: Int) -> String {
+        // convert seconds into days and hours
+        let hours = airingTime / 60 / 60
+        let days = hours / 24
+        
+        // return days if time is longer than one day
+        if(days >= 1) {
+            return String(days) + " days"
+        } else {
+            // return hours if time is less than one day
+            return String(hours) + " hours"
+        }
+        
+    }
+    
+    var body: some View {
+        VStack {
+            ZStack {
+                Color(hex: "#ff1E222C")
+                Text(.init(infoApi.infodata!.description.replacingOccurrences(of: "<br>", with: "").replacingOccurrences(of: "<i>", with: "_").replacingOccurrences(of: "</i>", with: "_")))
+                    .foregroundColor(.white)
+                    .font(.caption)
+                    .multilineTextAlignment(.center)
+                    .padding(.all, 20)
+            }
+            .frame(maxWidth: 350)
+            .cornerRadius(20)
+            .padding(.all, 20)
+            
+            HStack {
+                ScrollView(.horizontal) {
+                    HStack(spacing: 12) {
+                        ForEach(0..<infoApi.infodata!.genres.count) {genre in
+                            ZStack {
+                                Color(.black)
+                                Text(infoApi.infodata!.genres[genre])
+                                    .foregroundColor(.white)
+                                    .bold()
+                                    .font(.caption)
+                                    .bold()
+                                    .padding(.horizontal, 20)
+                                    .padding(.vertical, 12)
+                            }
+                            .frame(height: 32)
+                            .cornerRadius(40)
+                        }
+                    }
+                }
+                if(infoApi.infodata?.nextAiringEpisode != nil) {
+                    ZStack {
+                        Color(hex: "#ffEE4546")
+                        Text("Next Episode: \(getAiringTime(airingTime: infoApi.infodata!.nextAiringEpisode!.timeUntilAiring))")
+                            .bold()
+                            .font(.caption)
+                            .bold()
+                            .multilineTextAlignment(.center)
+                    }
+                    .frame(height: 40)
+                    .frame(maxWidth: 100)
+                    .cornerRadius(12)
+                }
+                
+            }
+            .padding(.horizontal, 20)
+            .frame(maxWidth: 390)
+            
+            Text("Episodes")
+                .foregroundColor(.white)
+                .font(.title)
+                .bold()
+                .frame(maxWidth: 340, alignment: .leading)
+                .padding(.top, 10)
+            
+            ScrollView {
+                VStack(spacing: 18) {
+                    ForEach(0..<infoApi.infodata!.episodes!.count) {index in
+                        EpisodeCard(animeData: infoApi.infodata!,title: infoApi.infodata!.episodes![index].title ?? infoApi.infodata!.title.romaji, number: infoApi.infodata!.episodes![index].number, thumbnail: infoApi.infodata!.episodes![index].image, isFiller: infoApi.infodata!.episodes![index].isFiller
+                                    )
+                        .contextMenu {
+                            VStack {
+                                Button(action: {
+                                    // set this episode as watched
+                                    
+                                }) {
+                                    HStack {
+                                        Text("Mark as watched")
+                                        
+                                        Image(systemName: "eye.fill")
+                                    }
+                                }
+                                Button(action: {}) {
+                                    HStack {
+                                        Text("Set to current Episode")
+                                        
+                                        Image(systemName: "eye.fill")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Spacer()
+                        .frame(maxHeight: 100)
+                }
+            .frame(maxWidth: 350, alignment: .leading)
+            }
+            .frame(height: 500)
+        }
+    }
+}
+
 struct InfoPage_Previews: PreviewProvider {
     static var previews: some View {
-        InfoPage(anilistId: "130298")
+        InfoPage(anilistId: "151807")
     }
 }
 
@@ -342,7 +409,7 @@ struct InfoData: Codable {
     let trailer: Trailer?
     let image: String
     let popularity: Int
-    let color: String
+    let color: String?
     let cover: String
     let description, status: String
     let releaseDate: Int
@@ -354,10 +421,11 @@ struct InfoData: Codable {
     let genres: [String]
     let season: String?
     let studios: [String]
-    let subOrDub, type: String
+    let subOrDub: String
+let type: String?
     let recommendations: [Recommended]?
     let characters: [Character]
-    let relations: [Related]
+    let relations: [Related]?
     let episodes: [Episode]?
 }
 
@@ -375,7 +443,7 @@ struct Recommended: Codable {
     let episodes: Int?
     let image, cover: String
     let rating: Int?
-    let type: String
+    let type: String?
 }
 
 struct Character: Codable {
@@ -394,7 +462,7 @@ struct Related: Codable {
     let status: String
     var episodes: Int?
     let image: String
-    let color, type: String
+    let color, type: String?
     let cover: String
     let rating: Int?
 }

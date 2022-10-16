@@ -613,14 +613,13 @@ struct CustomPlayerWithControls: View {
                                 .overlay(CustomControlsView(episodeData: episodeData,animeData: animeData!, qualityIndex: resIndex, showUI: $showUI, episodeIndex: episodeIndex, playerVM: playerVM)
                                          , alignment: .bottom)
                             }
+                            .padding(.horizontal, 60)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                            .edgesIgnoringSafeArea(.all)
+                            .ignoresSafeArea(.all)
+                            .persistentSystemOverlays(.hidden)
                         }
-                        .padding(.horizontal, 60)
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .edgesIgnoringSafeArea(.all)
-                    .ignoresSafeArea(.all)
-                    .persistentSystemOverlays(.hidden)
                     .task {
                         await self.streamApi.loadStream(id: self.animeData!.episodes![episodeIndex].id)
                         
@@ -723,8 +722,6 @@ struct WatchPage: View {
     
     var body: some View {
         if #available(iOS 16, *) {
-            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .landscape))
             
             return ZStack {
                 CustomPlayerWithControls(animeData: animeData, episodeIndex: episodeIndex)
@@ -734,12 +731,11 @@ struct WatchPage: View {
                     .edgesIgnoringSafeArea(.all)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .persistentSystemOverlays(.hidden)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .ignoresSafeArea(.all)
             .edgesIgnoringSafeArea(.all)
-            
-            
+            .supportedOrientation(.landscape)
+            .prefersHomeIndicatorAutoHidden(true)
         } else {
             return CustomPlayerWithControls(animeData: animeData!, episodeIndex: episodeIndex)
                 .navigationBarBackButtonHidden(true)

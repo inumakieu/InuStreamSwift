@@ -8,11 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		5871865F28DA849400BABB66 /* SnapToScroll in Frameworks */ = {isa = PBXBuildFile; productRef = 5871865E28DA849400BABB66 /* SnapToScroll */; };
-		588B11F628D90DCF007CA197 /* Inus_StreamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B11F528D90DCF007CA197 /* Inus_StreamApp.swift */; };
 		588B11F828D90DCF007CA197 /* RecentAnimeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B11F728D90DCF007CA197 /* RecentAnimeCard.swift */; };
 		588B11FA28D90DD1007CA197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 588B11F928D90DD1007CA197 /* Assets.xcassets */; };
 		588B11FD28D90DD1007CA197 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 588B11FC28D90DD1007CA197 /* Preview Assets.xcassets */; };
 		588B120428D91452007CA197 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B120328D91452007CA197 /* HomePage.swift */; };
+		E966283028F41F730090628D /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E966282F28F41F730090628D /* HostingController.swift */; };
+		E966283228F41FB00090628D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E966283128F41FB00090628D /* AppDelegate.swift */; };
+		E966283428F41FCC0090628D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E966283328F41FCC0090628D /* SceneDelegate.swift */; };
+		E966283628F420590090628D /* Inus_StreamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E966283528F420590090628D /* Inus_StreamApp.swift */; };
 		E9933E8F28E019FC00751BBE /* SwiftUISnappingScrollView in Frameworks */ = {isa = PBXBuildFile; productRef = E9933E8E28E019FC00751BBE /* SwiftUISnappingScrollView */; };
 		E9933E9128E02A2400751BBE /* ContinueWatching.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9028E02A2400751BBE /* ContinueWatching.swift */; };
 		E9933E9328E1220400751BBE /* InfoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9228E1220400751BBE /* InfoPage.swift */; };
@@ -30,11 +33,14 @@
 
 /* Begin PBXFileReference section */
 		588B11F228D90DCF007CA197 /* Inus Stream.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Inus Stream.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		588B11F528D90DCF007CA197 /* Inus_StreamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inus_StreamApp.swift; sourceTree = "<group>"; };
 		588B11F728D90DCF007CA197 /* RecentAnimeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentAnimeCard.swift; sourceTree = "<group>"; };
 		588B11F928D90DD1007CA197 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		588B11FC28D90DD1007CA197 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		588B120328D91452007CA197 /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
+		E966282F28F41F730090628D /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
+		E966283128F41FB00090628D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E966283328F41FCC0090628D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		E966283528F420590090628D /* Inus_StreamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inus_StreamApp.swift; sourceTree = "<group>"; };
 		E9933E9028E02A2400751BBE /* ContinueWatching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinueWatching.swift; sourceTree = "<group>"; };
 		E9933E9228E1220400751BBE /* InfoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPage.swift; sourceTree = "<group>"; };
 		E9933E9428E1282100751BBE /* EpisodeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCard.swift; sourceTree = "<group>"; };
@@ -85,7 +91,6 @@
 				E9CBF17328E2775B00F1BC29 /* SeekbarView.swift */,
 				E9933E9928E1608E00751BBE /* WatchPage.swift */,
 				E9933E9B28E1633700751BBE /* Inus-Stream-Info.plist */,
-				588B11F528D90DCF007CA197 /* Inus_StreamApp.swift */,
 				588B11F728D90DCF007CA197 /* RecentAnimeCard.swift */,
 				588B11F928D90DD1007CA197 /* Assets.xcassets */,
 				588B11FB28D90DD1007CA197 /* Preview Content */,
@@ -97,6 +102,10 @@
 				E9CBF17728E3D93C00F1BC29 /* SearchPage.swift */,
 				E9CBF17C28E3F3F500F1BC29 /* DataController.swift */,
 				E9CBF17E28E3F72D00F1BC29 /* AnimeStorage.xcdatamodeld */,
+				E966282F28F41F730090628D /* HostingController.swift */,
+				E966283128F41FB00090628D /* AppDelegate.swift */,
+				E966283328F41FCC0090628D /* SceneDelegate.swift */,
+				E966283528F420590090628D /* Inus_StreamApp.swift */,
 			);
 			path = "Inus Stream";
 			sourceTree = "<group>";
@@ -197,13 +206,16 @@
 				E9CBF17D28E3F3F500F1BC29 /* DataController.swift in Sources */,
 				E9933E9528E1282100751BBE /* EpisodeCard.swift in Sources */,
 				E9933E9A28E1608E00751BBE /* WatchPage.swift in Sources */,
+				E966283628F420590090628D /* Inus_StreamApp.swift in Sources */,
+				E966283228F41FB00090628D /* AppDelegate.swift in Sources */,
+				E966283428F41FCC0090628D /* SceneDelegate.swift in Sources */,
 				E9CBF17428E2775B00F1BC29 /* SeekbarView.swift in Sources */,
+				E966283028F41F730090628D /* HostingController.swift in Sources */,
 				E9CBF17828E3D93C00F1BC29 /* SearchPage.swift in Sources */,
 				588B11F828D90DCF007CA197 /* RecentAnimeCard.swift in Sources */,
 				E9CBF17628E2782F00F1BC29 /* BlurView.swift in Sources */,
 				E9CBF18028E3F72D00F1BC29 /* AnimeStorage.xcdatamodeld in Sources */,
 				588B120428D91452007CA197 /* HomePage.swift in Sources */,
-				588B11F628D90DCF007CA197 /* Inus_StreamApp.swift in Sources */,
 				E9933E9128E02A2400751BBE /* ContinueWatching.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

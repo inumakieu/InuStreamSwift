@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@main
+
 struct Inus_StreamApp: App {
     @StateObject private var dataController = DataController()
     
@@ -19,3 +19,4 @@ struct Inus_StreamApp: App {
         }
     }
 }
+

@@ -205,16 +205,16 @@ struct HomePage: View {
                     }
                     
                         
-                    Button(action: {
-                        sheetShown = true
-                    }) {
-                        Image(systemName: "magnifyingglass")
-                            .font(.system(size: 32, weight: .bold))
-                            .foregroundColor(.white)
-                    }
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(.horizontal, 20)
+                    NavigationLink(destination: SearchPage()) {
+                        HStack {
+                            Image(systemName: "magnifyingglass")
+                                .font(.system(size: 32, weight: .bold))
+                                .foregroundColor(.white)
+                        }
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .padding(.horizontal, 20)
                         .padding(.top, 12)
+                    }
                 }
             
         }
@@ -222,16 +222,6 @@ struct HomePage: View {
         .onAppear() {
             api.loadData()
             api.loadRecent()
-        }
-        .sheet(isPresented: $sheetShown) {
-            if #available(iOS 16.0, *) {
-                NavigationView {
-                    SearchPage()
-                        
-                }
-            } else {
-                // Fallback on earlier versions
-            }
         }
             
     }
