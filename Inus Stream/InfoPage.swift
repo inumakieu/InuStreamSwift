@@ -41,201 +41,201 @@ struct InfoPage: View {
             // Fallback on earlier versions
         }
         return ZStack(alignment: .top) {
-                Color(hex: "#ff16151A")
-                    .ignoresSafeArea()
-                
-                if(infoApi.infodata != nil) {
-                    ScrollView(showsIndicators: false) {
-                        ZStack(alignment: .bottom) {
-                            AsyncImage(url: URL(string: infoApi.infodata!.cover)) { image in
-                                image.resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(height: 440)
-                                    .frame(maxWidth: .infinity, maxHeight: 440)
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            
-                            Rectangle()
-                                .fill(LinearGradient(
-                                    gradient: Gradient(stops: [
-                                        .init(color: Color(hex: "#0016151A"), location: 0),
-                                        .init(color: Color(hex: "#9016151A"), location: 0.5),
-                                        .init(color: Color(hex: "#ff16151A"), location: 1)
-                                    ]),
-                                    startPoint: UnitPoint(x: 0.0, y: 0),
-                                    endPoint: UnitPoint(x: 0.0, y: 1)))
+            Color(hex: "#ff16151A")
+                .ignoresSafeArea()
+            
+            if(infoApi.infodata != nil) {
+                ScrollView(showsIndicators: false) {
+                    ZStack(alignment: .bottom) {
+                        AsyncImage(url: URL(string: infoApi.infodata!.cover)) { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fill)
                                 .frame(height: 440)
                                 .frame(maxWidth: .infinity, maxHeight: 440)
-                                .ignoresSafeArea()
-                            
-                            AsyncImage(url: URL(string: infoApi.infodata!.image)) { image in
-                                image.resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 176, height: 270)
-                                    .cornerRadius(20)
-                            } placeholder: {
-                                ProgressView()
-                            }
+                        } placeholder: {
+                            ProgressView()
                         }
-                        .frame(height: 440)
-                        .frame(maxWidth: .infinity, maxHeight: 440, alignment: .top)
                         
-                        Text(infoApi.infodata!.title.english ?? infoApi.infodata!.title.romaji)
-                            .bold()
-                            .font(.title)
-                            .foregroundColor(.white)
-                            .multilineTextAlignment(.center)
-                            .padding(.top, 14)
-                        Text(infoApi.infodata!.title.native)
-                            .bold()
-                            .font(.subheadline)
-                            .foregroundColor(.white)
-                            .multilineTextAlignment(.center)
+                        Rectangle()
+                            .fill(LinearGradient(
+                                gradient: Gradient(stops: [
+                                    .init(color: Color(hex: "#0016151A"), location: 0),
+                                    .init(color: Color(hex: "#9016151A"), location: 0.5),
+                                    .init(color: Color(hex: "#ff16151A"), location: 1)
+                                ]),
+                                startPoint: UnitPoint(x: 0.0, y: 0),
+                                endPoint: UnitPoint(x: 0.0, y: 1)))
+                            .frame(height: 440)
+                            .frame(maxWidth: .infinity, maxHeight: 440)
+                            .ignoresSafeArea()
                         
-                        ScrollView {
-                            HStack {
-                                TabView {
-                                    ExtraInfoView(infoApi: infoApi)
-                                        .frame(height: 700)
-                                        .frame(maxWidth: 390)
-                                    
-                                    EpisodeView(infoApi: infoApi)
-                                        .frame(maxWidth: 390)
-                                }.tabViewStyle(.page(indexDisplayMode: .never))
-                                    .indexViewStyle(.page(backgroundDisplayMode: .always))
-                                    .frame(maxHeight: 1000)
-                                .frame(maxWidth: 390)
-                            }
+                        AsyncImage(url: URL(string: infoApi.infodata!.image)) { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 176, height: 270)
+                                .cornerRadius(20)
+                        } placeholder: {
+                            ProgressView()
                         }
                     }
-                    .ignoresSafeArea()
+                    .frame(height: 440)
+                    .frame(maxWidth: .infinity, maxHeight: 440, alignment: .top)
+                    
+                    Text(infoApi.infodata!.title.english ?? infoApi.infodata!.title.romaji)
+                        .bold()
+                        .font(.title)
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 14)
+                    Text(infoApi.infodata!.title.native)
+                        .bold()
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                    
+                    
+                    
+                    TabView {
+                            ExtraInfoView(infoApi: infoApi)
+                            .fixedSize()
+                                .frame(maxWidth: 390)
+                            
+                            EpisodeView(infoApi: infoApi)
+                            .fixedSize()
+                                .frame(maxWidth: 390)
+                        }.tabViewStyle(.page(indexDisplayMode: .never))
+                        .indexViewStyle(.page(backgroundDisplayMode: .always))
+                        .frame(height: 800)
+                    .frame(maxWidth: 390, alignment: .top)
                     
                 }
-                else {
-                    ScrollView {
-                        ZStack(alignment: .bottom) {
-                            AsyncImage(url: URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/banner/98659-u46B5RCNl9il.jpg")) { image in
-                                image.resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 390, height: 440)
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            
-                            Rectangle()
-                                .fill(LinearGradient(
-                                    gradient: Gradient(stops: [
-                                        .init(color: Color(hex: "#0016151A"), location: 0),
-                                        .init(color: Color(hex: "#9016151A"), location: 0.5),
-                                        .init(color: Color(hex: "#ff16151A"), location: 1)
-                                    ]),
-                                    startPoint: UnitPoint(x: 0.0, y: 0),
-                                    endPoint: UnitPoint(x: 0.0, y: 1)))
-                                .frame(width: 394, height: 440)
-                                .ignoresSafeArea()
-                            
-                            AsyncImage(url: URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b98659-sH5z5RfMuyMr.png")) { image in
-                                image.resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 176, height: 270)
-                                    .cornerRadius(20)
-                            } placeholder: {
-                                ProgressView()
-                            }
-                        }
-                        
-                        Text("Classroom of the Elite")
-                            .bold()
-                            .font(.title)
-                            .foregroundColor(.white)
-                            .padding(.top, 14)
-                        Text("ようこそ実力至上主義の教室へ")
-                            .bold()
-                            .font(.subheadline)
-                            .foregroundColor(.white)
-                        
-                        ZStack {
-                            Color(hex: "#ff1E222C")
-                            Text("Koudo Ikusei Senior High School is a leading school with state-of-the-art facilities. The students there have the freedom to wear any hairstyle and bring any personal effects they desire. Koudo Ikusei is like a utopia, but the truth is that only the most superior students receive favorable treatment.<br><br>\n\nKiyotaka Ayanokouji is a student of D-class, which is where the school dumps its \"inferior\" students in order to ridicule them. For a certain reason, Kiyotaka was careless on his entrance examination, and was put in D-class. After meeting Suzune Horikita and Kikyou Kushida, two other students in his class, Kiyotaka's situation begins to change. <br><br>\n(Source: Anime News Network, edited)")
-                                .foregroundColor(.white)
-                                .font(.caption)
-                                .multilineTextAlignment(.center)
-                                .padding(.all, 20)
-                        }
-                        .frame(maxWidth: 350)
-                        .cornerRadius(20)
-                        .padding(.all, 20)
-                        
-                        ScrollView(.horizontal) {
-                            HStack(spacing: 12) {
-                                ForEach(0..<3) {genre in
-                                    ZStack {
-                                        Color(.black)
-                                        Text("GENRE")
-                                            .foregroundColor(.white)
-                                            .bold()
-                                            .font(.caption)
-                                            .padding(.horizontal, 20)
-                                            .padding(.vertical, 12)
-                                    }
-                                    .cornerRadius(40)
-                                }
-                            }
-                        }
-                        .padding(.horizontal, 20)
-                        
-                        Text("Episodes")
-                            .foregroundColor(.white)
-                            .font(.title)
-                            .bold()
-                            .frame(maxWidth: 340, alignment: .leading)
-                            .padding(.top, 10)
-                        
-                        ScrollView {
-                            VStack(spacing: 18) {
-                                ForEach(0..<5) {index in
-                                    EpisodeCard(animeData: nil,title: "Hell is other people.", number: 1, thumbnail: "https://artworks.thetvdb.com/banners/episodes/329822/6190201.jpg", isFiller: false)
-                                }
-                            }
-                        .frame(maxWidth: 350, alignment: .leading)
-                        }
-                        .frame(maxHeight: 500)
-                    }
-                    .ignoresSafeArea()
-                    .redacted(reason: .placeholder).shimmering(active: true)
-                }
+                .ignoresSafeArea()
                 
-                Button(action: {
-                    self.presentation.wrappedValue.dismiss()
-                }, label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 28, weight: .heavy))
-                        .foregroundColor(.white)
-                })
-                .frame(maxWidth: .infinity,alignment: .leading)
-                .padding(.leading, 20)
             }
-            .onAppear() {
-                infoApi.loadInfo(id: anilistId)
-        }
-            .supportedOrientation(.portrait)
-            .prefersHomeIndicatorAutoHidden(true)
-            .navigationBarBackButtonHidden(true)
-                
-                .contentShape(Rectangle()) // Start of the gesture to dismiss the navigation
-                .gesture(
-                  DragGesture(coordinateSpace: .local)
-                    .onEnded { value in
-                      if value.translation.width > .zero
-                          && value.translation.height > -30
-                          && value.translation.height < 30 {
-                        presentation.wrappedValue.dismiss()
-                      }
+            else {
+                ScrollView {
+                    ZStack(alignment: .bottom) {
+                        AsyncImage(url: URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/banner/98659-u46B5RCNl9il.jpg")) { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 390, height: 440)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        
+                        Rectangle()
+                            .fill(LinearGradient(
+                                gradient: Gradient(stops: [
+                                    .init(color: Color(hex: "#0016151A"), location: 0),
+                                    .init(color: Color(hex: "#9016151A"), location: 0.5),
+                                    .init(color: Color(hex: "#ff16151A"), location: 1)
+                                ]),
+                                startPoint: UnitPoint(x: 0.0, y: 0),
+                                endPoint: UnitPoint(x: 0.0, y: 1)))
+                            .frame(width: 394, height: 440)
+                            .ignoresSafeArea()
+                        
+                        AsyncImage(url: URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b98659-sH5z5RfMuyMr.png")) { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 176, height: 270)
+                                .cornerRadius(20)
+                        } placeholder: {
+                            ProgressView()
+                        }
                     }
-                )
+                    
+                    Text("Classroom of the Elite")
+                        .bold()
+                        .font(.title)
+                        .foregroundColor(.white)
+                        .padding(.top, 14)
+                    Text("ようこそ実力至上主義の教室へ")
+                        .bold()
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                    
+                    ZStack {
+                        Color(hex: "#ff1E222C")
+                        Text("Koudo Ikusei Senior High School is a leading school with state-of-the-art facilities. The students there have the freedom to wear any hairstyle and bring any personal effects they desire. Koudo Ikusei is like a utopia, but the truth is that only the most superior students receive favorable treatment.<br><br>\n\nKiyotaka Ayanokouji is a student of D-class, which is where the school dumps its \"inferior\" students in order to ridicule them. For a certain reason, Kiyotaka was careless on his entrance examination, and was put in D-class. After meeting Suzune Horikita and Kikyou Kushida, two other students in his class, Kiyotaka's situation begins to change. <br><br>\n(Source: Anime News Network, edited)")
+                            .foregroundColor(.white)
+                            .font(.caption)
+                            .multilineTextAlignment(.center)
+                            .padding(.all, 20)
+                    }
+                    .frame(maxWidth: 350)
+                    .cornerRadius(20)
+                    .padding(.all, 20)
+                    
+                    ScrollView(.horizontal) {
+                        HStack(spacing: 12) {
+                            ForEach(0..<3) {genre in
+                                ZStack {
+                                    Color(.black)
+                                    Text("GENRE")
+                                        .foregroundColor(.white)
+                                        .bold()
+                                        .font(.caption)
+                                        .padding(.horizontal, 20)
+                                        .padding(.vertical, 12)
+                                }
+                                .cornerRadius(40)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    
+                    Text("Episodes")
+                        .foregroundColor(.white)
+                        .font(.title)
+                        .bold()
+                        .frame(maxWidth: 340, alignment: .leading)
+                        .padding(.top, 10)
+                    
+                    ScrollView {
+                        VStack(spacing: 18) {
+                            ForEach(0..<5) {index in
+                                EpisodeCard(animeData: nil,title: "Hell is other people.", number: 1, thumbnail: "https://artworks.thetvdb.com/banners/episodes/329822/6190201.jpg", isFiller: false)
+                            }
+                        }
+                        .frame(maxWidth: 350, alignment: .leading)
+                    }
+                    .frame(maxHeight: 500)
+                }
+                .ignoresSafeArea()
+                .redacted(reason: .placeholder).shimmering(active: true)
+            }
+            
+            Button(action: {
+                self.presentation.wrappedValue.dismiss()
+            }, label: {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 28, weight: .heavy))
+                    .foregroundColor(.white)
+            })
+            .frame(maxWidth: .infinity,alignment: .leading)
+            .padding(.leading, 20)
+        }
+        .onAppear() {
+            infoApi.loadInfo(id: anilistId)
+        }
+        .supportedOrientation(.portrait)
+        .prefersHomeIndicatorAutoHidden(true)
+        .navigationBarBackButtonHidden(true)
         
-                
+        .contentShape(Rectangle()) // Start of the gesture to dismiss the navigation
+        .gesture(
+            DragGesture(coordinateSpace: .local)
+                .onEnded { value in
+                    if value.translation.width > .zero
+                        && value.translation.height > -30
+                        && value.translation.height < 30 {
+                        presentation.wrappedValue.dismiss()
+                    }
+                }
+        )
+        
+        
         
     }
 }
@@ -244,20 +244,202 @@ struct ExtraInfoView: View {
     let infoApi: InfoApi
     
     var body: some View {
+        
         ZStack {
             Color(hex: "#ff1E222C")
             
-            VStack {
-                Text("Synonyms")
-                    .bold()
+            VStack(alignment: .leading, spacing: 14) {
+                VStack(alignment: .leading) {
+                    Text("Synonyms")
+                        .bold()
+                        .foregroundColor(.white)
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Spacer().frame(maxHeight: 6)
+                    
+                    VStack(alignment: .leading, spacing: 6) {
+                        ForEach(0..<infoApi.infodata!.synonyms!.count) {synonym in
+                            Text("\(infoApi.infodata!.synonyms![synonym])")
+                                .bold()
+                                .foregroundColor(Color(hex: "#ff999999"))
+                                .font(.title3)
+                                .bold()
+                        }
+                        
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 20)
+                }
                 
-                Text("Youjitsu")
-                    .bold()
+                VStack(alignment: .leading) {
+                    Text("Country of Origin")
+                        .bold()
+                        .foregroundColor(.white)
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Spacer().frame(maxHeight: 6)
+                    
+                    Text(infoApi.infodata!.countryOfOrigin!)
+                                .bold()
+                                .foregroundColor(Color(hex: "#ff999999"))
+                                .font(.title3)
+                                .bold()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.leading, 20)
+                }
+                
+                VStack(alignment: .leading) {
+                    Text("Format")
+                        .bold()
+                        .foregroundColor(.white)
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Spacer().frame(maxHeight: 6)
+                    
+                    Text(infoApi.infodata!.type!)
+                                .bold()
+                                .foregroundColor(Color(hex: "#ff999999"))
+                                .font(.title3)
+                                .bold()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.leading, 20)
+                }
+                
+                VStack(alignment: .leading) {
+                    Text("Studios")
+                        .bold()
+                        .foregroundColor(.white)
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Spacer().frame(maxHeight: 6)
+                    
+                    VStack(alignment: .leading, spacing: 6) {
+                        ForEach(0..<infoApi.infodata!.studios.count) {studio in
+                            Text("\(infoApi.infodata!.studios[studio])")
+                                .bold()
+                                .foregroundColor(Color(hex: "#ff999999"))
+                                .font(.title3)
+                                .bold()
+                        }
+                        
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 20)
+                }
+                
+                VStack(alignment: .leading) {
+                    Text("Duration")
+                        .bold()
+                        .foregroundColor(.white)
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Spacer().frame(maxHeight: 6)
+                    
+                    Text("\(infoApi.infodata!.duration!)")
+                                .bold()
+                                .foregroundColor(Color(hex: "#ff999999"))
+                                .font(.title3)
+                                .bold()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.leading, 20)
+                }
+                
+                VStack(alignment: .leading) {
+                    Text("Episodes")
+                        .bold()
+                        .foregroundColor(.white)
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Spacer().frame(maxHeight: 6)
+                    
+                    Text("\(infoApi.infodata!.totalEpisodes!)")
+                                .bold()
+                                .foregroundColor(Color(hex: "#ff999999"))
+                                .font(.title3)
+                                .bold()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.leading, 20)
+                }
+                
+                VStack(alignment: .leading) {
+                    Text("Status")
+                        .bold()
+                        .foregroundColor(.white)
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Spacer().frame(maxHeight: 6)
+                    
+                    Text("\(infoApi.infodata!.status.uppercased())")
+                                .bold()
+                                .foregroundColor(Color(hex: "#ff999999"))
+                                .font(.title3)
+                                .bold()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.leading, 20)
+                }
+                
+                VStack(alignment: .leading) {
+                    Text("Released in")
+                        .bold()
+                        .foregroundColor(.white)
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Spacer().frame(maxHeight: 6)
+                    
+                    Text("\(infoApi.infodata!.releaseDate)")
+                                .bold()
+                                .foregroundColor(Color(hex: "#ff999999"))
+                                .font(.title3)
+                                .bold()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.leading, 20)
+                }
+                
+                VStack(alignment: .leading) {
+                    Text("Season")
+                        .bold()
+                        .foregroundColor(.white)
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Spacer().frame(maxHeight: 6)
+                    
+                    Text("\(infoApi.infodata!.season!)")
+                                .bold()
+                                .foregroundColor(Color(hex: "#ff999999"))
+                                .font(.title3)
+                                .bold()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.leading, 20)
+                }
             }
-            .padding(20)
+            .frame(maxWidth: .infinity, alignment: .top)
+            .padding(.all, 30)
         }
-        .padding(20)
-        .frame(maxWidth: .infinity)
+        .cornerRadius(20)
+        .padding(.all, 20)
+        .frame(width: 390)
+        .frame(maxWidth: .infinity, alignment: .top)
+        .fixedSize()
+        .cornerRadius(20)
+        .padding(.top, 90)
         
     }
 }
@@ -342,7 +524,7 @@ struct EpisodeView: View {
                 VStack(spacing: 18) {
                     ForEach(0..<infoApi.infodata!.episodes!.count) {index in
                         EpisodeCard(animeData: infoApi.infodata!,title: infoApi.infodata!.episodes![index].title ?? infoApi.infodata!.title.romaji, number: infoApi.infodata!.episodes![index].number, thumbnail: infoApi.infodata!.episodes![index].image, isFiller: infoApi.infodata!.episodes![index].isFiller
-                                    )
+                        )
                         .contextMenu {
                             VStack {
                                 Button(action: {
@@ -368,7 +550,7 @@ struct EpisodeView: View {
                     Spacer()
                         .frame(maxHeight: 100)
                 }
-            .frame(maxWidth: 350, alignment: .leading)
+                .frame(maxWidth: 350, alignment: .leading)
             }
             .frame(height: 500)
         }
@@ -377,7 +559,7 @@ struct EpisodeView: View {
 
 struct InfoPage_Previews: PreviewProvider {
     static var previews: some View {
-        InfoPage(anilistId: "151807")
+        InfoPage(anilistId: "98659")
     }
 }
 
@@ -422,7 +604,7 @@ struct InfoData: Codable {
     let season: String?
     let studios: [String]
     let subOrDub: String
-let type: String?
+    let type: String?
     let recommendations: [Recommended]?
     let characters: [Character]
     let relations: [Related]?
