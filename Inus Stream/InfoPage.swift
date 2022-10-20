@@ -13,7 +13,10 @@ struct InfoPage: View {
     let anilistId: String
     @StateObject var infoApi = InfoApi()
     @Environment(\.presentationMode) var presentation
-    @State private var selection = 3
+    @State private var selection = 2
+    @State private var paddingOffset: CGFloat = 80
+    @State private var paddingStyle: Edge.Set = .trailing
+    @State private var pillWidth: CGFloat = 78
     
     init(anilistId: String) {
         self.anilistId = anilistId
@@ -108,15 +111,21 @@ struct InfoPage: View {
                                 .frame(maxWidth: 390)
                                 .tag(2)
                         
-                        CharacterView(infoApi: infoApi)
+                            CharacterView(infoApi: infoApi)
+                            .fixedSize()
+                                .frame(maxWidth: 390)
+                                .tag(3)
+                        
+                        RelatedView(infoApi: infoApi)
                         .fixedSize()
                             .frame(maxWidth: 390)
-                            .tag(3)
+                            .tag(4)
                         
                         }.tabViewStyle(.page(indexDisplayMode: .never))
                         .indexViewStyle(.page(backgroundDisplayMode: .always))
-                        .frame(height: 800)
+                        .frame(height: 800, alignment: .top)
                     .frame(maxWidth: 390, alignment: .top)
+                    .animation(.spring(response: 0.3), value: selection)
                     
                 }
                 .ignoresSafeArea()
@@ -225,6 +234,86 @@ struct InfoPage: View {
             })
             .frame(maxWidth: .infinity,alignment: .leading)
             .padding(.leading, 20)
+            
+            // Bottom NavBar
+            VStack(alignment: .trailing) {
+                ZStack {
+                    Color(.black)
+                    
+                    RoundedRectangle(cornerRadius: 19)
+                        .fill(Color(#colorLiteral(red: 0.11764705926179886, green: 0.13333334028720856, blue: 0.1725490242242813, alpha: 1)))
+                    .frame(width: pillWidth, height: 30)
+                    .padding(paddingStyle, paddingOffset).animation(.spring(response: 0.3), value: selection)
+                    
+                    HStack {
+                        
+                        Spacer()
+                        
+                        Text("More Info")
+                            .foregroundColor(.white)
+                            .font(.system(size: 12, weight: .bold))
+                            .onTapGesture {
+                                selection = 1
+                                
+                                // set pill to width 78, padding 238 trailing
+                                pillWidth = 78
+                                paddingOffset = 238
+                                paddingStyle = .trailing
+                            }
+                        
+                        Spacer()
+                        
+                        Text("Episodes")
+                            .foregroundColor(.white)
+                            .font(.system(size: 12, weight: .bold))
+                            .onTapGesture {
+                                selection = 2
+                                
+                                // set pill to width 78, padding 80 trailing
+                                pillWidth = 78
+                                paddingOffset = 80
+                                paddingStyle = .trailing
+                            }
+                        
+                        Spacer()
+                        
+                        Text("Characters")
+                            .foregroundColor(.white)
+                            .font(.system(size: 12, weight: .bold))
+                            .onTapGesture {
+                                selection = 3
+                                
+                                // set pill to width 88, padding -90 trailing
+                                pillWidth = 88
+                                paddingOffset = -90
+                                paddingStyle = .trailing
+                            }
+                        
+                        Spacer()
+                        
+                        Text("Related")
+                            .foregroundColor(.white)
+                            .font(.system(size: 12, weight: .bold))
+                            .onTapGesture {
+                                selection = 4
+                                
+                                // set pill to width 68, padding 246 leading
+                                pillWidth = 68
+                                paddingOffset = 246
+                                paddingStyle = .leading
+                            }
+                        
+                        Spacer()
+                    }
+                }
+                .frame(maxWidth: 340, maxHeight: 70)
+                .cornerRadius(20)
+            }
+            .frame(maxHeight: .infinity, alignment: .bottom)
+            .padding(.bottom, 40)
+            .ignoresSafeArea()
+            .edgesIgnoringSafeArea(.all)
+            
         }
         .onAppear() {
             infoApi.loadInfo(id: anilistId)
@@ -620,64 +709,117 @@ struct CharacterView: View {
     
     var body: some View {
         
-        ScrollView(.vertical) {
-            VStack(alignment: .leading,spacing: 20) {
-                    ForEach(0..<infoApi.infodata!.characters.count) {charIndex in
-                        ZStack {
-                            Color(hex: "#ff1E222C")
-                            
-                            HStack {
-                                AsyncImage(url: URL(string: infoApi.infodata!.characters[charIndex].image)) { image in
-                                    image.resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 60, height: 90)
-                                        .cornerRadius(12)
-                                } placeholder: {
-                                    ProgressView()
-                                }
+        VStack {
+            ScrollView(.vertical) {
+                VStack(alignment: .leading,spacing: 20) {
+                        ForEach(0..<infoApi.infodata!.characters.count) {charIndex in
+                            ZStack {
+                                Color(hex: "#ff1E222C")
                                 
-                                ZStack(alignment: .bottom) {
-                                    VStack(alignment: .leading) {
-                                        Text("\(infoApi.infodata!.characters[charIndex].name.userPreferred)")
-                                            .foregroundColor(.white)
-                                            .bold()
-                                        Text(infoApi.infodata!.characters[charIndex].name.native ?? "")
-                                            .foregroundColor(.white)
+                                HStack {
+                                    AsyncImage(url: URL(string: infoApi.infodata!.characters[charIndex].image)) { image in
+                                        image.resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 60, height: 90)
+                                            .cornerRadius(12)
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
+                                    
+                                    ZStack(alignment: .bottom) {
+                                        VStack(alignment: .leading) {
+                                            Text("\(infoApi.infodata!.characters[charIndex].name.userPreferred)")
+                                                .foregroundColor(.white)
+                                                .bold()
+                                            Text(infoApi.infodata!.characters[charIndex].name.native ?? "")
+                                                .foregroundColor(.white)
+                                                .font(.caption)
+                                                .bold()
+                                        }
+                                        .frame(height: 90, alignment: .center)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        
+                                        Text(infoApi.infodata!.characters[charIndex].voiceActors![0].name.userPreferred)
+                                            .foregroundColor(Color(hex: "#ff999999"))
                                             .font(.caption)
                                             .bold()
+                                            .frame(maxWidth: .infinity, alignment: .trailing)
+                                            .padding(.bottom, 8)
+                                            .padding(.trailing, 8)
                                     }
-                                    .frame(height: 90, alignment: .center)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .frame(height: 90, alignment: .bottom)
+                                    .frame(maxWidth: .infinity)
                                     
-                                    Text(infoApi.infodata!.characters[charIndex].voiceActors![0].name.userPreferred)
-                                        .foregroundColor(Color(hex: "#ff999999"))
-                                        .font(.caption)
-                                        .bold()
-                                        .frame(maxWidth: .infinity, alignment: .trailing)
-                                        .padding(.bottom, 8)
-                                        .padding(.trailing, 8)
+                                    AsyncImage(url: URL(string: infoApi.infodata!.characters[charIndex].voiceActors![0].image)) { image in
+                                        image.resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 60, height: 90)
+                                            .cornerRadius(12)
+                                    } placeholder: {
+                                        ProgressView()
+                                    }
                                 }
-                                .frame(height: 90, alignment: .bottom)
-                                .frame(maxWidth: .infinity)
-                                
-                                AsyncImage(url: URL(string: infoApi.infodata!.characters[charIndex].voiceActors![0].image)) { image in
-                                    image.resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 60, height: 90)
-                                        .cornerRadius(12)
-                                } placeholder: {
-                                    ProgressView()
-                                }
+                                .frame(width: 330)
                             }
-                            .frame(width: 330)
+                            .cornerRadius(12)
                         }
-                        .cornerRadius(12)
                     }
-                }
+            }
             .frame(maxWidth: .infinity)
-            .frame(height: 700)
+            .frame(height: 780)
         }
         
+    }
+}
+
+struct RelatedView: View {
+    let infoApi: InfoApi
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            ScrollView(.vertical) {
+                ForEach(0..<infoApi.infodata!.relations!.count) {relIndex in
+                    HStack {
+                        AsyncImage(url: URL(string: infoApi.infodata!.relations![relIndex].image)) { image in
+                            image.resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 105, height: 145)
+                                .cornerRadius(12)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                        
+                        VStack(alignment: .leading) {
+                            Text("\(infoApi.infodata!.relations![relIndex].title.english ?? infoApi.infodata!.relations![relIndex].title.romaji)")
+                                .foregroundColor(.white)
+                                .bold()
+                                .font(.title2)
+                                .lineLimit(2)
+                            
+                            Text("\(infoApi.infodata!.relations![relIndex].title.native)")
+                                .foregroundColor(Color(hex: "#ff999999"))
+                                .bold()
+                                .font(.caption)
+                            
+                            HStack {
+                                Text("\(infoApi.infodata!.relations![relIndex].status)")
+                                    .foregroundColor(.white)
+                                    .bold()
+                                
+                                Spacer()
+                                
+                                Text("\(infoApi.infodata!.relations![relIndex].type!)")
+                                    .foregroundColor(.white)
+                                    .bold()
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
+                    }
+                }
+            }
+        }
+        .frame(maxWidth: 330)
+        .frame(height: 780, alignment: .top)
     }
 }
 
