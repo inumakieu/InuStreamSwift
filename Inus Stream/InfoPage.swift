@@ -7,11 +7,13 @@
 
 import SwiftUI
 import Shimmer
+import SwiftUIFontIcon
 
 struct InfoPage: View {
     let anilistId: String
     @StateObject var infoApi = InfoApi()
     @Environment(\.presentationMode) var presentation
+    @State private var selection = 3
     
     init(anilistId: String) {
         self.anilistId = anilistId
@@ -95,14 +97,22 @@ struct InfoPage: View {
                     
                     
                     
-                    TabView {
+                    TabView(selection: $selection) {
                             ExtraInfoView(infoApi: infoApi)
                             .fixedSize()
                                 .frame(maxWidth: 390)
+                                .tag(1)
                             
                             EpisodeView(infoApi: infoApi)
                             .fixedSize()
                                 .frame(maxWidth: 390)
+                                .tag(2)
+                        
+                        CharacterView(infoApi: infoApi)
+                        .fixedSize()
+                            .frame(maxWidth: 390)
+                            .tag(3)
+                        
                         }.tabViewStyle(.page(indexDisplayMode: .never))
                         .indexViewStyle(.page(backgroundDisplayMode: .always))
                         .frame(height: 800)
@@ -439,7 +449,7 @@ struct ExtraInfoView: View {
         .frame(maxWidth: .infinity, alignment: .top)
         .fixedSize()
         .cornerRadius(20)
-        .padding(.top, 90)
+        .padding(.top, 20)
         
     }
 }
@@ -464,6 +474,53 @@ struct EpisodeView: View {
     
     var body: some View {
         VStack {
+            HStack {
+                ZStack {
+                    Color(.black)
+                    
+                    FontIcon.button(.awesome5Solid(code: .bookmark), action: {
+                        
+                    }, fontsize: 22)
+                    .foregroundColor(.white)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 13)
+                }
+                .fixedSize()
+                .cornerRadius(40)
+                
+                Spacer()
+                
+                ZStack {
+                    Color(hex: "#ffEE4546")
+                    
+                    Text("Resume EP 2")
+                        .bold()
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                }
+                .fixedSize()
+                .cornerRadius(8)
+                
+                Spacer()
+                
+                ZStack {
+                    Color(.black)
+                    
+                    FontIcon.button(.awesome5Solid(code: .book_open), action: {
+                        
+                    }, fontsize: 22)
+                    .foregroundColor(.white)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 9)
+                }
+                .fixedSize()
+                .cornerRadius(40)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 40)
+            .padding(.top, 20)
+            
             ZStack {
                 Color(hex: "#ff1E222C")
                 Text(.init(infoApi.infodata!.description.replacingOccurrences(of: "<br>", with: "").replacingOccurrences(of: "<i>", with: "_").replacingOccurrences(of: "</i>", with: "_")))
@@ -556,6 +613,74 @@ struct EpisodeView: View {
         }
     }
 }
+
+
+struct CharacterView: View {
+    let infoApi: InfoApi
+    
+    var body: some View {
+        
+        ScrollView(.vertical) {
+            VStack(alignment: .leading,spacing: 20) {
+                    ForEach(0..<infoApi.infodata!.characters.count) {charIndex in
+                        ZStack {
+                            Color(hex: "#ff1E222C")
+                            
+                            HStack {
+                                AsyncImage(url: URL(string: infoApi.infodata!.characters[charIndex].image)) { image in
+                                    image.resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 60, height: 90)
+                                        .cornerRadius(12)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                
+                                ZStack(alignment: .bottom) {
+                                    VStack(alignment: .leading) {
+                                        Text("\(infoApi.infodata!.characters[charIndex].name.userPreferred)")
+                                            .foregroundColor(.white)
+                                            .bold()
+                                        Text(infoApi.infodata!.characters[charIndex].name.native ?? "")
+                                            .foregroundColor(.white)
+                                            .font(.caption)
+                                            .bold()
+                                    }
+                                    .frame(height: 90, alignment: .center)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    
+                                    Text(infoApi.infodata!.characters[charIndex].voiceActors![0].name.userPreferred)
+                                        .foregroundColor(Color(hex: "#ff999999"))
+                                        .font(.caption)
+                                        .bold()
+                                        .frame(maxWidth: .infinity, alignment: .trailing)
+                                        .padding(.bottom, 8)
+                                        .padding(.trailing, 8)
+                                }
+                                .frame(height: 90, alignment: .bottom)
+                                .frame(maxWidth: .infinity)
+                                
+                                AsyncImage(url: URL(string: infoApi.infodata!.characters[charIndex].voiceActors![0].image)) { image in
+                                    image.resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 60, height: 90)
+                                        .cornerRadius(12)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                            }
+                            .frame(width: 330)
+                        }
+                        .cornerRadius(12)
+                    }
+                }
+            .frame(maxWidth: .infinity)
+            .frame(height: 700)
+        }
+        
+    }
+}
+
 
 struct InfoPage_Previews: PreviewProvider {
     static var previews: some View {
