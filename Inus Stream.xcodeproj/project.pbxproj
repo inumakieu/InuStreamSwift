@@ -16,6 +16,7 @@
 		E966283228F41FB00090628D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E966283128F41FB00090628D /* AppDelegate.swift */; };
 		E966283428F41FCC0090628D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E966283328F41FCC0090628D /* SceneDelegate.swift */; };
 		E966283628F420590090628D /* Inus_StreamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E966283528F420590090628D /* Inus_StreamApp.swift */; };
+		E974025F2903418900609DE0 /* MangaReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E974025E2903418900609DE0 /* MangaReaderView.swift */; };
 		E9933E8F28E019FC00751BBE /* SwiftUISnappingScrollView in Frameworks */ = {isa = PBXBuildFile; productRef = E9933E8E28E019FC00751BBE /* SwiftUISnappingScrollView */; };
 		E9933E9128E02A2400751BBE /* ContinueWatching.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9028E02A2400751BBE /* ContinueWatching.swift */; };
 		E9933E9328E1220400751BBE /* InfoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9228E1220400751BBE /* InfoPage.swift */; };
@@ -41,6 +42,7 @@
 		E966283128F41FB00090628D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E966283328F41FCC0090628D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E966283528F420590090628D /* Inus_StreamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inus_StreamApp.swift; sourceTree = "<group>"; };
+		E974025E2903418900609DE0 /* MangaReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaReaderView.swift; sourceTree = "<group>"; };
 		E9933E9028E02A2400751BBE /* ContinueWatching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinueWatching.swift; sourceTree = "<group>"; };
 		E9933E9228E1220400751BBE /* InfoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPage.swift; sourceTree = "<group>"; };
 		E9933E9428E1282100751BBE /* EpisodeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCard.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 		588B11E928D90DCF007CA197 = {
 			isa = PBXGroup;
 			children = (
+				E974025E2903418900609DE0 /* MangaReaderView.swift */,
 				588B11F428D90DCF007CA197 /* Inus Stream */,
 				588B11F328D90DCF007CA197 /* Products */,
 			);
@@ -204,6 +207,7 @@
 			files = (
 				E9933E9328E1220400751BBE /* InfoPage.swift in Sources */,
 				E9CBF17D28E3F3F500F1BC29 /* DataController.swift in Sources */,
+				E974025F2903418900609DE0 /* MangaReaderView.swift in Sources */,
 				E9933E9528E1282100751BBE /* EpisodeCard.swift in Sources */,
 				E9933E9A28E1608E00751BBE /* WatchPage.swift in Sources */,
 				E966283628F420590090628D /* Inus_StreamApp.swift in Sources */,

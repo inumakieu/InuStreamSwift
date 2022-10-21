@@ -101,32 +101,50 @@ struct InfoPage: View {
                     
                     
                     TabView(selection: $selection) {
-                            ExtraInfoView(infoApi: infoApi)
+                        ExtraInfoView(infoApi: infoApi)
                             .fixedSize()
-                                .frame(maxWidth: 390)
-                                .tag(1)
-                            
-                            EpisodeView(infoApi: infoApi)
-                            .fixedSize()
-                                .frame(maxWidth: 390)
-                                .tag(2)
+                            .frame(maxWidth: 390)
+                            .tag(1)
                         
-                            CharacterView(infoApi: infoApi)
+                        EpisodeView(infoApi: infoApi)
                             .fixedSize()
-                                .frame(maxWidth: 390)
-                                .tag(3)
+                            .frame(maxWidth: 390)
+                            .tag(2)
+                        
+                        CharacterView(infoApi: infoApi)
+                            .fixedSize()
+                            .frame(maxWidth: 390)
+                            .tag(3)
                         
                         RelatedView(infoApi: infoApi)
-                        .fixedSize()
+                            .fixedSize()
                             .frame(maxWidth: 390)
                             .tag(4)
                         
-                        }.tabViewStyle(.page(indexDisplayMode: .never))
+                    }.tabViewStyle(.page(indexDisplayMode: .never))
                         .indexViewStyle(.page(backgroundDisplayMode: .always))
-                        .frame(height: 800, alignment: .top)
-                    .frame(maxWidth: 390, alignment: .top)
-                    .animation(.spring(response: 0.3), value: selection)
-                    
+                        .frame(height: 1000, alignment: .top)
+                        .frame(maxWidth: 390, alignment: .top)
+                        .animation(.spring(response: 0.3), value: selection)
+                        .onChange(of: selection, perform: { index in
+                            if(selection == 1) {
+                                pillWidth = 78
+                                paddingOffset = 238
+                                paddingStyle = .trailing
+                            } else if(selection == 2) {
+                                pillWidth = 78
+                                paddingOffset = 80
+                                paddingStyle = .trailing
+                            } else if(selection == 3) {
+                                pillWidth = 88
+                                paddingOffset = -90
+                                paddingStyle = .trailing
+                            } else {
+                                pillWidth = 68
+                                paddingOffset = 246
+                                paddingStyle = .leading
+                            }
+                        })
                 }
                 .ignoresSafeArea()
                 
@@ -242,8 +260,8 @@ struct InfoPage: View {
                     
                     RoundedRectangle(cornerRadius: 19)
                         .fill(Color(#colorLiteral(red: 0.11764705926179886, green: 0.13333334028720856, blue: 0.1725490242242813, alpha: 1)))
-                    .frame(width: pillWidth, height: 30)
-                    .padding(paddingStyle, paddingOffset).animation(.spring(response: 0.3), value: selection)
+                        .frame(width: pillWidth, height: 30)
+                        .padding(paddingStyle, paddingOffset).animation(.spring(response: 0.3), value: selection)
                     
                     HStack {
                         
@@ -383,12 +401,12 @@ struct ExtraInfoView: View {
                     Spacer().frame(maxHeight: 6)
                     
                     Text(infoApi.infodata!.countryOfOrigin!)
-                                .bold()
-                                .foregroundColor(Color(hex: "#ff999999"))
-                                .font(.title3)
-                                .bold()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.leading, 20)
+                        .bold()
+                        .foregroundColor(Color(hex: "#ff999999"))
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 20)
                 }
                 
                 VStack(alignment: .leading) {
@@ -402,12 +420,12 @@ struct ExtraInfoView: View {
                     Spacer().frame(maxHeight: 6)
                     
                     Text(infoApi.infodata!.type!)
-                                .bold()
-                                .foregroundColor(Color(hex: "#ff999999"))
-                                .font(.title3)
-                                .bold()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.leading, 20)
+                        .bold()
+                        .foregroundColor(Color(hex: "#ff999999"))
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 20)
                 }
                 
                 VStack(alignment: .leading) {
@@ -445,12 +463,12 @@ struct ExtraInfoView: View {
                     Spacer().frame(maxHeight: 6)
                     
                     Text("\(infoApi.infodata!.duration!)")
-                                .bold()
-                                .foregroundColor(Color(hex: "#ff999999"))
-                                .font(.title3)
-                                .bold()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.leading, 20)
+                        .bold()
+                        .foregroundColor(Color(hex: "#ff999999"))
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 20)
                 }
                 
                 VStack(alignment: .leading) {
@@ -464,12 +482,12 @@ struct ExtraInfoView: View {
                     Spacer().frame(maxHeight: 6)
                     
                     Text("\(infoApi.infodata!.totalEpisodes!)")
-                                .bold()
-                                .foregroundColor(Color(hex: "#ff999999"))
-                                .font(.title3)
-                                .bold()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.leading, 20)
+                        .bold()
+                        .foregroundColor(Color(hex: "#ff999999"))
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 20)
                 }
                 
                 VStack(alignment: .leading) {
@@ -483,12 +501,12 @@ struct ExtraInfoView: View {
                     Spacer().frame(maxHeight: 6)
                     
                     Text("\(infoApi.infodata!.status.uppercased())")
-                                .bold()
-                                .foregroundColor(Color(hex: "#ff999999"))
-                                .font(.title3)
-                                .bold()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.leading, 20)
+                        .bold()
+                        .foregroundColor(Color(hex: "#ff999999"))
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 20)
                 }
                 
                 VStack(alignment: .leading) {
@@ -502,12 +520,12 @@ struct ExtraInfoView: View {
                     Spacer().frame(maxHeight: 6)
                     
                     Text("\(infoApi.infodata!.releaseDate)")
-                                .bold()
-                                .foregroundColor(Color(hex: "#ff999999"))
-                                .font(.title3)
-                                .bold()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.leading, 20)
+                        .bold()
+                        .foregroundColor(Color(hex: "#ff999999"))
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 20)
                 }
                 
                 VStack(alignment: .leading) {
@@ -521,12 +539,12 @@ struct ExtraInfoView: View {
                     Spacer().frame(maxHeight: 6)
                     
                     Text("\(infoApi.infodata!.season!)")
-                                .bold()
-                                .foregroundColor(Color(hex: "#ff999999"))
-                                .font(.title3)
-                                .bold()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.leading, 20)
+                        .bold()
+                        .foregroundColor(Color(hex: "#ff999999"))
+                        .font(.title3)
+                        .bold()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 20)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .top)
@@ -641,6 +659,8 @@ struct EpisodeView: View {
                         }
                     }
                 }
+                .cornerRadius(40)
+                
                 if(infoApi.infodata?.nextAiringEpisode != nil) {
                     ZStack {
                         Color(hex: "#ffEE4546")
@@ -693,12 +713,12 @@ struct EpisodeView: View {
                             }
                         }
                     }
-                    Spacer()
-                        .frame(maxHeight: 100)
                 }
                 .frame(maxWidth: 350, alignment: .leading)
             }
-            .frame(height: 500)
+            .frame(height: 400)
+            .padding(.bottom, 300)
+            
         }
     }
 }
@@ -708,38 +728,38 @@ struct CharacterView: View {
     let infoApi: InfoApi
     
     var body: some View {
-        
         VStack {
             ScrollView(.vertical) {
                 VStack(alignment: .leading,spacing: 20) {
-                        ForEach(0..<infoApi.infodata!.characters.count) {charIndex in
-                            ZStack {
-                                Color(hex: "#ff1E222C")
+                    ForEach(0..<infoApi.infodata!.characters.count) {charIndex in
+                        ZStack {
+                            Color(hex: "#ff1E222C")
+                            
+                            HStack {
+                                AsyncImage(url: URL(string: infoApi.infodata!.characters[charIndex].image)) { image in
+                                    image.resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 60, height: 90)
+                                        .cornerRadius(12)
+                                } placeholder: {
+                                    ProgressView()
+                                }
                                 
-                                HStack {
-                                    AsyncImage(url: URL(string: infoApi.infodata!.characters[charIndex].image)) { image in
-                                        image.resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: 60, height: 90)
-                                            .cornerRadius(12)
-                                    } placeholder: {
-                                        ProgressView()
+                                ZStack(alignment: .bottom) {
+                                    VStack(alignment: .leading) {
+                                        Text("\(infoApi.infodata!.characters[charIndex].name.userPreferred)")
+                                            .foregroundColor(.white)
+                                            .bold()
+                                        Text(infoApi.infodata!.characters[charIndex].name.native ?? "")
+                                            .foregroundColor(.white)
+                                            .font(.caption)
+                                            .bold()
                                     }
+                                    .frame(height: 90, alignment: .center)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                                     
-                                    ZStack(alignment: .bottom) {
-                                        VStack(alignment: .leading) {
-                                            Text("\(infoApi.infodata!.characters[charIndex].name.userPreferred)")
-                                                .foregroundColor(.white)
-                                                .bold()
-                                            Text(infoApi.infodata!.characters[charIndex].name.native ?? "")
-                                                .foregroundColor(.white)
-                                                .font(.caption)
-                                                .bold()
-                                        }
-                                        .frame(height: 90, alignment: .center)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        
-                                        Text(infoApi.infodata!.characters[charIndex].voiceActors![0].name.userPreferred)
+                                    if(infoApi.infodata!.characters[charIndex].voiceActors != nil && infoApi.infodata!.characters[charIndex].voiceActors!.count > 0) {
+                                        Text(infoApi.infodata!.characters[charIndex].voiceActors?[0].name.userPreferred ?? "")
                                             .foregroundColor(Color(hex: "#ff999999"))
                                             .font(.caption)
                                             .bold()
@@ -747,10 +767,11 @@ struct CharacterView: View {
                                             .padding(.bottom, 8)
                                             .padding(.trailing, 8)
                                     }
-                                    .frame(height: 90, alignment: .bottom)
-                                    .frame(maxWidth: .infinity)
                                     
-                                    AsyncImage(url: URL(string: infoApi.infodata!.characters[charIndex].voiceActors![0].image)) { image in
+                                }
+                                .frame(height: 90, alignment: .bottom)
+                                .frame(maxWidth: .infinity)
+                                AsyncImage(url: URL(string: infoApi.infodata!.characters[charIndex].voiceActors!.count > 0 ? infoApi.infodata!.characters[charIndex].voiceActors![0].image : "")) { image in
                                         image.resizable()
                                             .aspectRatio(contentMode: .fill)
                                             .frame(width: 60, height: 90)
@@ -758,12 +779,12 @@ struct CharacterView: View {
                                     } placeholder: {
                                         ProgressView()
                                     }
-                                }
-                                .frame(width: 330)
                             }
-                            .cornerRadius(12)
+                            .frame(width: 330)
                         }
+                        .cornerRadius(12)
                     }
+                }
             }
             .frame(maxWidth: .infinity)
             .frame(height: 780)
