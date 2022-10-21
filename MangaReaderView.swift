@@ -47,20 +47,54 @@ struct MangaReaderView: View {
         "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/b033.jpg"
     ]
     
+    @State var offsetX: CGFloat = 0
+    @State var tapped: CGFloat = 0
+    
     
     var body: some View {
         ZStack(alignment: .bottom) {
             Color(.black)
             
             ZStack {
-                CustomAsyncImage(getImage: getImage) { image in
-                  image
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity)
-                } placeholder: {
-                    Text("PlaceHolder")
+                ScrollView(.horizontal) {
+                    HStack(spacing: 0) {
+                        ForEach(0..<images.count) {imageIndex in
+                            CustomAsyncImage(imgUrl: images[imageIndex], referer: "http://www.mangahere.cc/manga/youkoso_jitsuryoku_shijou_shugi_no_kyoushitsu_e/c001/1.html") { image in
+                              image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxWidth: 393)
+                                
+                            } placeholder: {
+                                ProgressView()
+                            }
+                        }
+                    }
+                    .offset(x: offsetX)
                 }
+                .animation(.spring(response: 0.3), value: tapped)
+                .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                                    .onEnded({ value in
+                                        if value.translation.width < 0 {
+                                            // left
+                                            if(Int(tapped) < images.count - 1) {
+                                                tapped += 1
+                                            } else {
+                                                tapped = CGFloat(images.count - 1)
+                                            }
+                                        }
+
+                                        if value.translation.width > 0 {
+                                            // right
+                                            if(Int(tapped) > 0) {
+                                                tapped -= 1
+                                            } else {
+                                                tapped = 0
+                                            }
+                                            
+                                        }
+                                        offsetX = (393 * tapped) * -1
+                                    }))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             
@@ -91,14 +125,17 @@ struct MangaReaderView: View {
                             
                             FontIcon.button(.awesome5Solid(code: .sliders_h), action: {
                                 
-                            }, fontsize: 12)
+                            }, fontsize: 14)
                             .foregroundColor(.white)
-                            .padding(16)
+                            .padding(12)
                         }
                         .fixedSize()
                         .cornerRadius(40)
                         .padding(.trailing, 20)
                     }
+                    
+                    Spacer()
+                        .frame(maxHeight: 20)
                     
                     HStack {
                         ZStack {
@@ -107,12 +144,13 @@ struct MangaReaderView: View {
                             HStack {
                                 FontIcon.button(.awesome5Solid(code: .chevron_left), action: {
                                     
-                                }, fontsize: 18)
+                                }, fontsize: 10)
                                 .foregroundColor(.white)
                                 
                                 Text("Prev. Chapter")
                                     .foregroundColor(.white)
                                     .bold()
+                                    .font(.caption)
                             }
                             .padding(12)
                         }
@@ -121,7 +159,7 @@ struct MangaReaderView: View {
                         
                         Spacer()
                         
-                        Text("4 / 21")
+                        Text("\(Int(tapped) + 1) / \(images.count)")
                             .foregroundColor(.white)
                             .bold()
                             .font(.footnote)
@@ -133,13 +171,14 @@ struct MangaReaderView: View {
                             Color(hex: "#ff1E222C")
                             
                             HStack {
-                                Text("Next Chpater")
+                                Text("Next Chapter")
                                     .foregroundColor(.white)
                                     .bold()
+                                    .font(.caption)
                                 
                                 FontIcon.button(.awesome5Solid(code: .chevron_right), action: {
                                     
-                                }, fontsize: 18)
+                                }, fontsize: 10)
                                 .foregroundColor(.white)
                             }
                             .padding(12)
@@ -151,7 +190,7 @@ struct MangaReaderView: View {
                     .padding(.bottom, 20)
                 }
             }
-            .frame(height: 180)
+            .frame(height: 140)
             .frame(maxWidth: .infinity)
             .cornerRadius(20, corners: [.topLeft, .topRight])
             
@@ -172,16 +211,19 @@ struct CustomAsyncImage<Content: View, Placeholder: View>: View {
 
   @State var uiImage: UIImage?
 
-  let getImage: () async -> UIImage?
+    let imgUrl: String
+    let referer: String
   let content: (Image) -> Content
   let placeholder: () -> Placeholder
 
   init(
-      getImage: @escaping () async -> UIImage?,
+    imgUrl: String,
+    referer: String,
       @ViewBuilder content: @escaping (Image) -> Content,
       @ViewBuilder placeholder: @escaping () -> Placeholder
   ){
-      self.getImage = getImage
+      self.imgUrl = imgUrl
+      self.referer = referer
       self.content = content
       self.placeholder = placeholder
   }
@@ -192,19 +234,19 @@ struct CustomAsyncImage<Content: View, Placeholder: View>: View {
       }else {
           placeholder()
               .task {
-                  self.uiImage = await getImage()
+                  self.uiImage = await getImage(imgUrl: imgUrl, referer: referer)
               }
       }
   }
 }
 
-func getImage() async -> UIImage? {
-    guard let url = URL(string: "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f001.jpg") else {
+func getImage(imgUrl: String, referer: String) async -> UIImage? {
+    guard let url = URL(string: imgUrl) else {
         fatalError("Missing URL")
     }
     
     var request = URLRequest(url: url)
-    request.addValue("http://www.mangahere.cc/manga/youkoso_jitsuryoku_shijou_shugi_no_kyoushitsu_e/c001/1.html", forHTTPHeaderField: "Referer")
+    request.addValue(referer, forHTTPHeaderField: "Referer")
     
     do {
         let (data, response) = try await URLSession.shared.data(for: request)
