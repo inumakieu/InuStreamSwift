@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = HostingController(
                 wrappedView:
-                    MangaReaderView()
+                    HomePage()
             )
             self.window = window
             window.makeKeyAndVisible()

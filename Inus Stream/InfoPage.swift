@@ -563,6 +563,7 @@ struct ExtraInfoView: View {
 
 struct EpisodeView: View {
     let infoApi: InfoApi
+    @State var moveToManga: Bool = false
     
     func getAiringTime(airingTime: Int) -> String {
         // convert seconds into days and hours
@@ -611,18 +612,21 @@ struct EpisodeView: View {
                 
                 Spacer()
                 
-                ZStack {
-                    Color(.black)
-                    
-                    FontIcon.button(.awesome5Solid(code: .book_open), action: {
+                NavigationLink(destination: MangaReaderView(mangaName: infoApi.infodata!.title.romaji.lowercased().replacingOccurrences(of: " ", with: "_"), mangaTitle: infoApi.infodata!.title.english ?? infoApi.infodata!.title.romaji), isActive: $moveToManga) {
+                    ZStack {
+                        Color(.black)
                         
-                    }, fontsize: 22)
-                    .foregroundColor(.white)
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 9)
+                        FontIcon.button(.awesome5Solid(code: .book_open), action: {
+                            moveToManga = true
+                        }, fontsize: 22)
+                        .foregroundColor(.white)
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 9)
+                    }
+                    .fixedSize()
+                    .cornerRadius(40)
                 }
-                .fixedSize()
-                .cornerRadius(40)
+                
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 40)

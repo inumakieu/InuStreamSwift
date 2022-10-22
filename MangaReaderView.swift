@@ -9,94 +9,68 @@ import SwiftUI
 import SwiftUIFontIcon
 
 struct MangaReaderView: View {
-    let images = [
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f001.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f002.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f003.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f004.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f005.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f006.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f007.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f008.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f009.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f010.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f011.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f012.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f013.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f014.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f015.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f016.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f016.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f017.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f018.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f019.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f020.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f021.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f022.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f023.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f024.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f025.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f026.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f027.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f028.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f029.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f030.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f031.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f032.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/f033.jpg",
-        "https://zjcdn.mangahere.org/store/manga/20993/001.0/compressed/b033.jpg"
-    ]
+    let mangaName: String
+    let mangaTitle: String
+    
+    @StateObject var mangaApi = MangaApi()
     
     @State var offsetX: CGFloat = 0
     @State var tapped: CGFloat = 0
+    @State var showUI: Bool = true
+    @State var chapterNumber: Int = 1
+    @State var chapterNumberName: String = "c001"
+    @State var maxChapter = 100
     
     
     var body: some View {
         ZStack(alignment: .bottom) {
             Color(.black)
             
-            ZStack {
-                ScrollView(.horizontal) {
-                    HStack(spacing: 0) {
-                        ForEach(0..<images.count) {imageIndex in
-                            CustomAsyncImage(imgUrl: images[imageIndex], referer: "http://www.mangahere.cc/manga/youkoso_jitsuryoku_shijou_shugi_no_kyoushitsu_e/c001/1.html") { image in
-                              image
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: 393)
-                                
-                            } placeholder: {
-                                ProgressView()
+            if(mangaApi.mangadata != nil && mangaApi.mangadata.count > 0) {
+                ZStack {
+                    ScrollView(.horizontal) {
+                        HStack(spacing: 0) {
+                            ForEach(0..<mangaApi.mangadata.count) {imageIndex in
+                                CustomAsyncImage(imgUrl: mangaApi.mangadata[imageIndex].img, referer: mangaApi.mangadata[imageIndex].headerForImage.Referer) { image in
+                                  image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(maxWidth: 393)
+                                    
+                                } placeholder: {
+                                    ProgressView()
+                                }
                             }
                         }
+                        .offset(x: offsetX)
                     }
-                    .offset(x: offsetX)
-                }
-                .animation(.spring(response: 0.3), value: tapped)
-                .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                                    .onEnded({ value in
-                                        if value.translation.width < 0 {
-                                            // left
-                                            if(Int(tapped) < images.count - 1) {
-                                                tapped += 1
-                                            } else {
-                                                tapped = CGFloat(images.count - 1)
+                    .animation(.spring(response: 0.3), value: tapped)
+                    .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                                        .onEnded({ value in
+                                            if value.translation.width < 0 {
+                                                // left
+                                                if(Int(tapped) < mangaApi.mangadata.count - 1) {
+                                                    tapped += 1
+                                                } else {
+                                                    tapped = CGFloat(mangaApi.mangadata.count - 1)
+                                                }
                                             }
-                                        }
 
-                                        if value.translation.width > 0 {
-                                            // right
-                                            if(Int(tapped) > 0) {
-                                                tapped -= 1
-                                            } else {
-                                                tapped = 0
+                                            if value.translation.width > 0 {
+                                                // right
+                                                if(Int(tapped) > 0) {
+                                                    tapped -= 1
+                                                } else {
+                                                    tapped = 0
+                                                }
+                                                
                                             }
-                                            
-                                        }
-                                        offsetX = (393 * tapped) * -1
-                                    }))
+                                            offsetX = (393 * tapped) * -1
+                                        }))
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
             
             ZStack {
                 Color(hex: "#ff16151A")
@@ -108,11 +82,12 @@ struct MangaReaderView: View {
                         Spacer()
                         
                         VStack {
-                            Text("Classroom of the Elite")
+                            Text(mangaTitle)
                                 .bold()
                                 .foregroundColor(.white)
+                                .lineLimit(2)
                             
-                            Text("Chapter 1")
+                            Text("Chapter \(chapterNumber)")
                                 .bold()
                                 .foregroundColor(Color(hex: "#ff999999"))
                                 .font(.footnote)
@@ -156,10 +131,24 @@ struct MangaReaderView: View {
                         }
                         .fixedSize()
                         .cornerRadius(8)
+                        .onTapGesture {
+                            if(chapterNumber > 0) {
+                                chapterNumber -= 1
+                            }
+                            if(chapterNumber < 10) {
+                                chapterNumberName = "c00\(chapterNumber)"
+                            } else {
+                                chapterNumberName = "c0\(chapterNumber)"
+                            }
+                            mangaApi.mangadata = []
+                            mangaApi.loadInfo(id: "\(mangaName)/\(chapterNumberName)")
+                            tapped = 0
+                            offsetX = 0
+                        }
                         
                         Spacer()
                         
-                        Text("\(Int(tapped) + 1) / \(images.count)")
+                        Text("\(Int(tapped) + 1) / \(mangaApi.mangadata.count)")
                             .foregroundColor(.white)
                             .bold()
                             .font(.footnote)
@@ -185,6 +174,20 @@ struct MangaReaderView: View {
                         }
                         .fixedSize()
                         .cornerRadius(8)
+                        .onTapGesture {
+                            if(chapterNumber < maxChapter) {
+                                chapterNumber += 1
+                            }
+                            if(chapterNumber < 10) {
+                                chapterNumberName = "c00\(chapterNumber)"
+                            } else {
+                                chapterNumberName = "c0\(chapterNumber)"
+                            }
+                            mangaApi.mangadata = []
+                            mangaApi.loadInfo(id: "\(mangaName)/\(chapterNumberName)")
+                            tapped = 0
+                            offsetX = 0
+                        }
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 20)
@@ -193,16 +196,26 @@ struct MangaReaderView: View {
             .frame(height: 140)
             .frame(maxWidth: .infinity)
             .cornerRadius(20, corners: [.topLeft, .topRight])
+            .opacity(showUI ? 1.0 : 0.0)
+            .animation(.spring(response: 0.3), value: showUI)
             
             
         }
         .edgesIgnoringSafeArea(.all)
+        .task {
+            mangaApi.loadInfo(id: "\(mangaName)/\(chapterNumberName)")
+            let data = await mangaApi.getInfo(id: "\(mangaName)")
+            
+            print(data)
+            
+            maxChapter = data?.chapters.count ?? 1
+        }
     }
 }
 
 struct MangaReaderView_Previews: PreviewProvider {
     static var previews: some View {
-        MangaReaderView()
+        MangaReaderView(mangaName: "Tensei Shitara Slime Datta Ken", mangaTitle: "That time i got reincarnated as a Slime")
     }
 }
 
@@ -258,4 +271,66 @@ func getImage(imgUrl: String, referer: String) async -> UIImage? {
         return nil
     }
     
+}
+
+class MangaApi : ObservableObject{
+    @Published var mangadata = [MangaData]()
+    @Published var mangainfo: MangaInfo? = nil
+    
+    
+    func loadInfo(id: String) {
+        guard let url = URL(string: "https://api.consumet.org/manga/mangahere/read?chapterId=\(id)") else {
+            print("Invalid url...")
+            return
+        }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            let books = try! JSONDecoder().decode([MangaData].self, from: data!)
+            //print(books)
+            DispatchQueue.main.async {
+                self.mangadata = books
+            }
+        }.resume()
+    }
+    
+    func getInfo(id: String) async -> MangaInfo? {
+        guard let url = URL(string: "https://api.consumet.org/manga/mangahere/info?id=\(id)") else {
+            print("Invalid url...")
+            return nil
+        }
+        
+        let request = URLRequest(url: url)
+        
+        let (data, _) = try! await URLSession.shared.data(for: request)
+        let result = try! JSONDecoder().decode(MangaInfo.self, from: data)
+        return result
+    }
+}
+
+struct MangaData: Codable {
+    let page: Int
+    let img: String
+    let headerForImage: MangaReferer
+}
+
+struct MangaReferer: Codable {
+    let Referer: String
+}
+
+struct MangaInfo: Codable {
+    let id: String
+    let title: String
+    let description: String
+    let headers: MangaReferer
+    let image: String
+    let genres: [String]
+    let status: String
+    let rating: Float
+    let authors: [String]
+    let chapters: [MangaChapter]
+}
+
+struct MangaChapter: Codable {
+    let id: String
+    let title: String
+    let releasedDate: String
 }
