@@ -12,6 +12,7 @@ import SwiftUIFontIcon
 struct InfoPage: View {
     let anilistId: String
     @StateObject var infoApi = InfoApi()
+    @StateObject var mangaApi = MangaApi()
     @Environment(\.presentationMode) var presentation
     @State private var selection = 2
     @State private var paddingOffset: CGFloat = 80
@@ -51,6 +52,7 @@ struct InfoPage: View {
             
             if(infoApi.infodata != nil) {
                 ScrollView(showsIndicators: false) {
+                    
                     ZStack(alignment: .bottom) {
                         AsyncImage(url: URL(string: infoApi.infodata!.cover)) { image in
                             image.resizable()
@@ -97,8 +99,7 @@ struct InfoPage: View {
                         .font(.subheadline)
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
-                    
-                    
+                        .padding(.bottom, 0)
                     
                     TabView(selection: $selection) {
                         ExtraInfoView(infoApi: infoApi)
@@ -106,9 +107,9 @@ struct InfoPage: View {
                             .frame(maxWidth: 390)
                             .tag(1)
                         
-                        EpisodeView(infoApi: infoApi)
+                        EpisodeView(infoApi: infoApi, mangaApi: mangaApi, id: anilistId)
                             .fixedSize()
-                            .frame(maxWidth: 390)
+                            .frame(maxWidth: 390, alignment: .top)
                             .tag(2)
                         
                         CharacterView(infoApi: infoApi)
@@ -121,9 +122,10 @@ struct InfoPage: View {
                             .frame(maxWidth: 390)
                             .tag(4)
                         
-                    }.tabViewStyle(.page(indexDisplayMode: .never))
+                    }
+                    .tabViewStyle(.page(indexDisplayMode: .never))
                         .indexViewStyle(.page(backgroundDisplayMode: .always))
-                        .frame(height: 1000, alignment: .top)
+                        .frame(height: 1300, alignment: .top)
                         .frame(maxWidth: 390, alignment: .top)
                         .animation(.spring(response: 0.3), value: selection)
                         .onChange(of: selection, perform: { index in
@@ -145,6 +147,7 @@ struct InfoPage: View {
                                 paddingStyle = .leading
                             }
                         })
+                    
                 }
                 .ignoresSafeArea()
                 
@@ -563,7 +566,11 @@ struct ExtraInfoView: View {
 
 struct EpisodeView: View {
     let infoApi: InfoApi
+    let mangaApi: MangaApi
+    let id: String
     @State var moveToManga: Bool = false
+    @State var isManga: Bool = false
+    @State var mangaData: MangaInfo? = nil
     
     func getAiringTime(airingTime: Int) -> String {
         // convert seconds into days and hours
@@ -601,7 +608,7 @@ struct EpisodeView: View {
                 ZStack {
                     Color(hex: "#ffEE4546")
                     
-                    Text("Resume EP 2")
+                    Text("\(isManga ? "Read CP" : "Play EP") 1")
                         .bold()
                         .foregroundColor(.white)
                         .padding(.horizontal, 20)
@@ -612,12 +619,17 @@ struct EpisodeView: View {
                 
                 Spacer()
                 
-                NavigationLink(destination: MangaReaderView(mangaName: infoApi.infodata!.title.romaji.lowercased().replacingOccurrences(of: " ", with: "_"), mangaTitle: infoApi.infodata!.title.english ?? infoApi.infodata!.title.romaji), isActive: $moveToManga) {
-                    ZStack {
+                ZStack {
                         Color(.black)
                         
                         FontIcon.button(.awesome5Solid(code: .book_open), action: {
-                            moveToManga = true
+                            //moveToManga = true
+                            // fetch chapters
+                            Task {
+                                mangaData = await mangaApi.getInfo(id: id)
+                                print(mangaData)
+                                isManga = !isManga
+                            }
                         }, fontsize: 22)
                         .foregroundColor(.white)
                         .padding(.vertical, 10)
@@ -625,12 +637,11 @@ struct EpisodeView: View {
                     }
                     .fixedSize()
                     .cornerRadius(40)
-                }
+                
                 
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, 40)
-            .padding(.top, 20)
             
             ZStack {
                 Color(hex: "#ff1E222C")
@@ -641,6 +652,7 @@ struct EpisodeView: View {
                     .padding(.all, 20)
             }
             .frame(maxWidth: 350)
+            .fixedSize(horizontal: false, vertical: true)
             .cornerRadius(20)
             .padding(.all, 20)
             
@@ -683,46 +695,102 @@ struct EpisodeView: View {
             .padding(.horizontal, 20)
             .frame(maxWidth: 390)
             
-            Text("Episodes")
+            Text("\(mangaData != nil ? "Chapters" : "Episodes")")
                 .foregroundColor(.white)
                 .font(.title)
                 .bold()
                 .frame(maxWidth: 340, alignment: .leading)
                 .padding(.top, 10)
             
-            ScrollView {
-                VStack(spacing: 18) {
-                    ForEach(0..<infoApi.infodata!.episodes!.count) {index in
-                        EpisodeCard(animeData: infoApi.infodata!,title: infoApi.infodata!.episodes![index].title ?? infoApi.infodata!.title.romaji, number: infoApi.infodata!.episodes![index].number, thumbnail: infoApi.infodata!.episodes![index].image, isFiller: infoApi.infodata!.episodes![index].isFiller
-                        )
-                        .contextMenu {
-                            VStack {
-                                Button(action: {
-                                    // set this episode as watched
-                                    
-                                }) {
-                                    HStack {
-                                        Text("Mark as watched")
+            if(!isManga) {
+                ScrollView {
+                    VStack(spacing: 18) {
+                        ForEach(0..<infoApi.infodata!.episodes!.count) {index in
+                            EpisodeCard(animeData: infoApi.infodata!,title: infoApi.infodata!.episodes![index].title ?? infoApi.infodata!.title.romaji, number: infoApi.infodata!.episodes![index].number, thumbnail: infoApi.infodata!.episodes![index].image, isFiller: infoApi.infodata!.episodes![index].isFiller
+                            )
+                            .contextMenu {
+                                VStack {
+                                    Button(action: {
+                                        // set this episode as watched
                                         
-                                        Image(systemName: "eye.fill")
+                                    }) {
+                                        HStack {
+                                            Text("Mark as watched")
+                                            
+                                            Image(systemName: "eye.fill")
+                                        }
                                     }
-                                }
-                                Button(action: {}) {
-                                    HStack {
-                                        Text("Set to current Episode")
-                                        
-                                        Image(systemName: "eye.fill")
+                                    Button(action: {}) {
+                                        HStack {
+                                            Text("Set to current Episode")
+                                            
+                                            Image(systemName: "eye.fill")
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    .frame(maxWidth: 350, alignment: .leading)
                 }
-                .frame(maxWidth: 350, alignment: .leading)
+                .frame(maxHeight: .infinity)
+                .padding(.bottom, 130)
+            } else {
+                ScrollView {
+                    VStack(spacing: 18) {
+                        ForEach(0..<mangaData!.chapters!.count) {index in
+                            ChapterView(mangaChapter: mangaData!.chapters![index], animeImage: infoApi.infodata!.image, chapterNumber: index, englishTitle: infoApi.infodata!.title.english ?? infoApi.infodata!.title.romaji, mangaData: mangaData!)
+                        }
+                    }
+                    .frame(maxWidth: 350, alignment: .leading)
+                }
+                .frame(maxHeight: 500)
+                .padding(.bottom, 130)
             }
-            .frame(height: 400)
-            .padding(.bottom, 300)
             
+        }
+        .frame(height: 1300, alignment: .top)
+        .frame(maxHeight: 1300, alignment: .top)
+        
+    }
+}
+
+struct ChapterView: View {
+    let mangaChapter: MangaChapter
+    let animeImage: String
+    let chapterNumber: Int
+    let englishTitle: String
+    let mangaData: MangaInfo
+    
+    var body: some View {
+        NavigationLink(destination: MangaReaderView(mangaName: mangaChapter.id, mangaTitle: englishTitle, mangaData: mangaData, chapterNumber: chapterNumber)) {
+            HStack {
+                AsyncImage(url: URL(string: animeImage)) { image in
+                    image.resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 90, height: 130)
+                        .cornerRadius(12)
+                } placeholder: {
+                    ProgressView()
+                }
+                
+                Spacer()
+                    .frame(width: 12)
+                    .frame(maxWidth: 12)
+                
+                VStack {
+                    Text("\(mangaChapter.title)")
+                        .bold()
+                        .foregroundColor(.white)
+                    
+                    Text("Chapter \(mangaChapter.id.components(separatedBy: "/")[1].replacingOccurrences(of: "c", with: "").replacingOccurrences(of: "^0+", with: "", options: .regularExpression))")
+                        .bold()
+                        .foregroundColor(Color(hex: "#ff999999"))
+                        .font(.subheadline)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .frame(width: 350, alignment: .leading)
         }
     }
 }
@@ -851,7 +919,7 @@ struct RelatedView: View {
 
 struct InfoPage_Previews: PreviewProvider {
     static var previews: some View {
-        InfoPage(anilistId: "98659")
+        InfoPage(anilistId: "113415")
     }
 }
 

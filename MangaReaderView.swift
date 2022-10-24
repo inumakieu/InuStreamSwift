@@ -11,13 +11,14 @@ import SwiftUIFontIcon
 struct MangaReaderView: View {
     let mangaName: String
     let mangaTitle: String
+    let mangaData: MangaInfo
+    @State var chapterNumber: Int
     
     @StateObject var mangaApi = MangaApi()
     
     @State var offsetX: CGFloat = 0
     @State var tapped: CGFloat = 0
     @State var showUI: Bool = true
-    @State var chapterNumber: Int = 1
     @State var chapterNumberName: String = "c001"
     @State var maxChapter = 100
     
@@ -87,7 +88,7 @@ struct MangaReaderView: View {
                                 .foregroundColor(.white)
                                 .lineLimit(2)
                             
-                            Text("Chapter \(chapterNumber)")
+                            Text("Chapter \(mangaData.chapters![chapterNumber].id.components(separatedBy: "/")[1].replacingOccurrences(of: "c", with: "").replacingOccurrences(of: "^0+", with: "", options: .regularExpression))")
                                 .bold()
                                 .foregroundColor(Color(hex: "#ff999999"))
                                 .font(.footnote)
@@ -133,7 +134,7 @@ struct MangaReaderView: View {
                         .cornerRadius(8)
                         .onTapGesture {
                             if(chapterNumber > 0) {
-                                chapterNumber -= 1
+                                chapterNumber += 1
                             }
                             if(chapterNumber < 10) {
                                 chapterNumberName = "c00\(chapterNumber)"
@@ -141,7 +142,7 @@ struct MangaReaderView: View {
                                 chapterNumberName = "c0\(chapterNumber)"
                             }
                             mangaApi.mangadata = []
-                            mangaApi.loadInfo(id: "\(mangaName)/\(chapterNumberName)")
+                            mangaApi.loadInfo(id: "\(mangaData.chapters![chapterNumber].id)")
                             tapped = 0
                             offsetX = 0
                         }
@@ -176,7 +177,7 @@ struct MangaReaderView: View {
                         .cornerRadius(8)
                         .onTapGesture {
                             if(chapterNumber < maxChapter) {
-                                chapterNumber += 1
+                                chapterNumber -= 1
                             }
                             if(chapterNumber < 10) {
                                 chapterNumberName = "c00\(chapterNumber)"
@@ -184,7 +185,7 @@ struct MangaReaderView: View {
                                 chapterNumberName = "c0\(chapterNumber)"
                             }
                             mangaApi.mangadata = []
-                            mangaApi.loadInfo(id: "\(mangaName)/\(chapterNumberName)")
+                            mangaApi.loadInfo(id: "\(mangaData.chapters![chapterNumber].id)")
                             tapped = 0
                             offsetX = 0
                         }
@@ -203,21 +204,13 @@ struct MangaReaderView: View {
         }
         .edgesIgnoringSafeArea(.all)
         .task {
-            mangaApi.loadInfo(id: "\(mangaName)/\(chapterNumberName)")
-            let data = await mangaApi.getInfo(id: "\(mangaName)")
+            mangaApi.loadInfo(id: "\(mangaName)")
             
-            print(data)
-            
-            maxChapter = data?.chapters.count ?? 1
+            maxChapter = mangaData.chapters?.count ?? 1
         }
     }
 }
 
-struct MangaReaderView_Previews: PreviewProvider {
-    static var previews: some View {
-        MangaReaderView(mangaName: "Tensei Shitara Slime Datta Ken", mangaTitle: "That time i got reincarnated as a Slime")
-    }
-}
 
 
 struct CustomAsyncImage<Content: View, Placeholder: View>: View {
@@ -279,7 +272,7 @@ class MangaApi : ObservableObject{
     
     
     func loadInfo(id: String) {
-        guard let url = URL(string: "https://api.consumet.org/manga/mangahere/read?chapterId=\(id)") else {
+        guard let url = URL(string: "https://api.consumet.org/meta/anilist-manga/read?chapterId=\(id)&provider=mangahere") else {
             print("Invalid url...")
             return
         }
@@ -293,7 +286,7 @@ class MangaApi : ObservableObject{
     }
     
     func getInfo(id: String) async -> MangaInfo? {
-        guard let url = URL(string: "https://api.consumet.org/manga/mangahere/info?id=\(id)") else {
+        guard let url = URL(string: "https://api.consumet.org/meta/anilist-manga/info/\(id)?provider=mangahere") else {
             print("Invalid url...")
             return nil
         }
@@ -318,15 +311,31 @@ struct MangaReferer: Codable {
 
 struct MangaInfo: Codable {
     let id: String
-    let title: String
-    let description: String
-    let headers: MangaReferer
+    let title: Title
+    let malId: Int?
+    let synonyms: [String]?
+    let isLicensed, isAdult: Bool?
+    let countryOfOrigin: String?
+    let trailer: Trailer?
     let image: String
+    let popularity: Int
+    let color: String?
+    let cover: String
+    let description, status: String
+    let releaseDate: Int
+    let startDate, endDate: EndDateClass
+    let nextAiringEpisode: AiringData?
+    let totalEpisodes: Int?
+    let duration: Int?
+    let rating: Int?
     let genres: [String]
-    let status: String
-    let rating: Float
-    let authors: [String]
-    let chapters: [MangaChapter]
+    let season: String?
+    let studios: [String]
+    let type: String?
+    let recommendations: [Recommended]?
+    let characters: [Character]
+    let relations: [Related]?
+    let chapters: [MangaChapter]?
 }
 
 struct MangaChapter: Codable {
