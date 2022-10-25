@@ -17,6 +17,12 @@
 		E966283428F41FCC0090628D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E966283328F41FCC0090628D /* SceneDelegate.swift */; };
 		E966283628F420590090628D /* Inus_StreamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E966283528F420590090628D /* Inus_StreamApp.swift */; };
 		E974025F2903418900609DE0 /* MangaReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E974025E2903418900609DE0 /* MangaReaderView.swift */; };
+		E9892C88290790A9008E8C9B /* Anilist.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9892C87290790A9008E8C9B /* Anilist.swift */; };
+		E9892C8A29079797008E8C9B /* RelatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9892C8929079797008E8C9B /* RelatedView.swift */; };
+		E9892C8C290797BA008E8C9B /* CharacterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9892C8B290797BA008E8C9B /* CharacterView.swift */; };
+		E9892C8E2907980A008E8C9B /* ChapterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9892C8D2907980A008E8C9B /* ChapterView.swift */; };
+		E9892C9029079824008E8C9B /* EpisodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9892C8F29079824008E8C9B /* EpisodeView.swift */; };
+		E9892C922907983D008E8C9B /* ExtraInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9892C912907983D008E8C9B /* ExtraInfoView.swift */; };
 		E9933E8F28E019FC00751BBE /* SwiftUISnappingScrollView in Frameworks */ = {isa = PBXBuildFile; productRef = E9933E8E28E019FC00751BBE /* SwiftUISnappingScrollView */; };
 		E9933E9128E02A2400751BBE /* ContinueWatching.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9028E02A2400751BBE /* ContinueWatching.swift */; };
 		E9933E9328E1220400751BBE /* InfoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9228E1220400751BBE /* InfoPage.swift */; };
@@ -43,6 +49,12 @@
 		E966283328F41FCC0090628D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E966283528F420590090628D /* Inus_StreamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inus_StreamApp.swift; sourceTree = "<group>"; };
 		E974025E2903418900609DE0 /* MangaReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaReaderView.swift; sourceTree = "<group>"; };
+		E9892C87290790A9008E8C9B /* Anilist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anilist.swift; sourceTree = "<group>"; };
+		E9892C8929079797008E8C9B /* RelatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelatedView.swift; sourceTree = "<group>"; };
+		E9892C8B290797BA008E8C9B /* CharacterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterView.swift; sourceTree = "<group>"; };
+		E9892C8D2907980A008E8C9B /* ChapterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterView.swift; sourceTree = "<group>"; };
+		E9892C8F29079824008E8C9B /* EpisodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeView.swift; sourceTree = "<group>"; };
+		E9892C912907983D008E8C9B /* ExtraInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtraInfoView.swift; sourceTree = "<group>"; };
 		E9933E9028E02A2400751BBE /* ContinueWatching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinueWatching.swift; sourceTree = "<group>"; };
 		E9933E9228E1220400751BBE /* InfoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPage.swift; sourceTree = "<group>"; };
 		E9933E9428E1282100751BBE /* EpisodeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCard.swift; sourceTree = "<group>"; };
@@ -74,7 +86,6 @@
 		588B11E928D90DCF007CA197 = {
 			isa = PBXGroup;
 			children = (
-				E974025E2903418900609DE0 /* MangaReaderView.swift */,
 				588B11F428D90DCF007CA197 /* Inus Stream */,
 				588B11F328D90DCF007CA197 /* Products */,
 			);
@@ -91,18 +102,12 @@
 		588B11F428D90DCF007CA197 /* Inus Stream */ = {
 			isa = PBXGroup;
 			children = (
-				E9CBF17328E2775B00F1BC29 /* SeekbarView.swift */,
-				E9933E9928E1608E00751BBE /* WatchPage.swift */,
+				E9892C8629079084008E8C9B /* Backend */,
+				E9892C8529079077008E8C9B /* Components */,
+				E9892C8429079058008E8C9B /* Views */,
 				E9933E9B28E1633700751BBE /* Inus-Stream-Info.plist */,
-				588B11F728D90DCF007CA197 /* RecentAnimeCard.swift */,
 				588B11F928D90DD1007CA197 /* Assets.xcassets */,
 				588B11FB28D90DD1007CA197 /* Preview Content */,
-				588B120328D91452007CA197 /* HomePage.swift */,
-				E9933E9228E1220400751BBE /* InfoPage.swift */,
-				E9933E9428E1282100751BBE /* EpisodeCard.swift */,
-				E9933E9028E02A2400751BBE /* ContinueWatching.swift */,
-				E9CBF17528E2782F00F1BC29 /* BlurView.swift */,
-				E9CBF17728E3D93C00F1BC29 /* SearchPage.swift */,
 				E9CBF17C28E3F3F500F1BC29 /* DataController.swift */,
 				E9CBF17E28E3F72D00F1BC29 /* AnimeStorage.xcdatamodeld */,
 				E966282F28F41F730090628D /* HostingController.swift */,
@@ -119,6 +124,43 @@
 				588B11FC28D90DD1007CA197 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		E9892C8429079058008E8C9B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E974025E2903418900609DE0 /* MangaReaderView.swift */,
+				E9933E9928E1608E00751BBE /* WatchPage.swift */,
+				588B120328D91452007CA197 /* HomePage.swift */,
+				E9933E9228E1220400751BBE /* InfoPage.swift */,
+				E9CBF17728E3D93C00F1BC29 /* SearchPage.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E9892C8529079077008E8C9B /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E9933E9428E1282100751BBE /* EpisodeCard.swift */,
+				E9CBF17328E2775B00F1BC29 /* SeekbarView.swift */,
+				588B11F728D90DCF007CA197 /* RecentAnimeCard.swift */,
+				E9933E9028E02A2400751BBE /* ContinueWatching.swift */,
+				E9CBF17528E2782F00F1BC29 /* BlurView.swift */,
+				E9892C8929079797008E8C9B /* RelatedView.swift */,
+				E9892C8B290797BA008E8C9B /* CharacterView.swift */,
+				E9892C8D2907980A008E8C9B /* ChapterView.swift */,
+				E9892C8F29079824008E8C9B /* EpisodeView.swift */,
+				E9892C912907983D008E8C9B /* ExtraInfoView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		E9892C8629079084008E8C9B /* Backend */ = {
+			isa = PBXGroup;
+			children = (
+				E9892C87290790A9008E8C9B /* Anilist.swift */,
+			);
+			path = Backend;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,8 +247,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9892C88290790A9008E8C9B /* Anilist.swift in Sources */,
 				E9933E9328E1220400751BBE /* InfoPage.swift in Sources */,
+				E9892C8A29079797008E8C9B /* RelatedView.swift in Sources */,
 				E9CBF17D28E3F3F500F1BC29 /* DataController.swift in Sources */,
+				E9892C8C290797BA008E8C9B /* CharacterView.swift in Sources */,
 				E974025F2903418900609DE0 /* MangaReaderView.swift in Sources */,
 				E9933E9528E1282100751BBE /* EpisodeCard.swift in Sources */,
 				E9933E9A28E1608E00751BBE /* WatchPage.swift in Sources */,
@@ -216,10 +261,13 @@
 				E9CBF17428E2775B00F1BC29 /* SeekbarView.swift in Sources */,
 				E966283028F41F730090628D /* HostingController.swift in Sources */,
 				E9CBF17828E3D93C00F1BC29 /* SearchPage.swift in Sources */,
+				E9892C8E2907980A008E8C9B /* ChapterView.swift in Sources */,
 				588B11F828D90DCF007CA197 /* RecentAnimeCard.swift in Sources */,
 				E9CBF17628E2782F00F1BC29 /* BlurView.swift in Sources */,
 				E9CBF18028E3F72D00F1BC29 /* AnimeStorage.xcdatamodeld in Sources */,
 				588B120428D91452007CA197 /* HomePage.swift in Sources */,
+				E9892C922907983D008E8C9B /* ExtraInfoView.swift in Sources */,
+				E9892C9029079824008E8C9B /* EpisodeView.swift in Sources */,
 				E9933E9128E02A2400751BBE /* ContinueWatching.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

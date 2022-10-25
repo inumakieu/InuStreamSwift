@@ -267,57 +267,6 @@ class Api : ObservableObject{
     }
 }
 
-struct TrendingResults: Codable, Hashable {
-    let currentPage: Int
-    let hasNextPage: Bool
-    let results: [IAnimeInfo]
-}
-
-struct RecentResults: Codable, Hashable {
-    let currentPage: Int
-    let hasNextPage: Bool
-    let totalPages: Int
-    let totalResults: Int
-    let results: [IAnimeRecent]
-}
-
-struct IAnimeInfo: Codable, Hashable, Identifiable {
-    let id: String
-    let malId: Int?
-    let title: ITitle
-    let image: String
-    let description: String?
-    let status: String
-    let cover: String?
-    let rating: Int?
-    let releaseDate: Int?
-    let genres: [String]
-    let totalEpisodes: Int?
-    let duration: Int?
-    let type: String?
-}
-
-struct IAnimeRecent: Codable, Hashable, Identifiable {
-    let id: String
-    let malId: Int?
-    let title: ITitle
-    let image: String
-    let rating: Int?
-    let color: String?
-    let episodeId: String
-    let episodeTitle: String
-    let episodeNumber: Int
-    let genres: [String]
-    let type: String
-}
-
-struct ITitle: Codable, Hashable {
-    let romaji: String
-    var english: String?
-    let native: String?
-    var userPreferred: String?
-}
-
 struct ExtractedView: View {
     let item: IAnimeInfo
     @State private var isShowingDeviceDetail = false
