@@ -32,7 +32,7 @@ struct MangaReaderView: View {
                     ScrollView(.horizontal) {
                         HStack(spacing: 0) {
                             ForEach(0..<mangaApi.mangadata.count) {imageIndex in
-                                CustomAsyncImage(imgUrl: mangaApi.mangadata[imageIndex].img, referer: mangaApi.mangadata[imageIndex].headerForImage.Referer) { image in
+                                CustomAsyncImage(imgUrl: mangaApi.mangadata[ imageIndex].img, referer: mangaApi.mangadata[imageIndex].headerForImage.Referer) { image in
                                   image
                                     .resizable()
                                     .scaledToFit()
@@ -45,6 +45,7 @@ struct MangaReaderView: View {
                         }
                         .offset(x: offsetX)
                     }
+                    .environment(\.layoutDirection, .leftToRight)
                     .animation(.spring(response: 0.3), value: tapped)
                     .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)
                                         .onEnded({ value in

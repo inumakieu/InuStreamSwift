@@ -648,8 +648,9 @@ struct CustomPlayerWithControls: View {
                     .onDisappear {
                         playerVM.player.pause()
                         
-                        
+                        /**
                         let index = animeStorageData.firstIndex(where: {($0.id!) == animeData!.id})
+                        print(index)
                         if(index != nil && animeStorageData[index!].watched != nil) {
                             animeStorageData[index!].watched!.append(animeData!.episodes![episodeIndex].number)
                             animeStorageData[index!].episodeThumbnail = animeData!.episodes![(animeStorageData[index!].watched!.max() ?? 1) - 1].image
@@ -659,6 +660,7 @@ struct CustomPlayerWithControls: View {
                             animeStorageData[index!].animeTitle = animeData!.title.english ?? animeData!.title.romaji
                             animeStorageData[index!].episodeNumber = Int16(animeData!.episodes![episodeIndex].number)
                         } else {
+                            print(animeData!.id)
                             let storageDataTemp = AnimeStorageData(context: storage)
                             storageDataTemp.id = animeData!.id
                             storageDataTemp.watched = [animeData!.episodes![episodeIndex].number]
@@ -669,7 +671,7 @@ struct CustomPlayerWithControls: View {
                             storageDataTemp.animeTitle = animeData!.title.english ?? animeData!.title.romaji
                             storageDataTemp.episodeNumber = Int16(animeData!.episodes![episodeIndex].number)
                         }
-                        
+                        **/
                         
                         try? storage.save()
                         

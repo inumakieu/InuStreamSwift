@@ -93,18 +93,20 @@ struct InfoPage: View {
                         .font(.title)
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
+                        .frame(maxWidth: 350)
                         .padding(.top, 14)
                     Text(infoApi.infodata!.title.native)
                         .bold()
                         .font(.subheadline)
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
+                        .frame(maxWidth: 350)
                         .padding(.bottom, 0)
                     
                     TabView(selection: $selection) {
                         ExtraInfoView(infoApi: infoApi)
                             .fixedSize()
-                            .frame(maxWidth: 390)
+                            .frame(maxWidth: 390, alignment: .top)
                             .tag(1)
                         
                         EpisodeView(infoApi: infoApi, mangaApi: mangaApi, id: anilistId)
@@ -114,12 +116,12 @@ struct InfoPage: View {
                         
                         CharacterView(infoApi: infoApi)
                             .fixedSize()
-                            .frame(maxWidth: 390)
+                            .frame(maxWidth: 390, alignment: .top)
                             .tag(3)
                         
                         RelatedView(infoApi: infoApi)
                             .fixedSize()
-                            .frame(maxWidth: 390)
+                            .frame(maxWidth: 390, alignment: .top)
                             .tag(4)
                         
                     }
@@ -551,13 +553,16 @@ struct ExtraInfoView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .top)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxHeight: 1300, alignment: .top)
             .padding(.all, 30)
         }
         .cornerRadius(20)
         .padding(.all, 20)
         .frame(width: 390)
         .frame(maxWidth: .infinity, alignment: .top)
-        .fixedSize()
+        .frame(height: 1300, alignment: .top)
+        .frame(maxHeight: 1300, alignment: .top)
         .cornerRadius(20)
         .padding(.top, 20)
         
@@ -791,6 +796,8 @@ struct ChapterView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(width: 350, alignment: .leading)
+            .frame(height: 1300, alignment: .top)
+            .frame(maxHeight: 1300, alignment: .top)
         }
     }
 }
@@ -859,7 +866,8 @@ struct CharacterView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 780)
+            .frame(height: 1300, alignment: .top)
+            .frame(maxHeight: 1300, alignment: .top)
         }
         
     }
@@ -912,7 +920,8 @@ struct RelatedView: View {
             }
         }
         .frame(maxWidth: 330)
-        .frame(height: 780, alignment: .top)
+        .frame(height: 1300, alignment: .top)
+        .frame(maxHeight: 1300, alignment: .top)
     }
 }
 
