@@ -279,7 +279,7 @@ struct CustomControlsView: View {
                                 .foregroundColor(.white)
                                 .font(.system(size: 16))
                                 .bold()
-                            Text("EP: \(animeData.episodes![episodeIndex].number)")
+                            Text("EP: \(animeData.episodes![episodeIndex].number ?? 0)")
                                 .foregroundColor(Color(hex: "#ff999999"))
                                 .font(.system(size: 16))
                                 .bold()
@@ -465,7 +465,7 @@ struct CustomControlsView: View {
                                             }
                                             
                                             VStack(alignment: .trailing) {
-                                                Text("\(animeData.episodes![index].number)")
+                                                Text("\(animeData.episodes![index].number ?? 0)")
                                                     .bold()
                                                     .font(.headline)
                                                     .bold()
@@ -513,11 +513,48 @@ struct CustomControlsView: View {
             }
             .opacity(showEpisodeSelector ? 1.0 : 0.0)
             .animation(.spring(response: 0.3), value: showEpisodeSelector)
+            
+            ZStack {
+                Color(.white)
+                
+                Text("I’ve never once thought of you as an ally.")
+                    .foregroundColor(.white)
+                    .font(.custom("TrebuchetMS", size: 22))
+                    .italic()
+                    .glowBorder(color: .black, lineWidth: 4)
+                    .shadow(color: Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), radius:0, x:2, y:2)
+            }
+            .frame(maxHeight: 30)
+            
         }
         .opacity(showUI ? 1.0 : 0.0)
         .animation(.spring(response: 0.3), value: showUI)
     }
 }
+
+struct GlowBorder: ViewModifier {
+    var color: Color
+    var lineWidth: Int
+    
+    func body(content: Content) -> some View {
+        applyShadow(content: AnyView(content), lineWidth: lineWidth)
+    }
+    
+    func applyShadow(content: AnyView, lineWidth: Int) -> AnyView {
+        if lineWidth == 0 {
+            return content
+        } else {
+            return applyShadow(content: AnyView(content.shadow(color: color, radius: 1)), lineWidth: lineWidth - 1)
+        }
+    }
+}
+
+extension View {
+    func glowBorder(color: Color, lineWidth: Int) -> some View {
+        self.modifier(GlowBorder(color: color, lineWidth: lineWidth))
+    }
+}
+
 
 class StreamApi : ObservableObject{
     @Published var streamdata: StreamData? = nil
@@ -627,16 +664,21 @@ struct CustomPlayerWithControls: View {
                         
                         // get 1080p res
                         
-                        for i in 0..<streamApi.streamdata!.sources!.count {
-                            if (self.streamApi.streamdata!.sources![i].quality! == "1080p")
-                            {
-                                resIndex = i
-                            }
-                        }
+                        //for i in 0..<streamApi.streamdata!.sources!.count {
+                            //if (self.streamApi.streamdata!.sources![i].quality! == "1080p")
+                            //{
+                                //resIndex = i
+                            //}
+                        //}
                         
                         print(episodeData)
                         
+                        
+                        
                         playerVM.setCurrentItem(AVPlayerItem(url:  URL(string: self.streamApi.streamdata?.sources![resIndex].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
+                        
+                        //playerVM.setCurrentItem(AVPlayerItem(url:  URL(string: "https://cors.proxy.consumet.org/https://cdn.consumet.stream/51b21b61-5216-4861-a6b8-ee4937d8c7fe/streaming/ep-RZT33zUm-dub-1080p.m3u8")!))
+                        
                         
                         let index = animeStorageData.firstIndex(where: {($0.id!) == animeData!.id})
                         if(index != nil && animeStorageData[index!].watched != nil && animeStorageData[index!].currentTime != nil && animeStorageData[index!].episodeNumber == episodeIndex + 1) {
@@ -652,24 +694,24 @@ struct CustomPlayerWithControls: View {
                         let index = animeStorageData.firstIndex(where: {($0.id!) == animeData!.id})
                         print(index)
                         if(index != nil && animeStorageData[index!].watched != nil) {
-                            animeStorageData[index!].watched!.append(animeData!.episodes![episodeIndex].number)
+                            animeStorageData[index!].watched!.append(animeData!.episodes![episodeIndex].number ?? 0)
                             animeStorageData[index!].episodeThumbnail = animeData!.episodes![(animeStorageData[index!].watched!.max() ?? 1) - 1].image
                             animeStorageData[index!].episodeProgress = 0.5
                             animeStorageData[index!].currentTime = playerVM.currentTime
                             animeStorageData[index!].duration = playerVM.duration ?? (24.0 * 60.0)
                             animeStorageData[index!].animeTitle = animeData!.title.english ?? animeData!.title.romaji
-                            animeStorageData[index!].episodeNumber = Int16(animeData!.episodes![episodeIndex].number)
+                            animeStorageData[index!].episodeNumber = Int16(animeData!.episodes![episodeIndex].number ?? 0)
                         } else {
                             print(animeData!.id)
                             let storageDataTemp = AnimeStorageData(context: storage)
                             storageDataTemp.id = animeData!.id
-                            storageDataTemp.watched = [animeData!.episodes![episodeIndex].number]
+                            storageDataTemp.watched = [animeData!.episodes![episodeIndex].number ?? 0]
                             storageDataTemp.episodeProgress = 0.5
                             storageDataTemp.episodeThumbnail = animeData!.episodes![episodeIndex].image
                             storageDataTemp.currentTime = playerVM.currentTime
                             storageDataTemp.duration = playerVM.duration!
                             storageDataTemp.animeTitle = animeData!.title.english ?? animeData!.title.romaji
-                            storageDataTemp.episodeNumber = Int16(animeData!.episodes![episodeIndex].number)
+                            storageDataTemp.episodeNumber = Int16(animeData!.episodes![episodeIndex].number ?? 0)
                         }
                         
                         

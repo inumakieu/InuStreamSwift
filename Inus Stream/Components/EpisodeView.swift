@@ -185,8 +185,8 @@ struct EpisodeView: View {
             if(!isManga) {
                 ScrollView {
                     VStack(spacing: 18) {
-                        ForEach((firstEpisodeNumber - 1)..<(infoApi.infodata!.episodes!.count < lastEpisodeNumber ? infoApi.infodata!.episodes!.count : lastEpisodeNumber - 1), id: \.self) {index in
-                            EpisodeCard(animeData: infoApi.infodata!,title: infoApi.infodata!.episodes![index].title ?? infoApi.infodata!.title.romaji, number: infoApi.infodata!.episodes![index].number, thumbnail: infoApi.infodata!.episodes![index].image, isFiller: infoApi.infodata!.episodes![index].isFiller
+                        ForEach((firstEpisodeNumber - 1)..<(infoApi.infodata!.episodes!.count < lastEpisodeNumber ? infoApi.infodata!.episodes!.count : lastEpisodeNumber), id: \.self) {index in
+                            EpisodeCard(animeData: infoApi.infodata!,title: infoApi.infodata!.episodes![index].title ?? infoApi.infodata!.title.romaji, number: infoApi.infodata!.episodes![index].number ?? 0, thumbnail: infoApi.infodata!.episodes![index].image, isFiller: infoApi.infodata!.episodes![index].isFiller
                             )
                             .contextMenu {
                                 VStack {

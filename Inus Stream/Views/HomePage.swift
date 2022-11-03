@@ -7,6 +7,8 @@
 
 import SwiftUI
 import SnapToScroll
+import SwiftUIFontIcon
+import Firebase
 
 struct HomePage: View {
     @StateObject var api = Api()
@@ -18,29 +20,44 @@ struct HomePage: View {
     @State var canNavigate: Bool = false
     @State var tempData: InfoData? = nil
     @State private var sheetShown = false
+    @State private var autoSkipIntro = false
+    
+    let db = Firestore.firestore()
+    @State var displayName: String = ""
     
     init() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-
-        UINavigationBar.appearance().standardAppearance = appearance
-        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        if #available(iOS 16.0, *) {
-            windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
-        } else {
-            // Fallback on earlier versions
+        getName()
+    }
+    
+    func getName() -> String {
+        if(Auth.auth().currentUser != nil) {
+            print(Auth.auth().currentUser?.email)
+            
+            let docRef = db.collection("users").document(Auth.auth().currentUser!.uid)
+            var name: String = ""
+            
+            docRef.getDocument { (document, error) in
+                guard error == nil else {
+                    print("error", error ?? "")
+                    return
+                }
+                
+                if let document = document, document.exists {
+                    let data = document.data()
+                    if let data = data {
+                        print("data", data)
+                        name =  data["name"] as? String ?? ""
+                    }
+                }
+                
+            }
+            return name
         }
+        
+        return "No User"
     }
     
     var body: some View {
-        
-        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        if #available(iOS 16.0, *) {
-            windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
-        } else {
-            // Fallback on earlier versions
-        }
-        
         return NavigationView {
                 ZStack(alignment: .top) {
                     Color(hex: "#ff16151A")
@@ -205,16 +222,38 @@ struct HomePage: View {
                     }
                     
                         
-                    NavigationLink(destination: SearchPage()) {
+                    
                         HStack {
-                            Image(systemName: "magnifyingglass")
-                                .font(.system(size: 32, weight: .bold))
-                                .foregroundColor(.white)
+                            NavigationLink(destination: SearchPage()) {
+                                ZStack {
+                                    Color(.black)
+                                    
+                                    Image(systemName: "magnifyingglass")
+                                        .font(.system(size: 22, weight: .bold))
+                                        .foregroundColor(.white)
+                                }
+                                .frame(width: 42, height: 42)
+                                .cornerRadius(40)
+                            }
+                            
+                            Spacer()
+                            
+                            AsyncImage(url: URL(string: "https://preview.redd.it/12spjh08sfg31.jpg?auto=webp&s=17b3acfcf4a1af63b940371ac3af02379e24b99a")) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 42, height: 42)
+                                    .cornerRadius(50)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .onTapGesture {
+                                sheetShown.toggle()
+                            }
                         }
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .padding(.horizontal, 20)
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 20)
                         .padding(.top, 12)
-                    }
                 }
             
         }
@@ -222,6 +261,215 @@ struct HomePage: View {
         .onAppear() {
             api.loadData()
             api.loadRecent()
+        }
+        .sheet(isPresented: $sheetShown) {
+            if #available(iOS 16.0, *) {
+                VStack {
+                    
+                    ZStack {
+                        Color(hex: "#ff1E222C")
+                        
+                        VStack {
+                            AsyncImage(url: URL(string: "https://preview.redd.it/12spjh08sfg31.jpg?auto=webp&s=17b3acfcf4a1af63b940371ac3af02379e24b99a")) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 100, height: 100)
+                                    .cornerRadius(50)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            
+                            HStack {
+                                Text("Inumaki")
+                                    .foregroundColor(.white)
+                                    .bold()
+                                    .font(.title)
+                                
+                                
+                                FontIcon.button(.awesome5Solid(code: .crown), action: {
+                                    
+                                }, fontsize: 18)
+                                .foregroundColor(Color(hex: "#ffFFDF00"))
+                            }
+                            
+                            Text("General Settings")
+                                .bold()
+                                .foregroundColor(.white)
+                                .font(.title3)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal, 20)
+                                .padding(.top, 30)
+                            
+                            HStack {
+                                Text("Provider")
+                                    .foregroundColor(.white)
+                                    .bold()
+                                    .font(.subheadline)
+                                
+                                Spacer()
+                                
+                                Menu {
+                                    Button {
+                                        print("pressed")
+                                    } label: {
+                                        Text("Zoro")
+                                    }
+                                    Button {
+                                        print("pressed")
+                                    } label: {
+                                        Text("Gogoanime")
+                                    }
+                                    Button {
+                                        print("pressed")
+                                    } label: {
+                                        Text("9Anime")
+                                    }
+                                    Button {
+                                        print("pressed")
+                                    } label: {
+                                        Text("Crunchyroll")
+                                    }
+                                } label: {
+                                    ZStack {
+                                        Color(hex: "#ff16151A")
+                                            
+                                        Text("Zoro")
+                                                .bold()
+                                                .foregroundColor(.white)
+                                                .frame(width: 120, height: 40)
+                                    }
+                                    .fixedSize()
+                                    .cornerRadius(12)
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal, 20)
+                            
+                            Text("Video Settings")
+                                .bold()
+                                .foregroundColor(.white)
+                                .font(.title3)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal, 20)
+                                .padding(.top, 30)
+                            
+                            HStack {
+                                Text("Autoskip Intro")
+                                    .foregroundColor(.white)
+                                    .bold()
+                                    .font(.subheadline)
+                                
+                                Spacer()
+                                
+                                Toggle("", isOn: $autoSkipIntro)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal, 20)
+                            
+                            HStack {
+                                Text("Autoskip Outro")
+                                    .foregroundColor(.white)
+                                    .bold()
+                                    .font(.subheadline)
+                                
+                                Spacer()
+                                
+                                Toggle("", isOn: $autoSkipIntro)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal, 20)
+                            
+                            HStack {
+                                Text("Autoplay Next Episode")
+                                    .foregroundColor(.white)
+                                    .bold()
+                                    .font(.subheadline)
+                                
+                                Spacer()
+                                
+                                Toggle("", isOn: $autoSkipIntro)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal, 20)
+                            
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text("Subtitle Language")
+                                        .foregroundColor(.white)
+                                        .bold()
+                                        .font(.subheadline)
+                                    
+                                    Text("Falls back to English if unavailable")
+                                        .foregroundColor(Color(hex: "#ff999999"))
+                                        .font(.caption2)
+                                }
+                                
+                                Spacer()
+                                
+                                Menu {
+                                    Button {
+                                        print("pressed")
+                                    } label: {
+                                        Text("English")
+                                    }
+                                    Button {
+                                        print("pressed")
+                                    } label: {
+                                        Text("German")
+                                    }
+                                    Button {
+                                        print("pressed")
+                                    } label: {
+                                        Text("Italian")
+                                    }
+                                    Button {
+                                        print("pressed")
+                                    } label: {
+                                        Text("Japanese")
+                                    }
+                                } label: {
+                                    ZStack {
+                                        Color(hex: "#ff16151A")
+                                            
+                                        Text("English")
+                                                .bold()
+                                                .foregroundColor(.white)
+                                                .frame(width: 120, height: 40)
+                                    }
+                                    .fixedSize()
+                                    .cornerRadius(12)
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal, 20)
+                        }
+                        .frame(maxHeight: .infinity, alignment: .top)
+                        .padding(.top, 70)
+                        
+                        HStack {
+                            ZStack {
+                                Color(hex: "#ff16151A")
+                                
+                                Image(systemName: "xmark")
+                                    .foregroundColor(.white)
+                                    .bold()
+                            }
+                            .frame(maxWidth: 40, maxHeight: 40)
+                            .cornerRadius(30)
+                            .onTapGesture {
+                                sheetShown.toggle()
+                            }
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+                        .padding(20)
+                    }
+                    .presentationDetents([.large])
+                    .edgesIgnoringSafeArea(.bottom)
+                }
+            } else {
+                // Fallback on earlier versions
+            }
         }
             
     }
@@ -231,6 +479,7 @@ struct HomePage: View {
 struct HomePage_Previews: PreviewProvider {
     static var previews: some View {
         HomePage()
+            .preferredColorScheme(.dark)
     }
 }
 

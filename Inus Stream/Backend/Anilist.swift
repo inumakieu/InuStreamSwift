@@ -12,8 +12,10 @@ class Anilist : ObservableObject{
     @Published var recentsData = [IAnimeRecent]()
     @Published var infodata: InfoData? = nil
     
+    let baseUrl: String = "https://api.consumet.org"
+    
     func getTrending() {
-        guard let url = URL(string: "https://api.consumet.org/meta/anilist/trending") else {
+        guard let url = URL(string: "\(baseUrl)/meta/anilist/trending") else {
             print("Invalid url...")
             return
         }
@@ -26,7 +28,7 @@ class Anilist : ObservableObject{
     }
     
     func getRecents() {
-        guard let url = URL(string: "https://api.consumet.org/meta/anilist/recent-episodes") else {
+        guard let url = URL(string: "\(baseUrl)/meta/anilist/recent-episodes") else {
             print("Invalid url...")
             return
         }
@@ -39,7 +41,7 @@ class Anilist : ObservableObject{
     }
     
     func getInfo(id: String) {
-        guard let url = URL(string: "https://api.consumet.org/meta/anilist/info/\(id)?fetchFiller=true") else {
+        guard let url = URL(string: "\(baseUrl)/meta/anilist/info/\(id)?fetchFiller=true") else {
             print("Invalid url...")
             return
         }
@@ -175,7 +177,7 @@ struct Episode: Codable, Identifiable {
     let id: String
     let title: String?
     let description: String?
-    let number: Int
+    let number: Int?
     let image: String
     let isFiller: Bool?
 }

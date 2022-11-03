@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = HostingController(
                 wrappedView:
-                    HomePage().environment(\.managedObjectContext, dataController.container.viewContext)
+                    HomePageWrapperView().environment(\.managedObjectContext, dataController.container.viewContext)
             )
             self.window = window
             window.makeKeyAndVisible()
