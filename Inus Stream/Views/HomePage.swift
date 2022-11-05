@@ -100,15 +100,18 @@ struct HomePage: View {
                             .frame(maxWidth: .infinity)
                             .padding(.top, 0)
                             
-                            Text("Continue watching")
-                                .foregroundColor(.white)
-                                .bold()
-                                .font(.title2)
-                                .padding(.horizontal, 30)
-                                .padding(.top, 0)
-                                .padding(.bottom, -12)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
+                            if(animeStorageData == nil) {
+                                
+                                Text("Continue watching")
+                                    .foregroundColor(.white)
+                                    .bold()
+                                    .font(.title2)
+                                    .padding(.horizontal, 30)
+                                    .padding(.top, 0)
+                                    .padding(.bottom, -12)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                                
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(alignment: .top, spacing: 20) {
                                     ForEach(animeStorageData) {data in

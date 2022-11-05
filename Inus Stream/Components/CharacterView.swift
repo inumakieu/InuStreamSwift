@@ -10,6 +10,14 @@ import SwiftUI
 struct CharacterView: View {
     let infoApi: InfoApi
     
+    func onEndOfList() {
+        print("bottom")
+    }
+    
+    func onTopOfList() {
+        print("top")
+    }
+    
     var body: some View {
         VStack {
             ScrollView(.vertical) {
@@ -70,9 +78,13 @@ struct CharacterView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 1300, alignment: .top)
-            .frame(maxHeight: 1300, alignment: .top)
+            .frame(height: 700, alignment: .top)
+            .frame(maxHeight: 700, alignment: .top)
+            
+            Spacer()
         }
+        .frame(height: 1300, alignment: .top)
+        .frame(maxHeight: 1300, alignment: .top)
         
     }
 }

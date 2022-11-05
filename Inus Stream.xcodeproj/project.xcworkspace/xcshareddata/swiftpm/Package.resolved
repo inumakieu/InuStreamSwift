@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "activityindicatorview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/exyte/ActivityIndicatorView.git",
+      "state" : {
+        "revision" : "0fb57e69b6130b4beb8ba49eaafe13563f2f6bd6",
+        "version" : "1.1.0"
+      }
+    },
+    {
       "identity" : "boringssl-swiftpm",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/boringssl-SwiftPM.git",
@@ -151,6 +160,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "e2cd31e59f61478dae08b9f941bfb910c9413f00"
+      }
+    },
+    {
+      "identity" : "swiftwebvtt",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/thisIsTheFoxe/SwiftWebVTT",
+      "state" : {
+        "revision" : "a02faf7e8ba5d1369e390661768482618581c192",
+        "version" : "0.1.0"
       }
     }
   ],

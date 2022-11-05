@@ -23,7 +23,7 @@ struct SearchPage: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 30)
-                        .padding(.top, 30)
+                        .padding(.top, 0)
                         
                     
                     ZStack {

@@ -12,10 +12,13 @@
 		588B11FA28D90DD1007CA197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 588B11F928D90DD1007CA197 /* Assets.xcassets */; };
 		588B11FD28D90DD1007CA197 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 588B11FC28D90DD1007CA197 /* Preview Assets.xcassets */; };
 		588B120428D91452007CA197 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B120328D91452007CA197 /* HomePage.swift */; };
+		E9329F8E2915F652000C2A40 /* ActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = E9329F8D2915F652000C2A40 /* ActivityIndicatorView */; };
 		E935A67E29132FAE00CD7639 /* Trebuchet-MS-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E935A67C29132FAE00CD7639 /* Trebuchet-MS-Italic.ttf */; };
 		E935A67F29132FAE00CD7639 /* trebuc.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E935A67D29132FAE00CD7639 /* trebuc.ttf */; };
 		E935A6812913331700CD7639 /* TrebuchetMSItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E935A6802913331700CD7639 /* TrebuchetMSItalic.ttf */; };
 		E935A6822913337F00CD7639 /* Inus-Stream-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9933E9B28E1633700751BBE /* Inus-Stream-Info.plist */; };
+		E935A68529147F8200CD7639 /* SwiftWebVTT in Frameworks */ = {isa = PBXBuildFile; productRef = E935A68429147F8200CD7639 /* SwiftWebVTT */; };
+		E935A6872914A31800CD7639 /* TextTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E935A6862914A31800CD7639 /* TextTest.swift */; };
 		E966283028F41F730090628D /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E966282F28F41F730090628D /* HostingController.swift */; };
 		E966283228F41FB00090628D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E966283128F41FB00090628D /* AppDelegate.swift */; };
 		E966283428F41FCC0090628D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E966283328F41FCC0090628D /* SceneDelegate.swift */; };
@@ -59,6 +62,7 @@
 		E935A67C29132FAE00CD7639 /* Trebuchet-MS-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Trebuchet-MS-Italic.ttf"; path = "../../../../Downloads/trebuchet-ms-2-cufonfonts/Trebuchet-MS-Italic.ttf"; sourceTree = "<group>"; };
 		E935A67D29132FAE00CD7639 /* trebuc.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = trebuc.ttf; path = "../../../../Downloads/trebuchet-ms-2-cufonfonts/trebuc.ttf"; sourceTree = "<group>"; };
 		E935A6802913331700CD7639 /* TrebuchetMSItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = TrebuchetMSItalic.ttf; sourceTree = "<group>"; };
+		E935A6862914A31800CD7639 /* TextTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTest.swift; sourceTree = "<group>"; };
 		E966282F28F41F730090628D /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
 		E966283128F41FB00090628D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E966283328F41FCC0090628D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -92,7 +96,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9329F8E2915F652000C2A40 /* ActivityIndicatorView in Frameworks */,
 				E9933E9828E153B400751BBE /* Shimmer in Frameworks */,
+				E935A68529147F8200CD7639 /* SwiftWebVTT in Frameworks */,
 				E9892C97290A28D4008E8C9B /* FirebaseAuth in Frameworks */,
 				E9933E8F28E019FC00751BBE /* SwiftUISnappingScrollView in Frameworks */,
 				5871865F28DA849400BABB66 /* SnapToScroll in Frameworks */,
@@ -173,6 +179,7 @@
 				E9892C9F290C9951008E8C9B /* HomePageWrapperView.swift */,
 				E9892CA1290C99DB008E8C9B /* HomePageMac.swift */,
 				E9892CA3290CB224008E8C9B /* InfoPageMac.swift */,
+				E935A6862914A31800CD7639 /* TextTest.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -227,6 +234,8 @@
 				E9892C96290A28D4008E8C9B /* FirebaseAuth */,
 				E9892C98290A28D4008E8C9B /* FirebaseDatabase */,
 				E9892C9A290A28D4008E8C9B /* FirebaseFirestore */,
+				E935A68429147F8200CD7639 /* SwiftWebVTT */,
+				E9329F8D2915F652000C2A40 /* ActivityIndicatorView */,
 			);
 			productName = "Inus Stream";
 			productReference = 588B11F228D90DCF007CA197 /* Inus Stream.app */;
@@ -263,6 +272,8 @@
 				E9933E9C28E1721400751BBE /* XCRemoteSwiftPackageReference "FASwiftUI" */,
 				E9933E9F28E1736F00751BBE /* XCRemoteSwiftPackageReference "SwiftUIFontIcon" */,
 				E9892C95290A28D4008E8C9B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				E935A68329147F8200CD7639 /* XCRemoteSwiftPackageReference "SwiftWebVTT" */,
+				E9329F8C2915F652000C2A40 /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */,
 			);
 			productRefGroup = 588B11F328D90DCF007CA197 /* Products */;
 			projectDirPath = "";
@@ -308,6 +319,7 @@
 				E966283628F420590090628D /* Inus_StreamApp.swift in Sources */,
 				E966283228F41FB00090628D /* AppDelegate.swift in Sources */,
 				E966283428F41FCC0090628D /* SceneDelegate.swift in Sources */,
+				E935A6872914A31800CD7639 /* TextTest.swift in Sources */,
 				E9CBF17428E2775B00F1BC29 /* SeekbarView.swift in Sources */,
 				E966283028F41F730090628D /* HostingController.swift in Sources */,
 				E9CBF17828E3D93C00F1BC29 /* SearchPage.swift in Sources */,
@@ -444,7 +456,7 @@
 		588B120128D90DD1007CA197 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -475,7 +487,7 @@
 		588B120228D90DD1007CA197 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -535,6 +547,22 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		E9329F8C2915F652000C2A40 /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/ActivityIndicatorView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		E935A68329147F8200CD7639 /* XCRemoteSwiftPackageReference "SwiftWebVTT" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/thisIsTheFoxe/SwiftWebVTT";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 		E9892C95290A28D4008E8C9B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -582,6 +610,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5871865D28DA849400BABB66 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */;
 			productName = SnapToScroll;
+		};
+		E9329F8D2915F652000C2A40 /* ActivityIndicatorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E9329F8C2915F652000C2A40 /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */;
+			productName = ActivityIndicatorView;
+		};
+		E935A68429147F8200CD7639 /* SwiftWebVTT */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E935A68329147F8200CD7639 /* XCRemoteSwiftPackageReference "SwiftWebVTT" */;
+			productName = SwiftWebVTT;
 		};
 		E9892C96290A28D4008E8C9B /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;

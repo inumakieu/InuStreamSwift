@@ -170,7 +170,7 @@ struct ExtraInfoView: View {
                         
                         Spacer().frame(maxHeight: 6)
                         
-                        Text("\(infoApi.infodata!.releaseDate)")
+                        Text(String(infoApi.infodata!.releaseDate))
                             .bold()
                             .foregroundColor(Color(hex: "#ff999999"))
                             .font(.title3)

@@ -39,14 +39,7 @@ struct InfoPage: View {
     }
     
     var body: some View {
-        
-        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        if #available(iOS 16.0, *) {
-            windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .portrait))
-        } else {
-            // Fallback on earlier versions
-        }
-        return ZStack(alignment: .top) {
+        ZStack(alignment: .top) {
             Color(hex: "#ff16151A")
                 .ignoresSafeArea()
             
@@ -126,29 +119,29 @@ struct InfoPage: View {
                         
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
-                        .indexViewStyle(.page(backgroundDisplayMode: .always))
-                        .frame(height: 1300, alignment: .top)
-                        .frame(maxWidth: 390, alignment: .top)
-                        .animation(.spring(response: 0.3), value: selection)
-                        .onChange(of: selection, perform: { index in
-                            if(selection == 1) {
-                                pillWidth = 78
-                                paddingOffset = 238
-                                paddingStyle = .trailing
-                            } else if(selection == 2) {
-                                pillWidth = 78
-                                paddingOffset = 80
-                                paddingStyle = .trailing
-                            } else if(selection == 3) {
-                                pillWidth = 88
-                                paddingOffset = -90
-                                paddingStyle = .trailing
-                            } else {
-                                pillWidth = 68
-                                paddingOffset = 246
-                                paddingStyle = .leading
-                            }
-                        })
+                    .indexViewStyle(.page(backgroundDisplayMode: .always))
+                    .frame(height: 1300, alignment: .top)
+                    .frame(maxWidth: 390, alignment: .top)
+                    .animation(.spring(response: 0.3), value: selection)
+                    .onChange(of: selection, perform: { index in
+                        if(selection == 1) {
+                            pillWidth = 78
+                            paddingOffset = 238
+                            paddingStyle = .trailing
+                        } else if(selection == 2) {
+                            pillWidth = 78
+                            paddingOffset = 80
+                            paddingStyle = .trailing
+                        } else if(selection == 3) {
+                            pillWidth = 88
+                            paddingOffset = -90
+                            paddingStyle = .trailing
+                        } else {
+                            pillWidth = 68
+                            paddingOffset = 246
+                            paddingStyle = .leading
+                        }
+                    })
                     
                 }
                 .ignoresSafeArea()
@@ -248,16 +241,6 @@ struct InfoPage: View {
                 .redacted(reason: .placeholder).shimmering(active: true)
             }
             
-            Button(action: {
-                self.presentation.wrappedValue.dismiss()
-            }, label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 28, weight: .heavy))
-                    .foregroundColor(.white)
-            })
-            .frame(maxWidth: .infinity,alignment: .leading)
-            .padding(.leading, 20)
-            
             // Bottom NavBar
             VStack(alignment: .trailing) {
                 ZStack {
@@ -337,25 +320,23 @@ struct InfoPage: View {
             .ignoresSafeArea()
             .edgesIgnoringSafeArea(.all)
             
+            Button(action: {
+                self.presentation.wrappedValue.dismiss()
+            }, label: {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(.white)
+            })
+            .frame(maxWidth: 390, alignment: .leading)
+            .padding(.leading, 40)
+            .padding(.top, 20)
+            
         }
         .onAppear() {
             infoApi.loadInfo(id: anilistId)
         }
         .supportedOrientation(.portrait)
-        .prefersHomeIndicatorAutoHidden(true)
         .navigationBarBackButtonHidden(true)
-        
-        .contentShape(Rectangle()) // Start of the gesture to dismiss the navigation
-        .gesture(
-            DragGesture(coordinateSpace: .local)
-                .onEnded { value in
-                    if value.translation.width > .zero
-                        && value.translation.height > -30
-                        && value.translation.height < 30 {
-                        presentation.wrappedValue.dismiss()
-                    }
-                }
-        )
     }
 }
 
@@ -369,8 +350,10 @@ struct InfoPage_Previews: PreviewProvider {
 class InfoApi : ObservableObject{
     @Published var infodata: InfoData? = nil
     
+    let provider = "gogoanime" // or gogoanime
+    
     func loadInfo(id: String) {
-        guard let url = URL(string: "https://api.consumet.org/meta/anilist/info/\(id)?fetchFiller=true") else {
+        guard let url = URL(string: "https://api.consumet.org/meta/anilist/info/\(id)?fetchFiller=true&provider=\(provider)") else {
             print("Invalid url...")
             return
         }
