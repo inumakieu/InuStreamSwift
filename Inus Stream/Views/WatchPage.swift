@@ -28,9 +28,13 @@ final class PlayerViewModel: ObservableObject {
     @Published var currentSubs: [WebVTT.Cue] = []
     @Published var isLoading: Bool = true
     @Published var hasError: Bool = false
+    @Published var id: String = ""
+    @Published var episodeNumber: Int = 1
     
     private var subscriptions: Set<AnyCancellable> = []
+    private var errorsubscriptions: Set<AnyCancellable> = []
     private var timeObserver: Any?
+    private var errorObserver: Any?
     
     deinit {
         if let timeObserver = timeObserver {
@@ -88,6 +92,22 @@ final class PlayerViewModel: ObservableObject {
                 }
             }
         }
+        
+        player.publisher(for: \.status)
+            .sink { [weak self] sts in
+                switch sts {
+                case .failed:
+                    self?.hasError = true
+                    print("ERROR")
+                case .readyToPlay:
+                    self?.hasError = false
+                case .unknown:
+                    self?.hasError = true
+                @unknown default:
+                    break
+                }
+            }
+            .store(in: &errorsubscriptions)
     }
     
     func getSubtitleText() {
@@ -272,7 +292,7 @@ extension AnyTransition {
 }
 
 struct CustomControlsView: View {
-    var episodeData: StreamData?
+    @State var episodeData: StreamData?
     let animeData: InfoData
     @State var qualityIndex: Int = 0
     @State var selectedSubtitleIndex: Int = 0
@@ -286,7 +306,7 @@ struct CustomControlsView: View {
     @State var volumeDrag: Bool = false
     @State var showSubs: Bool = true
     
-    let provider = "gogoanime" // or gogoanime
+    @State var provider = "gogoanime" // or gogoanime
     @State var showingPopup = false
     @State var selectedSetting: SettingsNames = SettingsNames.home
     @State var rotation: Double = 0.0
@@ -509,8 +529,38 @@ struct CustomControlsView: View {
                         }
                         else {
                             ZStack {
-                                ActivityIndicatorView(isVisible: $playerVM.isLoading, type: .growingArc(.white, lineWidth: 4))
-                                    .frame(maxWidth: 40, maxHeight: 40)
+                                if(playerVM.hasError == true) {
+                                    ActivityIndicatorView(isVisible: $playerVM.isLoading, type: .growingArc(.white, lineWidth: 4))
+                                        .frame(maxWidth: 40, maxHeight: 40)
+                                } else {
+                                    HStack {
+                                        
+                                        ZStack {
+                                            Color(hex: "#ffFFE0E4")
+                                            
+                                            FontIcon.button(.awesome5Solid(code: .exclamation_triangle), action: {
+                                                
+                                            }, fontsize: 32)
+                                            .foregroundColor(Color(hex: "#ffDE2627"))
+                                            .padding(.bottom, 4)
+                                        }
+                                        .frame(maxWidth: 62, maxHeight: 62)
+                                        .cornerRadius(31)
+                                        
+                                        VStack(alignment: .leading) {
+                                            Text("Video Loading failed")
+                                                .foregroundColor(.white)
+                                                .bold()
+                                                .font(.title)
+                                            
+                                            Text("There was an error fetching the video file. Please try again later.")
+                                                .foregroundColor(.white.opacity(0.7))
+                                                .bold()
+                                                .font(.subheadline)
+                                                .frame(maxWidth: 280)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -591,7 +641,7 @@ struct CustomControlsView: View {
                                                     selectedSetting = SettingsNames.quality
                                                 }
                                             
-                                            SettingsOption(setting_name: "Provider", selected_option: "zoro")
+                                            SettingsOption(setting_name: "Provider", selected_option: provider)
                                                 .onTapGesture {
                                                     selectedSetting = SettingsNames.provider
                                                 }
@@ -718,7 +768,9 @@ struct CustomControlsView: View {
                                         else if(selectedSetting == SettingsNames.provider) {
                                             VStack {
                                                 ZStack {
-                                                    Color(hex: "#ff464E6C")
+                                                    if(provider == "zoro") {
+                                                        Color(hex: "#ff464E6C")
+                                                    }
                                                     
                                                     Text("zoro")
                                                         .fontWeight(.medium)
@@ -730,8 +782,62 @@ struct CustomControlsView: View {
                                                 .frame(width: 170, height: 32)
                                                 .frame(maxWidth: 170, maxHeight: 32)
                                                 .cornerRadius(8)
+                                                .onTapGesture(perform: {
+                                                    Task {
+                                                        provider = "zoro"
+                                                        
+                                                        let infoApi = InfoApi()
+                                                        
+                                                        await infoApi.loadInfoAsync(id: playerVM.id, provider: provider)
+                                                        
+                                                        let ep_id = infoApi.infodata!.episodes![playerVM.episodeNumber].id
+                                                        
+                                                        await streamApi.loadStream(id: ep_id, provider: provider)
+                                                        
+                                                        let tempTime = playerVM.currentTime
+                                                        
+                                                        episodeData = streamApi.streamdata!
+                                                        
+                                                        if(episodeData?.subtitles != nil) {
+                                                            var content: String
+                                                            var index = 0
+                                                            
+                                                            for sub in 0..<episodeData!.subtitles!.count {
+                                                                if(episodeData!.subtitles![sub].lang == "English") {
+                                                                    index = sub
+                                                                }
+                                                            }
+                                                            
+                                                            playerVM.selectedSubtitleIndex = index
+                                                            
+                                                            if let url = URL(string: episodeData!.subtitles![index].url) {
+                                                                do {
+                                                                    content = try String(contentsOf: url)
+                                                                    //print(content)
+                                                                } catch {
+                                                                    // contents could not be loaded
+                                                                    content = ""
+                                                                }
+                                                            } else {
+                                                                // the URL was bad!
+                                                                content = ""
+                                                            }
+                                                            
+                                                            let parser = WebVTTParser(string: content.replacingOccurrences(of: "<i>", with: "_").replacingOccurrences(of: "</i>", with: "_").replacingOccurrences(of: "<b>", with: "*").replacingOccurrences(of: "</b>", with: "*"))
+                                                            let webVTT = try? parser.parse()
+                                                            
+                                                            playerVM.webVTT = webVTT
+                                                        }
+                                                        
+                                                        playerVM.setCurrentItem(AVPlayerItem(url: URL(string:  self.streamApi.streamdata?.sources?[0].url ?? "/")!))
+                                                        await playerVM.player.seek(to: CMTime(seconds: tempTime, preferredTimescale: 1), toleranceBefore: .zero, toleranceAfter: .zero)
+                                                    }
+                                                })
                                                 
                                                 ZStack {
+                                                    if(provider == "gogoanime") {
+                                                        Color(hex: "#ff464E6C")
+                                                    }
                                                     
                                                     Text("gogoanime")
                                                         .fontWeight(.medium)
@@ -743,6 +849,18 @@ struct CustomControlsView: View {
                                                 .frame(width: 170, height: 32)
                                                 .frame(maxWidth: 170, maxHeight: 32)
                                                 .cornerRadius(8)
+                                                .onTapGesture(perform: {
+                                                    Task {
+                                                        provider = "gogoanime"
+                                                        await streamApi.loadStream(id: playerVM.id, provider: provider)
+                                                        
+                                                        let tempTime = playerVM.currentTime
+                                                        
+                                                        playerVM.setCurrentItem(AVPlayerItem(url: URL(string:  self.streamApi.streamdata?.sources?[0].url ?? "/")!))
+                                                        playerVM.player.play()
+                                                        await playerVM.player.seek(to: CMTime(seconds: tempTime, preferredTimescale: 1), toleranceBefore: .zero, toleranceAfter: .zero)
+                                                    }
+                                                })
                                             }
                                             .transition(.backslide)
                                         }
@@ -764,7 +882,7 @@ struct CustomControlsView: View {
                                 Task {
                                     self.episodeIndex = self.episodeIndex + 1
                                     await self.streamApi.loadStream(id: self.animeData.episodes![episodeIndex].id, provider: provider)
-                                    playerVM.setCurrentItem(AVPlayerItem(url: URL(string:  self.streamApi.streamdata?.sources![0].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
+                                    playerVM.setCurrentItem(AVPlayerItem(url: URL(string:  self.streamApi.streamdata?.sources![0].url ?? "/")!))
                                     playerVM.player.play()
                                 }
                                 
@@ -837,8 +955,12 @@ struct CustomControlsView: View {
                                             .onTapGesture {
                                                 Task {
                                                     self.episodeIndex = self.episodeIndex  + index - 1
+                                                    
+                                                    playerVM.id = self.animeData.id
+                                                    playerVM.episodeNumber = episodeIndex
+                                                    
                                                     await self.streamApi.loadStream(id: self.animeData.episodes![episodeIndex].id, provider: provider)
-                                                    playerVM.setCurrentItem(AVPlayerItem(url: URL(string:  self.streamApi.streamdata?.sources![0].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
+                                                    playerVM.setCurrentItem(AVPlayerItem(url: URL(string:  self.streamApi.streamdata?.sources![0].url ?? "/")!))
                                                     playerVM.player.play()
                                                 }
                                             }
@@ -1023,7 +1145,6 @@ class StreamApi : ObservableObject{
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             self.streamdata = try! JSONDecoder().decode(StreamData.self, from: data)
-            
         } catch {
             print("couldnt load data")
         }
@@ -1156,18 +1277,22 @@ struct CustomPlayerWithControls: View {
                         }
                     }
                     .task {
+                        playerVM.episodeNumber = episodeIndex
+                        
                         await self.streamApi.loadStream(id: self.animeData!.episodes![episodeIndex].id, provider: provider)
                         
                         episodeData = streamApi.streamdata!
+                        playerVM.id = self.animeData!.id
                         
                         // get 1080p res
                         
-                        //for i in 0..<streamApi.streamdata!.sources!.count {
-                        //if (self.streamApi.streamdata!.sources![i].quality! == "1080p")
-                        //{
-                        //resIndex = i
-                        //}
-                        //}
+                        if(streamApi.streamdata != nil && streamApi.streamdata!.sources != nil) {
+                            for i in 0..<streamApi.streamdata!.sources!.count {
+                                if (self.streamApi.streamdata!.sources![i].quality! == "1080p") {
+                                    resIndex = i
+                                }
+                            }
+                        }
                         
                         print(episodeData)
                         
@@ -1202,11 +1327,7 @@ struct CustomPlayerWithControls: View {
                             playerVM.webVTT = webVTT
                         }
                         
-                        
-                        
-                        playerVM.setCurrentItem(AVPlayerItem(url:  URL(string: self.streamApi.streamdata?.sources?[resIndex].url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8")!))
-                        
-                        //playerVM.setCurrentItem(AVPlayerItem(url:  URL(string: "https://cors.proxy.consumet.org/https://cdn.consumet.stream/51b21b61-5216-4861-a6b8-ee4937d8c7fe/streaming/ep-RZT33zUm-dub-1080p.m3u8")!))
+                        playerVM.setCurrentItem(AVPlayerItem(url:  URL(string: self.streamApi.streamdata?.sources?[resIndex].url ?? "/")!))
                         
                         
                         let index = animeStorageData.firstIndex(where: {($0.id!) == animeData!.id})

@@ -365,6 +365,20 @@ class InfoApi : ObservableObject{
             }
         }.resume()
     }
+    
+    func loadInfoAsync(id: String, provider: String) async {
+        guard let url = URL(string: "https://api.consumet.org/meta/anilist/info/\(id)?fetchFiller=true&provider=\(provider)") else {
+            print("Invalid url...")
+            return
+        }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            self.infodata = try! JSONDecoder().decode(InfoData.self, from: data)
+            
+        } catch {
+            print("couldnt load data")
+        }
+    }
 }
 
 
