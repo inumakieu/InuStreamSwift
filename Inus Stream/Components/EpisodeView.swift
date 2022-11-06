@@ -131,6 +131,7 @@ struct EpisodeView: View {
                             .font(.caption)
                             .bold()
                             .multilineTextAlignment(.center)
+                            .foregroundColor(.white)
                     }
                     .frame(height: 40)
                     .frame(maxWidth: 100)

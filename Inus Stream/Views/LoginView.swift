@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftUIFontIcon
-import Firebase
 
 struct LoginView: View {
     
@@ -148,19 +147,6 @@ struct LoginView: View {
     
     func login() {
         print("Login requested")
-        Auth.auth().signIn(withEmail: emailString, password: passString) { (result, error) in
-                    if error != nil {
-                        print(error?.localizedDescription ?? "")
-                    } else {
-                        print("success")
-                        
-                        print(Auth.auth().currentUser?.uid)
-                        
-                        navigate = true
-                    }
-                }
-        
-        
     }
 }
 

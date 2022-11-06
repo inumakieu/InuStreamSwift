@@ -8,7 +8,6 @@
 import SwiftUI
 import SnapToScroll
 import SwiftUIFontIcon
-import Firebase
 
 struct HomePage: View {
     @StateObject var api = Api()
@@ -22,7 +21,6 @@ struct HomePage: View {
     @State private var sheetShown = false
     @State private var autoSkipIntro = false
     
-    let db = Firestore.firestore()
     @State var displayName: String = ""
     
     init() {
@@ -30,30 +28,6 @@ struct HomePage: View {
     }
     
     func getName() -> String {
-        if(Auth.auth().currentUser != nil) {
-            print(Auth.auth().currentUser?.email)
-            
-            let docRef = db.collection("users").document(Auth.auth().currentUser!.uid)
-            var name: String = ""
-            
-            docRef.getDocument { (document, error) in
-                guard error == nil else {
-                    print("error", error ?? "")
-                    return
-                }
-                
-                if let document = document, document.exists {
-                    let data = document.data()
-                    if let data = data {
-                        print("data", data)
-                        name =  data["name"] as? String ?? ""
-                    }
-                }
-                
-            }
-            return name
-        }
-        
         return "No User"
     }
     
@@ -260,6 +234,7 @@ struct HomePage: View {
                 }
             
         }
+        .navigationViewStyle(StackNavigationViewStyle())
         .accentColor(.white)
         .onAppear() {
             api.loadData()
@@ -562,14 +537,17 @@ struct ExtractedView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.red)
                         .font(.subheadline)
-                    Text("- Status:")
+                        .padding(.leading, -4)
+                    Text(.init("*•* Status:"))
                         .fontWeight(.semibold)
                         .font(.subheadline)
+                        .padding(.leading, -4)
                     Text("\(item.status)")
                         .fontWeight(.bold)
                         .textCase(.uppercase)
                         .foregroundColor(.red)
                         .font(.subheadline)
+                        .padding(.leading, -4)
                 }
                 Text("\(item.title.english ?? item.title.romaji)")
                     .bold()

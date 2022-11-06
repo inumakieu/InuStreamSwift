@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5871865F28DA849400BABB66 /* SnapToScroll in Frameworks */ = {isa = PBXBuildFile; productRef = 5871865E28DA849400BABB66 /* SnapToScroll */; };
 		588B11F828D90DCF007CA197 /* RecentAnimeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B11F728D90DCF007CA197 /* RecentAnimeCard.swift */; };
 		588B11FA28D90DD1007CA197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 588B11F928D90DD1007CA197 /* Assets.xcassets */; };
 		588B11FD28D90DD1007CA197 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 588B11FC28D90DD1007CA197 /* Preview Assets.xcassets */; };
@@ -31,14 +30,10 @@
 		E9892C9029079824008E8C9B /* EpisodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9892C8F29079824008E8C9B /* EpisodeView.swift */; };
 		E9892C922907983D008E8C9B /* ExtraInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9892C912907983D008E8C9B /* ExtraInfoView.swift */; };
 		E9892C94290A0348008E8C9B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9892C93290A0348008E8C9B /* LoginView.swift */; };
-		E9892C97290A28D4008E8C9B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E9892C96290A28D4008E8C9B /* FirebaseAuth */; };
-		E9892C99290A28D4008E8C9B /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = E9892C98290A28D4008E8C9B /* FirebaseDatabase */; };
-		E9892C9B290A28D4008E8C9B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = E9892C9A290A28D4008E8C9B /* FirebaseFirestore */; };
 		E9892C9D290ACDAB008E8C9B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9892C9C290ACDAB008E8C9B /* GoogleService-Info.plist */; };
 		E9892CA0290C9951008E8C9B /* HomePageWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9892C9F290C9951008E8C9B /* HomePageWrapperView.swift */; };
 		E9892CA2290C99DB008E8C9B /* HomePageMac.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9892CA1290C99DB008E8C9B /* HomePageMac.swift */; };
 		E9892CA4290CB224008E8C9B /* InfoPageMac.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9892CA3290CB224008E8C9B /* InfoPageMac.swift */; };
-		E9933E8F28E019FC00751BBE /* SwiftUISnappingScrollView in Frameworks */ = {isa = PBXBuildFile; productRef = E9933E8E28E019FC00751BBE /* SwiftUISnappingScrollView */; };
 		E9933E9128E02A2400751BBE /* ContinueWatching.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9028E02A2400751BBE /* ContinueWatching.swift */; };
 		E9933E9328E1220400751BBE /* InfoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9228E1220400751BBE /* InfoPage.swift */; };
 		E9933E9528E1282100751BBE /* EpisodeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9933E9428E1282100751BBE /* EpisodeCard.swift */; };
@@ -99,12 +94,7 @@
 				E9329F8E2915F652000C2A40 /* ActivityIndicatorView in Frameworks */,
 				E9933E9828E153B400751BBE /* Shimmer in Frameworks */,
 				E935A68529147F8200CD7639 /* SwiftWebVTT in Frameworks */,
-				E9892C97290A28D4008E8C9B /* FirebaseAuth in Frameworks */,
-				E9933E8F28E019FC00751BBE /* SwiftUISnappingScrollView in Frameworks */,
-				5871865F28DA849400BABB66 /* SnapToScroll in Frameworks */,
 				E9933EA128E1736F00751BBE /* SwiftUIFontIcon in Frameworks */,
-				E9892C9B290A28D4008E8C9B /* FirebaseFirestore in Frameworks */,
-				E9892C99290A28D4008E8C9B /* FirebaseDatabase in Frameworks */,
 				E9933E9E28E1721400751BBE /* FASwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -226,14 +216,9 @@
 			);
 			name = "Inus Stream";
 			packageProductDependencies = (
-				5871865E28DA849400BABB66 /* SnapToScroll */,
-				E9933E8E28E019FC00751BBE /* SwiftUISnappingScrollView */,
 				E9933E9728E153B400751BBE /* Shimmer */,
 				E9933E9D28E1721400751BBE /* FASwiftUI */,
 				E9933EA028E1736F00751BBE /* SwiftUIFontIcon */,
-				E9892C96290A28D4008E8C9B /* FirebaseAuth */,
-				E9892C98290A28D4008E8C9B /* FirebaseDatabase */,
-				E9892C9A290A28D4008E8C9B /* FirebaseFirestore */,
 				E935A68429147F8200CD7639 /* SwiftWebVTT */,
 				E9329F8D2915F652000C2A40 /* ActivityIndicatorView */,
 			);
@@ -266,12 +251,9 @@
 			);
 			mainGroup = 588B11E928D90DCF007CA197;
 			packageReferences = (
-				5871865D28DA849400BABB66 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */,
-				E9933E8D28E019FC00751BBE /* XCRemoteSwiftPackageReference "SwiftUISnappingScrollView" */,
 				E9933E9628E153B400751BBE /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */,
 				E9933E9C28E1721400751BBE /* XCRemoteSwiftPackageReference "FASwiftUI" */,
 				E9933E9F28E1736F00751BBE /* XCRemoteSwiftPackageReference "SwiftUIFontIcon" */,
-				E9892C95290A28D4008E8C9B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				E935A68329147F8200CD7639 /* XCRemoteSwiftPackageReference "SwiftWebVTT" */,
 				E9329F8C2915F652000C2A40 /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */,
 			);
@@ -539,14 +521,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5871865D28DA849400BABB66 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/swiftui-library/hstack-snap-to-scroll";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		E9329F8C2915F652000C2A40 /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/exyte/ActivityIndicatorView.git";
@@ -561,22 +535,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.1.0;
-			};
-		};
-		E9892C95290A28D4008E8C9B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 9.0.0;
-			};
-		};
-		E9933E8D28E019FC00751BBE /* XCRemoteSwiftPackageReference "SwiftUISnappingScrollView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ciaranrobrien/SwiftUISnappingScrollView.git";
-			requirement = {
-				branch = main;
-				kind = branch;
 			};
 		};
 		E9933E9628E153B400751BBE /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */ = {
@@ -606,11 +564,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5871865E28DA849400BABB66 /* SnapToScroll */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5871865D28DA849400BABB66 /* XCRemoteSwiftPackageReference "hstack-snap-to-scroll" */;
-			productName = SnapToScroll;
-		};
 		E9329F8D2915F652000C2A40 /* ActivityIndicatorView */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E9329F8C2915F652000C2A40 /* XCRemoteSwiftPackageReference "ActivityIndicatorView" */;
@@ -620,26 +573,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E935A68329147F8200CD7639 /* XCRemoteSwiftPackageReference "SwiftWebVTT" */;
 			productName = SwiftWebVTT;
-		};
-		E9892C96290A28D4008E8C9B /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E9892C95290A28D4008E8C9B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
-		};
-		E9892C98290A28D4008E8C9B /* FirebaseDatabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E9892C95290A28D4008E8C9B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabase;
-		};
-		E9892C9A290A28D4008E8C9B /* FirebaseFirestore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E9892C95290A28D4008E8C9B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestore;
-		};
-		E9933E8E28E019FC00751BBE /* SwiftUISnappingScrollView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E9933E8D28E019FC00751BBE /* XCRemoteSwiftPackageReference "SwiftUISnappingScrollView" */;
-			productName = SwiftUISnappingScrollView;
 		};
 		E9933E9728E153B400751BBE /* Shimmer */ = {
 			isa = XCSwiftPackageProductDependency;
