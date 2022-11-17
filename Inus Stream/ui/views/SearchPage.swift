@@ -151,7 +151,7 @@ struct SearchPage_Previews: PreviewProvider {
 }
 
 class SearchApi : ObservableObject{
-    @Published var searchdata = [IAnimeInfo]()
+    @Published var searchdata = [TrendingData]()
     
     func searchAnime(animeName: String) {
         guard let url = URL(string: "https://api.consumet.org/meta/anilist/\(animeName)") else {

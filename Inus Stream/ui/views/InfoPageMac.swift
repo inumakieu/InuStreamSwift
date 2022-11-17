@@ -64,7 +64,7 @@ struct InfoPageMac: View {
                                         Text("\(anilistApi.infodata!.title.english ?? anilistApi.infodata!.title.romaji)")
                                             .font(.largeTitle)
                                             .fontWeight(.heavy)
-                                        Text("\(anilistApi.infodata!.title.native)")
+                                        Text("\(anilistApi.infodata!.title.native ?? "")")
                                             .bold()
                                             .font(.title2)
                                         
@@ -76,16 +76,7 @@ struct InfoPageMac: View {
                             }
                             
                             HStack(alignment: .top, spacing: 30) {
-                                ZStack {
-                                    Color(hex: "#ff1E222C")
-                                    
-                                    VStack {
-                                        Text("extra info")
-                                            .foregroundColor(.white)
-                                    }
-                                }
-                                .frame(width: 280, height: 700)
-                                .cornerRadius(20)
+                                ExtraInfoView(infodata: anilistApi.infodata!)
                                 
                                 VStack(alignment: .leading) {
                                     ZStack {

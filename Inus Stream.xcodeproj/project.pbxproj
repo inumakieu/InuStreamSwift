@@ -12,6 +12,21 @@
 		588B11FD28D90DD1007CA197 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 588B11FC28D90DD1007CA197 /* Preview Assets.xcassets */; };
 		588B120428D91452007CA197 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588B120328D91452007CA197 /* HomePage.swift */; };
 		E9329F8E2915F652000C2A40 /* ActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = E9329F8D2915F652000C2A40 /* ActivityIndicatorView */; };
+		E9329F9A29188901000C2A40 /* trailer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329F9929188901000C2A40 /* trailer.swift */; };
+		E9329F9C29188925000C2A40 /* title.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329F9B29188925000C2A40 /* title.swift */; };
+		E9329F9E29188944000C2A40 /* date.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329F9D29188944000C2A40 /* date.swift */; };
+		E9329FA02918895D000C2A40 /* voiceactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329F9F2918895D000C2A40 /* voiceactor.swift */; };
+		E9329FA229188970000C2A40 /* name.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329FA129188970000C2A40 /* name.swift */; };
+		E9329FA42918898D000C2A40 /* episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329FA32918898D000C2A40 /* episode.swift */; };
+		E9329FA6291889A8000C2A40 /* related.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329FA5291889A8000C2A40 /* related.swift */; };
+		E9329FA8291889BA000C2A40 /* character.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329FA7291889BA000C2A40 /* character.swift */; };
+		E9329FAA291889D2000C2A40 /* recommended.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329FA9291889D2000C2A40 /* recommended.swift */; };
+		E9329FAC291889EF000C2A40 /* airingdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329FAB291889EF000C2A40 /* airingdate.swift */; };
+		E9329FAE29188A0E000C2A40 /* infodata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329FAD29188A0E000C2A40 /* infodata.swift */; };
+		E9329FB029188A4F000C2A40 /* recentdata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329FAF29188A4F000C2A40 /* recentdata.swift */; };
+		E9329FB229188A88000C2A40 /* trendingdata.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329FB129188A88000C2A40 /* trendingdata.swift */; };
+		E9329FB429188AAC000C2A40 /* recentresults.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329FB329188AAC000C2A40 /* recentresults.swift */; };
+		E9329FB629188ABD000C2A40 /* trendingresults.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9329FB529188ABD000C2A40 /* trendingresults.swift */; };
 		E935A67E29132FAE00CD7639 /* Trebuchet-MS-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E935A67C29132FAE00CD7639 /* Trebuchet-MS-Italic.ttf */; };
 		E935A67F29132FAE00CD7639 /* trebuc.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E935A67D29132FAE00CD7639 /* trebuc.ttf */; };
 		E935A6812913331700CD7639 /* TrebuchetMSItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E935A6802913331700CD7639 /* TrebuchetMSItalic.ttf */; };
@@ -54,6 +69,21 @@
 		588B11F928D90DD1007CA197 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		588B11FC28D90DD1007CA197 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		588B120328D91452007CA197 /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
+		E9329F9929188901000C2A40 /* trailer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = trailer.swift; sourceTree = "<group>"; };
+		E9329F9B29188925000C2A40 /* title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = title.swift; sourceTree = "<group>"; };
+		E9329F9D29188944000C2A40 /* date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = date.swift; sourceTree = "<group>"; };
+		E9329F9F2918895D000C2A40 /* voiceactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = voiceactor.swift; sourceTree = "<group>"; };
+		E9329FA129188970000C2A40 /* name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = name.swift; sourceTree = "<group>"; };
+		E9329FA32918898D000C2A40 /* episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = episode.swift; sourceTree = "<group>"; };
+		E9329FA5291889A8000C2A40 /* related.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = related.swift; sourceTree = "<group>"; };
+		E9329FA7291889BA000C2A40 /* character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = character.swift; sourceTree = "<group>"; };
+		E9329FA9291889D2000C2A40 /* recommended.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recommended.swift; sourceTree = "<group>"; };
+		E9329FAB291889EF000C2A40 /* airingdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = airingdate.swift; sourceTree = "<group>"; };
+		E9329FAD29188A0E000C2A40 /* infodata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = infodata.swift; sourceTree = "<group>"; };
+		E9329FAF29188A4F000C2A40 /* recentdata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recentdata.swift; sourceTree = "<group>"; };
+		E9329FB129188A88000C2A40 /* trendingdata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = trendingdata.swift; sourceTree = "<group>"; };
+		E9329FB329188AAC000C2A40 /* recentresults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recentresults.swift; sourceTree = "<group>"; };
+		E9329FB529188ABD000C2A40 /* trendingresults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = trendingresults.swift; sourceTree = "<group>"; };
 		E935A67C29132FAE00CD7639 /* Trebuchet-MS-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Trebuchet-MS-Italic.ttf"; path = "../../../../Downloads/trebuchet-ms-2-cufonfonts/Trebuchet-MS-Italic.ttf"; sourceTree = "<group>"; };
 		E935A67D29132FAE00CD7639 /* trebuc.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = trebuc.ttf; path = "../../../../Downloads/trebuchet-ms-2-cufonfonts/trebuc.ttf"; sourceTree = "<group>"; };
 		E935A6802913331700CD7639 /* TrebuchetMSItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = TrebuchetMSItalic.ttf; sourceTree = "<group>"; };
@@ -121,11 +151,15 @@
 		588B11F428D90DCF007CA197 /* Inus Stream */ = {
 			isa = PBXGroup;
 			children = (
+				E9329F9429187DE7000C2A40 /* utils */,
+				E9329F9329187DE3000C2A40 /* ui */,
+				E9329F9229187DDB000C2A40 /* services */,
+				E9329F9129187DD0000C2A40 /* providers */,
+				E9329F9029187DC9000C2A40 /* models */,
+				E9329F8F29187DBD000C2A40 /* types */,
 				E935A6802913331700CD7639 /* TrebuchetMSItalic.ttf */,
-				E935A67929132CAB00CD7639 /* Fonts */,
+				E935A67929132CAB00CD7639 /* fonts */,
 				E9892C8629079084008E8C9B /* Backend */,
-				E9892C8529079077008E8C9B /* Components */,
-				E9892C8429079058008E8C9B /* Views */,
 				E9933E9B28E1633700751BBE /* Inus-Stream-Info.plist */,
 				588B11F928D90DD1007CA197 /* Assets.xcassets */,
 				588B11FB28D90DD1007CA197 /* Preview Content */,
@@ -148,33 +182,68 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		E935A67929132CAB00CD7639 /* Fonts */ = {
+		E9329F8F29187DBD000C2A40 /* types */ = {
 			isa = PBXGroup;
 			children = (
-				E935A67D29132FAE00CD7639 /* trebuc.ttf */,
-				E935A67C29132FAE00CD7639 /* Trebuchet-MS-Italic.ttf */,
+				E9329F9929188901000C2A40 /* trailer.swift */,
+				E9329F9B29188925000C2A40 /* title.swift */,
+				E9329F9D29188944000C2A40 /* date.swift */,
+				E9329FA129188970000C2A40 /* name.swift */,
 			);
-			path = Fonts;
+			path = types;
 			sourceTree = "<group>";
 		};
-		E9892C8429079058008E8C9B /* Views */ = {
+		E9329F9029187DC9000C2A40 /* models */ = {
 			isa = PBXGroup;
 			children = (
-				E974025E2903418900609DE0 /* MangaReaderView.swift */,
-				E9933E9928E1608E00751BBE /* WatchPage.swift */,
-				588B120328D91452007CA197 /* HomePage.swift */,
-				E9933E9228E1220400751BBE /* InfoPage.swift */,
-				E9CBF17728E3D93C00F1BC29 /* SearchPage.swift */,
-				E9892C93290A0348008E8C9B /* LoginView.swift */,
-				E9892C9F290C9951008E8C9B /* HomePageWrapperView.swift */,
-				E9892CA1290C99DB008E8C9B /* HomePageMac.swift */,
-				E9892CA3290CB224008E8C9B /* InfoPageMac.swift */,
-				E935A6862914A31800CD7639 /* TextTest.swift */,
+				E9329FA32918898D000C2A40 /* episode.swift */,
+				E9329F9F2918895D000C2A40 /* voiceactor.swift */,
+				E9329FA5291889A8000C2A40 /* related.swift */,
+				E9329FA7291889BA000C2A40 /* character.swift */,
+				E9329FA9291889D2000C2A40 /* recommended.swift */,
+				E9329FAB291889EF000C2A40 /* airingdate.swift */,
+				E9329FAD29188A0E000C2A40 /* infodata.swift */,
+				E9329FAF29188A4F000C2A40 /* recentdata.swift */,
+				E9329FB129188A88000C2A40 /* trendingdata.swift */,
+				E9329FB329188AAC000C2A40 /* recentresults.swift */,
+				E9329FB529188ABD000C2A40 /* trendingresults.swift */,
 			);
-			path = Views;
+			path = models;
 			sourceTree = "<group>";
 		};
-		E9892C8529079077008E8C9B /* Components */ = {
+		E9329F9129187DD0000C2A40 /* providers */ = {
+			isa = PBXGroup;
+			children = (
+				E9892C87290790A9008E8C9B /* Anilist.swift */,
+			);
+			path = providers;
+			sourceTree = "<group>";
+		};
+		E9329F9229187DDB000C2A40 /* services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = services;
+			sourceTree = "<group>";
+		};
+		E9329F9329187DE3000C2A40 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				E9329F9729187E54000C2A40 /* theme */,
+				E9329F9629187E0B000C2A40 /* views */,
+				E9329F9529187E02000C2A40 /* components */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		E9329F9429187DE7000C2A40 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		E9329F9529187E02000C2A40 /* components */ = {
 			isa = PBXGroup;
 			children = (
 				E9933E9428E1282100751BBE /* EpisodeCard.swift */,
@@ -188,13 +257,45 @@
 				E9892C8F29079824008E8C9B /* EpisodeView.swift */,
 				E9892C912907983D008E8C9B /* ExtraInfoView.swift */,
 			);
-			path = Components;
+			path = components;
+			sourceTree = "<group>";
+		};
+		E9329F9629187E0B000C2A40 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				E974025E2903418900609DE0 /* MangaReaderView.swift */,
+				E9933E9928E1608E00751BBE /* WatchPage.swift */,
+				588B120328D91452007CA197 /* HomePage.swift */,
+				E9933E9228E1220400751BBE /* InfoPage.swift */,
+				E9CBF17728E3D93C00F1BC29 /* SearchPage.swift */,
+				E9892C93290A0348008E8C9B /* LoginView.swift */,
+				E9892C9F290C9951008E8C9B /* HomePageWrapperView.swift */,
+				E9892CA1290C99DB008E8C9B /* HomePageMac.swift */,
+				E9892CA3290CB224008E8C9B /* InfoPageMac.swift */,
+				E935A6862914A31800CD7639 /* TextTest.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		E9329F9729187E54000C2A40 /* theme */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = theme;
+			sourceTree = "<group>";
+		};
+		E935A67929132CAB00CD7639 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				E935A67D29132FAE00CD7639 /* trebuc.ttf */,
+				E935A67C29132FAE00CD7639 /* Trebuchet-MS-Italic.ttf */,
+			);
+			path = fonts;
 			sourceTree = "<group>";
 		};
 		E9892C8629079084008E8C9B /* Backend */ = {
 			isa = PBXGroup;
 			children = (
-				E9892C87290790A9008E8C9B /* Anilist.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -288,21 +389,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9329FA02918895D000C2A40 /* voiceactor.swift in Sources */,
 				E9892C88290790A9008E8C9B /* Anilist.swift in Sources */,
 				E9933E9328E1220400751BBE /* InfoPage.swift in Sources */,
+				E9329FAA291889D2000C2A40 /* recommended.swift in Sources */,
 				E9892C8A29079797008E8C9B /* RelatedView.swift in Sources */,
 				E9CBF17D28E3F3F500F1BC29 /* DataController.swift in Sources */,
 				E9892C94290A0348008E8C9B /* LoginView.swift in Sources */,
+				E9329FA229188970000C2A40 /* name.swift in Sources */,
 				E9892C8C290797BA008E8C9B /* CharacterView.swift in Sources */,
+				E9329FB629188ABD000C2A40 /* trendingresults.swift in Sources */,
 				E9892CA4290CB224008E8C9B /* InfoPageMac.swift in Sources */,
+				E9329FA6291889A8000C2A40 /* related.swift in Sources */,
+				E9329FB029188A4F000C2A40 /* recentdata.swift in Sources */,
 				E974025F2903418900609DE0 /* MangaReaderView.swift in Sources */,
 				E9933E9528E1282100751BBE /* EpisodeCard.swift in Sources */,
+				E9329FAE29188A0E000C2A40 /* infodata.swift in Sources */,
 				E9933E9A28E1608E00751BBE /* WatchPage.swift in Sources */,
 				E966283628F420590090628D /* Inus_StreamApp.swift in Sources */,
+				E9329F9A29188901000C2A40 /* trailer.swift in Sources */,
+				E9329FA8291889BA000C2A40 /* character.swift in Sources */,
 				E966283228F41FB00090628D /* AppDelegate.swift in Sources */,
+				E9329F9E29188944000C2A40 /* date.swift in Sources */,
 				E966283428F41FCC0090628D /* SceneDelegate.swift in Sources */,
+				E9329FB429188AAC000C2A40 /* recentresults.swift in Sources */,
+				E9329FAC291889EF000C2A40 /* airingdate.swift in Sources */,
 				E935A6872914A31800CD7639 /* TextTest.swift in Sources */,
+				E9329FA42918898D000C2A40 /* episode.swift in Sources */,
 				E9CBF17428E2775B00F1BC29 /* SeekbarView.swift in Sources */,
+				E9329FB229188A88000C2A40 /* trendingdata.swift in Sources */,
 				E966283028F41F730090628D /* HostingController.swift in Sources */,
 				E9CBF17828E3D93C00F1BC29 /* SearchPage.swift in Sources */,
 				E9892C8E2907980A008E8C9B /* ChapterView.swift in Sources */,
@@ -313,6 +428,7 @@
 				E9892C922907983D008E8C9B /* ExtraInfoView.swift in Sources */,
 				E9892C9029079824008E8C9B /* EpisodeView.swift in Sources */,
 				E9892CA0290C9951008E8C9B /* HomePageWrapperView.swift in Sources */,
+				E9329F9C29188925000C2A40 /* title.swift in Sources */,
 				E9933E9128E02A2400751BBE /* ContinueWatching.swift in Sources */,
 				E9892CA2290C99DB008E8C9B /* HomePageMac.swift in Sources */,
 			);

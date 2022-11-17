@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SnapToScroll
 import SwiftUIFontIcon
 
 struct HomePage: View {
@@ -142,9 +141,9 @@ struct HomePage: View {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 20) {
                                     ForEach(0..<5) {_ in
-                                        RecentAnimeCard(anime: IAnimeRecent(id: "140085",
+                                        RecentAnimeCard(anime: RecentData(id: "140085",
                                                                             malId: 50060,
-                                                                            title: ITitle(
+                                                                            title: Title(
                                                                               romaji: "Shadowverse Flame",
                                                                               english: "Shadowverse Flame",
                                                                               native: "シャドウバースF（フレイム）",
@@ -462,8 +461,8 @@ struct HomePage_Previews: PreviewProvider {
 }
 
 class Api : ObservableObject{
-    @Published var books = [IAnimeInfo]()
-    @Published var recents = [IAnimeRecent]()
+    @Published var books = [TrendingData]()
+    @Published var recents = [RecentData]()
     
     func loadData() {
         guard let url = URL(string: "https://api.consumet.org/meta/anilist/trending") else {
@@ -495,7 +494,7 @@ class Api : ObservableObject{
 }
 
 struct ExtractedView: View {
-    let item: IAnimeInfo
+    let item: TrendingData
     @State private var isShowingDeviceDetail = false
     
     var body: some View {

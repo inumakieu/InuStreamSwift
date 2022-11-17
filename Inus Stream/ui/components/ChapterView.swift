@@ -43,8 +43,6 @@ struct ChapterView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(width: 350, alignment: .leading)
-            .frame(height: 1300, alignment: .top)
-            .frame(maxHeight: 1300, alignment: .top)
         }
     }
 }

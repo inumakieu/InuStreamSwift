@@ -134,18 +134,26 @@ struct MangaReaderView: View {
                         .fixedSize()
                         .cornerRadius(8)
                         .onTapGesture {
-                            if(chapterNumber > 0) {
-                                chapterNumber += 1
+                            Task {
+                                let oldNum = chapterNumber
+                                if(chapterNumber > 0) {
+                                    chapterNumber += 1
+                                }
+                                if(chapterNumber < 10) {
+                                    chapterNumberName = "c00\(chapterNumber)"
+                                } else {
+                                    chapterNumberName = "c0\(chapterNumber)"
+                                }
+                                mangaApi.mangadata = []
+                                await mangaApi.loadInfo(id: "\(mangaData.chapters![chapterNumber].id)")
+                                if(mangaApi.mangadata != []) {
+                                    tapped = 0
+                                    offsetX = 0
+                                } else {
+                                    chapterNumber = oldNum
+                                    await mangaApi.loadInfo(id: "\(mangaData.chapters![chapterNumber].id)")
+                                }
                             }
-                            if(chapterNumber < 10) {
-                                chapterNumberName = "c00\(chapterNumber)"
-                            } else {
-                                chapterNumberName = "c0\(chapterNumber)"
-                            }
-                            mangaApi.mangadata = []
-                            mangaApi.loadInfo(id: "\(mangaData.chapters![chapterNumber].id)")
-                            tapped = 0
-                            offsetX = 0
                         }
                         
                         Spacer()
@@ -177,18 +185,26 @@ struct MangaReaderView: View {
                         .fixedSize()
                         .cornerRadius(8)
                         .onTapGesture {
-                            if(chapterNumber < maxChapter) {
-                                chapterNumber -= 1
+                            Task {
+                                let oldNum = chapterNumber
+                                if(chapterNumber < maxChapter) {
+                                    chapterNumber -= 1
+                                }
+                                if(chapterNumber < 10) {
+                                    chapterNumberName = "c00\(chapterNumber)"
+                                } else {
+                                    chapterNumberName = "c0\(chapterNumber)"
+                                }
+                                mangaApi.mangadata = []
+                                await mangaApi.loadInfo(id: "\(mangaData.chapters![chapterNumber].id)")
+                                if(mangaApi.mangadata != []) {
+                                    tapped = 0
+                                    offsetX = 0
+                                } else {
+                                    chapterNumber = oldNum
+                                    await mangaApi.loadInfo(id: "\(mangaData.chapters![chapterNumber].id)")
+                                }
                             }
-                            if(chapterNumber < 10) {
-                                chapterNumberName = "c00\(chapterNumber)"
-                            } else {
-                                chapterNumberName = "c0\(chapterNumber)"
-                            }
-                            mangaApi.mangadata = []
-                            mangaApi.loadInfo(id: "\(mangaData.chapters![chapterNumber].id)")
-                            tapped = 0
-                            offsetX = 0
                         }
                     }
                     .padding(.horizontal, 20)
@@ -205,7 +221,7 @@ struct MangaReaderView: View {
         }
         .edgesIgnoringSafeArea(.all)
         .task {
-            mangaApi.loadInfo(id: "\(mangaName)")
+            await mangaApi.loadInfo(id: "\(mangaName)")
             
             maxChapter = mangaData.chapters?.count ?? 1
         }
@@ -272,18 +288,17 @@ class MangaApi : ObservableObject{
     @Published var mangainfo: MangaInfo? = nil
     
     
-    func loadInfo(id: String) {
+    func loadInfo(id: String) async {
         guard let url = URL(string: "https://api.consumet.org/meta/anilist-manga/read?chapterId=\(id)&provider=mangahere") else {
             print("Invalid url...")
             return
         }
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            let books = try! JSONDecoder().decode([MangaData].self, from: data!)
-            //print(books)
-            DispatchQueue.main.async {
-                self.mangadata = books
-            }
-        }.resume()
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            self.mangadata = try! JSONDecoder().decode([MangaData].self, from: data)
+        } catch {
+            print("couldnt load data")
+        }
     }
     
     func getInfo(id: String) async -> MangaInfo? {
@@ -300,13 +315,13 @@ class MangaApi : ObservableObject{
     }
 }
 
-struct MangaData: Codable {
+struct MangaData: Codable, Equatable {
     let page: Int
     let img: String
     let headerForImage: MangaReferer
 }
 
-struct MangaReferer: Codable {
+struct MangaReferer: Codable, Equatable {
     let Referer: String
 }
 
@@ -324,7 +339,7 @@ struct MangaInfo: Codable {
     let cover: String
     let description, status: String
     let releaseDate: Int
-    let startDate, endDate: EndDateClass
+    let startDate, endDate: Date
     let nextAiringEpisode: AiringData?
     let totalEpisodes: Int?
     let duration: Int?
@@ -339,7 +354,7 @@ struct MangaInfo: Codable {
     let chapters: [MangaChapter]?
 }
 
-struct MangaChapter: Codable {
+struct MangaChapter: Codable, Equatable {
     let id: String
     let title: String
     let releasedDate: String

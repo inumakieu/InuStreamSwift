@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ExtraInfoView: View {
-    let infoApi: InfoApi
+    let infodata: InfoData
     
     var body: some View {
         
@@ -28,8 +28,8 @@ struct ExtraInfoView: View {
                         Spacer().frame(maxHeight: 6)
                         
                         VStack(alignment: .leading, spacing: 6) {
-                            ForEach(0..<infoApi.infodata!.synonyms!.count) {synonym in
-                                Text("\(infoApi.infodata!.synonyms![synonym])")
+                            ForEach(0..<infodata.synonyms!.count) {synonym in
+                                Text("\(infodata.synonyms![synonym])")
                                     .bold()
                                     .foregroundColor(Color(hex: "#ff999999"))
                                     .font(.title3)
@@ -51,7 +51,7 @@ struct ExtraInfoView: View {
                         
                         Spacer().frame(maxHeight: 6)
                         
-                        Text(infoApi.infodata!.countryOfOrigin!)
+                        Text(infodata.countryOfOrigin!)
                             .bold()
                             .foregroundColor(Color(hex: "#ff999999"))
                             .font(.title3)
@@ -70,7 +70,7 @@ struct ExtraInfoView: View {
                         
                         Spacer().frame(maxHeight: 6)
                         
-                        Text(infoApi.infodata!.type!)
+                        Text(infodata.type!)
                             .bold()
                             .foregroundColor(Color(hex: "#ff999999"))
                             .font(.title3)
@@ -90,8 +90,8 @@ struct ExtraInfoView: View {
                         Spacer().frame(maxHeight: 6)
                         
                         VStack(alignment: .leading, spacing: 6) {
-                            ForEach(0..<infoApi.infodata!.studios.count) {studio in
-                                Text("\(infoApi.infodata!.studios[studio])")
+                            ForEach(0..<infodata.studios.count) {studio in
+                                Text("\(infodata.studios[studio])")
                                     .bold()
                                     .foregroundColor(Color(hex: "#ff999999"))
                                     .font(.title3)
@@ -113,7 +113,7 @@ struct ExtraInfoView: View {
                         
                         Spacer().frame(maxHeight: 6)
                         
-                        Text("\(infoApi.infodata!.duration!)")
+                        Text("\(infodata.duration!)")
                             .bold()
                             .foregroundColor(Color(hex: "#ff999999"))
                             .font(.title3)
@@ -132,7 +132,7 @@ struct ExtraInfoView: View {
                         
                         Spacer().frame(maxHeight: 6)
                         
-                        Text("\(infoApi.infodata!.totalEpisodes!)")
+                        Text("\(infodata.totalEpisodes!)")
                             .bold()
                             .foregroundColor(Color(hex: "#ff999999"))
                             .font(.title3)
@@ -151,7 +151,7 @@ struct ExtraInfoView: View {
                         
                         Spacer().frame(maxHeight: 6)
                         
-                        Text("\(infoApi.infodata!.status.uppercased())")
+                        Text("\(infodata.status.uppercased())")
                             .bold()
                             .foregroundColor(Color(hex: "#ff999999"))
                             .font(.title3)
@@ -170,7 +170,7 @@ struct ExtraInfoView: View {
                         
                         Spacer().frame(maxHeight: 6)
                         
-                        Text(String(infoApi.infodata!.releaseDate))
+                        Text(String(infodata.releaseDate))
                             .bold()
                             .foregroundColor(Color(hex: "#ff999999"))
                             .font(.title3)
@@ -189,7 +189,7 @@ struct ExtraInfoView: View {
                         
                         Spacer().frame(maxHeight: 6)
                         
-                        Text("\(infoApi.infodata!.season!)")
+                        Text("\(infodata.season!)")
                             .bold()
                             .foregroundColor(Color(hex: "#ff999999"))
                             .font(.title3)

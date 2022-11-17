@@ -31,7 +31,7 @@ struct RelatedView: View {
                                 .font(.title2)
                                 .lineLimit(2)
                             
-                            Text("\(infoApi.infodata!.relations![relIndex].title.native)")
+                            Text("\(infoApi.infodata!.relations![relIndex].title.native ?? "")")
                                 .foregroundColor(Color(hex: "#ff999999"))
                                 .bold()
                                 .font(.caption)

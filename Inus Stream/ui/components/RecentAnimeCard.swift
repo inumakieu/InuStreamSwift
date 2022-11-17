@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecentAnimeCard: View {
-    let anime: IAnimeRecent
+    let anime: RecentData
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -40,9 +40,9 @@ struct RecentAnimeCard: View {
 
 struct RecentAnimeCard_Previews: PreviewProvider {
     static var previews: some View {
-        RecentAnimeCard(anime: IAnimeRecent(id: "140085",
+        RecentAnimeCard(anime: RecentData(id: "140085",
                                             malId: 50060,
-                                            title: ITitle(
+                                            title: Title(
                                               romaji: "Shadowverse Flame",
                                               english: "Shadowverse Flame",
                                               native: "シャドウバースF（フレイム）",

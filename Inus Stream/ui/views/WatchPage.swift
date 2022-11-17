@@ -355,13 +355,9 @@ struct CustomControlsView: View {
                         
                         ForEach(0..<playerVM.currentSubs.count, id:\.self) {index in
                             if(subtitleStyle == SubtitleStyle.Outlined) {
-                                SubtitleTextDisplay(subtitle_text: playerVM.currentSubs[index].text)
+                                OutlinedSubtitleDisplay(subtitle_text: playerVM.currentSubs[index].text)
                             } else {
-                                Text(.init(playerVM.currentSubs[index].text))
-                                    .foregroundColor(.white)
-                                    .font(.custom("TrebuchetMS", size: 22))
-                                    .shadow(color: Color(.black),radius: 2, x: 2, y: 2)
-                                    .multilineTextAlignment(.center)
+                                SimpleSubtitleDisplay(subtitle_text: .init(playerVM.currentSubs[index].text))
                             }
                         }
                     }
@@ -552,6 +548,7 @@ struct CustomControlsView: View {
                                                 .foregroundColor(.white)
                                                 .bold()
                                                 .font(.title)
+                                                .padding(.leading, 4)
                                             
                                             Text("There was an error fetching the video file. Please try again later.")
                                                 .foregroundColor(.white.opacity(0.7))
@@ -1452,8 +1449,9 @@ struct WatchPage_Previews: PreviewProvider {
         WatchPage(aniData: InfoData(id: "98659",
                                     title: Title(
                                         romaji: "Youkoso Jitsuryoku Shijou Shugi no Kyoushitsu e",
-                                        native: "ようこそ実力至上主義の教室へ",
-                                        english: "Classroom of the Elite"
+                                        english: "Classroom of the Elite",
+                                        native: "ようこそ実力至上主義の教室へ"
+                                        
                                     ),
                                     malId: 35507,
                                     synonyms: [
@@ -1474,12 +1472,12 @@ struct WatchPage_Previews: PreviewProvider {
                                     description: "Koudo Ikusei Senior High School is a leading school with state-of-the-art facilities. The students there have the freedom to wear any hairstyle and bring any personal effects they desire. Koudo Ikusei is like a utopia, but the truth is that only the most superior students receive favorable treatment.<br><br>\n\nKiyotaka Ayanokouji is a student of D-class, which is where the school dumps its \"inferior\" students in order to ridicule them. For a certain reason, Kiyotaka was careless on his entrance examination, and was put in D-class. After meeting Suzune Horikita and Kikyou Kushida, two other students in his class, Kiyotaka's situation begins to change. <br><br>\n(Source: Anime News Network, edited)",
                                     status: "Completed",
                                     releaseDate: 2017,
-                                    startDate: EndDateClass(
+                                    startDate: Date(
                                         year: 2017,
                                         month: 7,
                                         day: 12
                                     ),
-                                    endDate: EndDateClass(
+                                    endDate: Date(
                                         year: 2017,
                                         month: 9,
                                         day: 27

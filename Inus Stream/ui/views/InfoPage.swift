@@ -88,7 +88,7 @@ struct InfoPage: View {
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: 350)
                         .padding(.top, 14)
-                    Text(infoApi.infodata!.title.native)
+                    Text(infoApi.infodata!.title.native ?? "")
                         .bold()
                         .font(.subheadline)
                         .foregroundColor(.white)
@@ -97,7 +97,7 @@ struct InfoPage: View {
                         .padding(.bottom, 0)
                     
                     TabView(selection: $selection) {
-                        ExtraInfoView(infoApi: infoApi)
+                        ExtraInfoView(infodata: infoApi.infodata!)
                             .fixedSize()
                             .frame(maxWidth: 390, alignment: .top)
                             .tag(1)
